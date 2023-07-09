@@ -71,3 +71,28 @@
 2023-07-09 19:27:06.6023 Trace  Scanning Property Layout '${longdate} ${level:uppercase=true} ${message}' NLog.Layouts.Layout
 2023-07-09 19:27:06.6023 Trace FileTarget(Name=logfile) has 2 layouts
 2023-07-09 19:27:06.6023 Trace FileTarget(Name=logfile): Using appenderFactory: NLog.Internal.FileAppenders.SingleProcessFileAppender+Factory
+2023-07-09 19:36:22.0708 Info AppDomain Shutting down. LogFactory closing...
+2023-07-09 19:36:22.0708 Debug Stopping file watching for path 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking' filter 'nlog.config'
+2023-07-09 19:36:22.0708 Trace Flushing all 1 targets...
+2023-07-09 19:36:22.0708 Trace ForEachItemInParallel() 1 items
+2023-07-09 19:36:22.0885 Trace FileTarget(Name=logfile): FlushAsync
+2023-07-09 19:36:22.0885 Trace Continuation invoked: 
+2023-07-09 19:36:22.0885 Trace Parallel task completed. 0 items remaining
+2023-07-09 19:36:22.0885 Debug Flush completed
+2023-07-09 19:36:22.0885 Trace FileTarget(Name=logfile): FlushAsync Done
+2023-07-09 19:36:22.0885 Debug Closing logging configuration...
+2023-07-09 19:36:22.1023 Trace Closing FileTarget(Name=logfile)
+2023-07-09 19:36:22.1023 Debug FileTarget(Name=logfile): Closing...
+2023-07-09 19:36:22.1023 Debug FileTarget(Name=logfile): Closed.
+2023-07-09 19:36:22.1023 Trace Closing .\logs\${shortdate}_logfile.txt
+2023-07-09 19:36:22.1023 Trace Closing Layout Renderer: ${literal}
+2023-07-09 19:36:22.1023 Trace Closing Layout Renderer: ${shortdate}
+2023-07-09 19:36:22.1023 Trace Closing Layout Renderer: ${literal}
+2023-07-09 19:36:22.1023 Trace Closing ${longdate} ${level:uppercase=true} ${message}
+2023-07-09 19:36:22.1023 Trace Closing Layout Renderer: ${longdate}
+2023-07-09 19:36:22.1173 Trace Closing Layout Renderer: ${literal}
+2023-07-09 19:36:22.1173 Trace Closing Layout Renderer: ${level}
+2023-07-09 19:36:22.1173 Trace Closing Layout Renderer: ${literal}
+2023-07-09 19:36:22.1173 Trace Closing Layout Renderer: ${message}
+2023-07-09 19:36:22.1173 Debug Finished closing logging configuration.
+2023-07-09 19:36:22.1173 Info LogFactory has been closed.
