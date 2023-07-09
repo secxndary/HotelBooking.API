@@ -46,7 +46,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 Id = new Guid("db277d82-62fd-49b8-b3ed-ad5976c1167c"),
                 DateEntry = new DateTime(2023, 7, 5),
                 DateExit = new DateTime(2023, 7, 12),
-                RoomId = new Guid("894622e4-9303-4ee8-a25b-dbea1c26eb1a"),
+                RoomId = new Guid("1e7bbd59-e683-4700-b8f0-d279ba1304bb"),
                 UserId = new Guid("a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9")
             },
             new Reservation

@@ -46,6 +46,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 HotelId = new Guid("0c6cc6d4-3f8c-43d2-9591-230cb646aab9"),
                 RoomTypeId = new Guid("2d2205b1-2c38-4b92-a710-cf4861e1c6cf")
             },
+
             // Номера люкс
             new Room
             {
@@ -65,6 +66,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 HotelId = new Guid("e418aacc-8a7c-4d78-b509-24dd42e823ee"),
                 RoomTypeId = new Guid("628cb11b-e91c-4faf-b5d9-fc41d79496fa")
             },
+
             // Номера полулюкс
             new Room
             {
@@ -73,6 +75,15 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 Quantity = 8,
                 SleepingPlaces = 4,
                 HotelId = new Guid("e418aacc-8a7c-4d78-b509-24dd42e823ee"),
+                RoomTypeId = new Guid("386c05e6-a4a5-451f-8363-246ff66367e9")
+            },
+            new Room
+            {
+                Id = new Guid("0bab8e32-e14b-4cd6-90ae-cf795fee80d8"),
+                Price = 450,
+                Quantity = 6,
+                SleepingPlaces = 2,
+                HotelId = new Guid("894622e4-9303-4ee8-a25b-dbea1c26eb1a"),
                 RoomTypeId = new Guid("386c05e6-a4a5-451f-8363-246ff66367e9")
             },
             new Room
@@ -93,6 +104,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 HotelId = new Guid("0c6cc6d4-3f8c-43d2-9591-230cb646aab9"),
                 RoomTypeId = new Guid("386c05e6-a4a5-451f-8363-246ff66367e9")
             },
+
             // Номера премиум
             new Room
             {
@@ -112,6 +124,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
                 HotelId = new Guid("e418aacc-8a7c-4d78-b509-24dd42e823ee"),
                 RoomTypeId = new Guid("c7e74df3-94ad-4e25-b3c1-1a053ce1ff55")
             },
+
             // Апартаменты
             new Room
             {

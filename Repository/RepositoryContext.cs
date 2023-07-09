@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Configuration;
 namespace Repository;
 
 public class RepositoryContext : DbContext
@@ -7,7 +8,21 @@ public class RepositoryContext : DbContext
     public RepositoryContext(DbContextOptions options) 
         : base (options)
     { }
-    
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .ApplyConfiguration(new RoleConfiguration())
+            .ApplyConfiguration(new UserConfiguration())
+            .ApplyConfiguration(new RoomTypeConfiguration())
+            .ApplyConfiguration(new RoomConfiguration())
+            .ApplyConfiguration(new HotelConfiguration())
+            .ApplyConfiguration(new ReservationConfiguration())
+            .ApplyConfiguration(new FeedbackConfiguration())
+            .ApplyConfiguration(new RoomPhotoConfiguration())
+            .ApplyConfiguration(new HotelPhotoConfiguration());
+    }
+
     public DbSet<Role>? Roles { get; set; }
     public DbSet<RoomType>? RoomTypes { get; set; }
     public DbSet<RoomPhoto>? RoomPhotos { get; set; }

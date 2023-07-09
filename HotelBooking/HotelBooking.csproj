@@ -21,4 +21,9 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Content\Images\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
