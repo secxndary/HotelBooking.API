@@ -1,7 +1,6 @@
 ﻿using Contracts.Repositories;
 using Entities.Models;
-
-namespace Repository.RepositoryUser;
+namespace Repository.Implementations;
 
 public class RoomRepository : RepositoryBase<Room>, IRoomRepository
 {
