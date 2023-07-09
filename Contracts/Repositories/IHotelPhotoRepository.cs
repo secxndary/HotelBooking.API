@@ -1,4 +1,4 @@
-﻿namespace Contracts.Repository;
+﻿namespace Contracts.Repositories;
 
 public interface IHotelPhotoRepository
 {
