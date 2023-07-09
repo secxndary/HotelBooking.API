@@ -1,5 +1,8 @@
 ﻿using Contracts;
+using Contracts.Repository;
 using LoggerService;
+using Repository;
+
 namespace HotelBooking.Extensions;
 
 public static class ServiceExtensions
@@ -18,4 +21,7 @@ public static class ServiceExtensions
 
     public static void ConfigureLoggerService(this IServiceCollection services) =>
         services.AddSingleton<ILoggerManager, LoggerManager>();
+
+    public static void ConfigureRepositoryManager(this IServiceCollection services) =>
+        services.AddScoped<IRepositoryManager, RepositoryManager>();
 }
