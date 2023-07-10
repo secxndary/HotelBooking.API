@@ -1,6 +1,8 @@
 ﻿using Contracts;
 using Contracts.Repository;
 using Service.Contracts;
+using Service.Contracts.UserServices;
+using Service.UserServicesImpl;
 namespace Service;
 
 public class ServiceManager : IServiceManager

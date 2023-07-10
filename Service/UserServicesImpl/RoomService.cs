@@ -1,14 +1,14 @@
 ﻿using Contracts;
 using Contracts.Repository;
-using Service.Contracts;
-namespace Service;
+using Service.Contracts.UserServices;
+namespace Service.UserServicesImpl;
 
-public sealed class FeedbackService : IFeedbackService
+public sealed class RoomService : IRoomService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
 
-    public FeedbackService(IRepositoryManager repository, ILoggerManager logger)
+    public RoomService(IRepositoryManager repository, ILoggerManager logger)
     {
         _repository = repository;
         _logger = logger;

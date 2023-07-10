@@ -1,14 +1,14 @@
 ﻿using Contracts;
 using Contracts.Repository;
-using Service.Contracts;
-namespace Service;
+using Service.Contracts.UserServices;
+namespace Service.UserServicesImpl;
 
-public sealed class RoleService : IRoleService
+public sealed class HotelService : IHotelService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
 
-    public RoleService(IRepositoryManager repository, ILoggerManager logger)
+    public HotelService(IRepositoryManager repository, ILoggerManager logger)
     {
         _repository = repository;
         _logger = logger;
