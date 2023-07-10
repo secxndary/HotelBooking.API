@@ -8,5 +8,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         : base(repositoryContext)
     { }
 
-
+    public IEnumerable<Role> GetAllRoles(bool trackChanges) =>
+        FindAll(trackChanges)
+            .OrderBy(r => r.Name)
+            .ToList();
 }
