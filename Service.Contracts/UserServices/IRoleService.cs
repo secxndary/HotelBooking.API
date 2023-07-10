@@ -1,7 +1,7 @@
-﻿using Entities.Models;
+﻿using Shared.DataTransferObjects;
 namespace Service.Contracts.UserServices;
 
 public interface IRoleService
 {
-    IEnumerable<Role> GetAllRoles(bool trackChanges);
+    IEnumerable<RoleDto> GetAllRoles(bool trackChanges);
 }

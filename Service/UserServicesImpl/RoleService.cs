@@ -1,7 +1,8 @@
 ﻿using Contracts;
 using Contracts.Repository;
-using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects;
+
 namespace Service.UserServicesImpl;
 
 public sealed class RoleService : IRoleService
@@ -16,12 +17,15 @@ public sealed class RoleService : IRoleService
     }
 
 
-    public IEnumerable<Role> GetAllRoles(bool trackChanges)
+    public IEnumerable<RoleDto> GetAllRoles(bool trackChanges)
     {
         try
         {
             var roles = _repository.Role.GetAllRoles(trackChanges);
-            return roles;
+            var rolesDto = roles
+                .Select(r => new RoleDto(r.Id, r.Name ?? "", r.Description ?? ""))
+                .ToList();
+            return rolesDto;
         }
         catch(Exception ex)
         {

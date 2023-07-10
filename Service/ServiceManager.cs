@@ -7,9 +7,6 @@ namespace Service;
 
 public class ServiceManager : IServiceManager
 {
-    private readonly IRepositoryManager _repositoryManager;
-    private readonly ILoggerManager _loggerManager;
-
     private readonly Lazy<IRoleService> _roleService;
     private readonly Lazy<IUserService> _userService;
     private readonly Lazy<IRoomTypeService> _roomTypeService;
@@ -22,9 +19,6 @@ public class ServiceManager : IServiceManager
 
     public ServiceManager(IRepositoryManager repository, ILoggerManager logger)
     {
-        _repositoryManager = repository;
-        _loggerManager = logger;
-
         _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger));
         _userService = new Lazy<IUserService>(() => new UserService(repository, logger));
         _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger));
