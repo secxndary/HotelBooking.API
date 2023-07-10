@@ -1,4 +1,5 @@
-﻿using Contracts;
+﻿using AutoMapper;
+using Contracts;
 using Contracts.Repository;
 using Service.Contracts;
 using Service.Contracts.UserServices;
@@ -17,17 +18,17 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IRoomPhotoService> _roomPhotoService;
     private readonly Lazy<IHotelPhotoService> _hotelPhotoService;
 
-    public ServiceManager(IRepositoryManager repository, ILoggerManager logger)
+    public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
     {
-        _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger));
-        _userService = new Lazy<IUserService>(() => new UserService(repository, logger));
-        _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger));
-        _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger));
-        _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger));
-        _reservationService = new Lazy<IReservationService>(() =>  new ReservationService(repository, logger));
-        _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repository, logger));
-        _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger));
-        _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger));
+        _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger, mapper));
+        _userService = new Lazy<IUserService>(() => new UserService(repository, logger, mapper));
+        _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger, mapper));
+        _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger, mapper));
+        _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger, mapper));
+        _reservationService = new Lazy<IReservationService>(() =>  new ReservationService(repository, logger, mapper));
+        _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repository, logger, mapper));
+        _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger, mapper));
+        _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger, mapper));
     }
 
     public IRoleService RoleService => _roleService.Value;
