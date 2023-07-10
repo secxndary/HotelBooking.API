@@ -1,4 +1,4 @@
-﻿using Contracts.Repositories;
+﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 namespace Repository.Implementations;
 
