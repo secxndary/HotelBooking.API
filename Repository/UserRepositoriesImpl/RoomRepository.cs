@@ -8,5 +8,8 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         : base(repositoryContext)
     { }
 
-
+    public IEnumerable<Room> GetRooms(Guid hotelId, bool trackChanges) =>
+        FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
+            .OrderBy(r => r.Price)
+            .ToList();
 }
