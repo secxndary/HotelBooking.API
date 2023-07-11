@@ -16,4 +16,11 @@ public class RolesController : ControllerBase
         var roles = _service.RoleService.GetAllRoles(trackChanges: false);
         return Ok(roles);
     }
+
+    [HttpGet("{id:guid}")]
+    public IActionResult GetRole(Guid id)
+    {
+        var role = _service.RoleService.GetRole(id, trackChanges: false);
+        return Ok(role);
+    }
 }

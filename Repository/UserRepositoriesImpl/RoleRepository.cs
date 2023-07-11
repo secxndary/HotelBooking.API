@@ -12,4 +12,8 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         FindAll(trackChanges)
             .OrderBy(r => r.Name)
             .ToList();
+
+    public Role GetRole(Guid id, bool trackChanges) =>
+        FindByCondition(r => r.Id.Equals(id), trackChanges)
+        .SingleOrDefault();
 }

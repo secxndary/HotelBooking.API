@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Exceptions;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects;
 namespace Service.UserServicesImpl;
@@ -24,5 +25,14 @@ public sealed class RoleService : IRoleService
         var roles = _repository.Role.GetAllRoles(trackChanges);
         var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
         return rolesDto;
+    }
+
+    public RoleDto GetRole(Guid id, bool trackChanges)
+    {
+        var role = _repository.Role.GetRole(id, trackChanges);
+        if (role is null)
+            throw new RoleNotFoundException(id);
+        var roleDto = _mapper.Map<RoleDto>(role);
+        return roleDto;
     }
 }
