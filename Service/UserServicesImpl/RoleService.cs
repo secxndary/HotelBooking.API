@@ -21,16 +21,8 @@ public sealed class RoleService : IRoleService
 
     public IEnumerable<RoleDto> GetAllRoles(bool trackChanges)
     {
-        try
-        {
-            var roles = _repository.Role.GetAllRoles(trackChanges);
-            var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
-            return rolesDto;
-        }
-        catch(Exception ex)
-        {
-            _logger.LogError($"Something went wrong in the {nameof(GetAllRoles)} service method {ex}");
-            throw;
-        }
+        var roles = _repository.Role.GetAllRoles(trackChanges);
+        var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
+        return rolesDto;
     }
 }

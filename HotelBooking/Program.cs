@@ -1,3 +1,4 @@
+using Contracts;
 using HotelBooking.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
@@ -21,11 +22,13 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+    
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
 }
 else
     app.UseHsts();
