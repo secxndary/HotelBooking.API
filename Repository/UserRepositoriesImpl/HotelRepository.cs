@@ -8,5 +8,12 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         : base(repositoryContext)
     { }
 
+    public IEnumerable<Hotel> GetAllHotels(bool trackChanges) =>
+        FindAll(trackChanges)
+            .OrderBy(h => h.Stars)
+            .ToList();
 
+    public Hotel GetHotel(Guid id, bool trackChanges) =>
+        FindByCondition(h => h.Id.Equals(id), trackChanges)
+            .SingleOrDefault();
 }
