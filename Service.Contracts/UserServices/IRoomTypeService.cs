@@ -1,6 +1,8 @@
-﻿namespace Service.Contracts.UserServices;
+﻿using Shared.DataTransferObjects;
+namespace Service.Contracts.UserServices;
 
 public interface IRoomTypeService
 {
-
+    IEnumerable<RoomTypeDto> GetAllRoomTypes(bool trackChanges);
+    RoomTypeDto GetRoomType(Guid id, bool trackChanges);
 }

@@ -4,23 +4,23 @@ namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels/{hotelId}/feedbacks")]
 [ApiController]
-public class ReservationsController : ControllerBase
+public class FeedbacksController : ControllerBase
 {
     private readonly IServiceManager _service;
-    public ReservationsController(IServiceManager service) => _service = service;
+    public FeedbacksController(IServiceManager service) => _service = service;
 
 
     [HttpGet]
-    public IActionResult GetReservationsForHotel(Guid hotelId)
+    public IActionResult GetFeedbacksForHotel(Guid hotelId)
     {
-        var feedbacks = _service.ReservationService.GetReservations(hotelId, trackChanges: false);
+        var feedbacks = _service.FeedbackService.GetFeedbacks(hotelId, trackChanges: false);
         return Ok(feedbacks);
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetReservationForHotel(Guid hotelId, Guid id)
+    public IActionResult GetFeedbackForHotel(Guid hotelId, Guid id)
     {
-        var feedback = _service.ReservationService.GetReservation(hotelId, id, trackChanges: false);
+        var feedback = _service.FeedbackService.GetFeedback(hotelId, id, trackChanges: false);
         return Ok(feedback);
     }
 }

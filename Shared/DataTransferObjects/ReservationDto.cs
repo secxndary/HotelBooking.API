@@ -1,6 +1,6 @@
 ﻿namespace Shared.DataTransferObjects;
 
-public record Dto
+public record ReservationDto
 {
     public Guid Id { get; init; }
     public DateTime DateEntry { get; init; }
