@@ -1,8 +1,8 @@
 ﻿namespace Shared.DataTransferObjects;
 
 public record RoleDto
-(
-    Guid    Id,
-    string  Name,
-    string  Description
-);
+{
+    public Guid Id { get; init; }
+    public string? Name { get; init; }
+    public string? Description { get; init; }
+}

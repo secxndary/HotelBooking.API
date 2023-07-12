@@ -1,9 +1,9 @@
 ﻿namespace Shared.DataTransferObjects;
 
 public record RoomDto
-(
-    Guid Id,
-    int Price,
-    int Quantity,
-    int SleepingPlaces
-);
+{
+    public Guid Id { get; init; }
+    public int Price { get; init; }
+    public int Quantity { get; init; }
+    public int SleepingPlaces { get; init; }
+}

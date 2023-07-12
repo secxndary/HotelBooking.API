@@ -1,9 +1,9 @@
 ﻿namespace Shared.DataTransferObjects;
 
 public record HotelDto
-(
-    Guid Id,
-    string Name,
-    string Description,
-    int Stars
-);
+{
+    public Guid Id { get; init; }
+    public string? Name { get; init; }
+    public string? Description { get; init; }
+    public int Stars { get; init; }
+}
