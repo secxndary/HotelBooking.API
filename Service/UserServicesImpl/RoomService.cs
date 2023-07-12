@@ -2,6 +2,7 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions;
+using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects;
 namespace Service.UserServicesImpl;
@@ -28,5 +29,19 @@ public sealed class RoomService : IRoomService
         var rooms = _repository.Room.GetRooms(hotelId, trackChanges);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
+    }
+
+    public RoomDto GetRoom(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+        
+        var room = _repository.Room.GetRoom(hotelId, id, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(id);
+        
+        var roomDto = _mapper.Map<RoomDto>(room);
+        return roomDto;
     }
 }

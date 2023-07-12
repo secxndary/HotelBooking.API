@@ -16,4 +16,11 @@ public class RoomsController : ControllerBase
         var rooms = _service.RoomService.GetRooms(hotelId, trackChanges: false);
         return Ok(rooms);
     }
+
+    [HttpGet("{id:guid}")]
+    public IActionResult GetRoomForHotel(Guid hotelId, Guid id)
+    {
+        var room = _service.RoomService.GetRoom(hotelId, id, trackChanges: false);
+        return Ok(room);
+    }
 }

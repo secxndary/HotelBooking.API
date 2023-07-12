@@ -17,8 +17,7 @@ public class HotelsController : ControllerBase
         return Ok(hotels);
     }
 
-    [Route("{id:guid}")]
-    [HttpGet]
+    [HttpGet("{id:guid}")]
     public IActionResult GetHotel(Guid id)
     {
         var hotel = _service.HotelService.GetHotel(id, trackChanges: false);
