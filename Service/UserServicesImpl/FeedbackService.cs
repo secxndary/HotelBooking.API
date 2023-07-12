@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Exceptions;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects;
 namespace Service.UserServicesImpl;
 
 public sealed class FeedbackService : IFeedbackService
@@ -17,4 +19,28 @@ public sealed class FeedbackService : IFeedbackService
         _mapper = mapper;
     }
 
+
+    public IEnumerable<FeedbackDto> GetFeedbacks(Guid hotelId, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+        var feedbacks = _repository.Feedback.GetFeedbacks(hotelId, trackChanges);
+        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
+        return feedbacksDto;
+    }
+
+    public FeedbackDto GetFeedback(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var feedback = _repository.Feedback.GetFeedback(hotelId, id, trackChanges);
+        if (feedback is null)
+            throw new FeedbackNotFoundException(id);
+
+        var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
+        return feedbackDto;
+    }
 }
