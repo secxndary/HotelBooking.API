@@ -1,6 +1,8 @@
-﻿namespace Contracts.Repositories.UserRepositories;
+﻿using Entities.Models;
+namespace Contracts.Repositories.UserRepositories;
 
 public interface IReservationRepository
 {
-
+    IEnumerable<Reservation> GetReservations(Guid roomId, bool trackChanges);
+    Reservation GetReservation(Guid roomId, Guid id, bool trackChanges);
 }
