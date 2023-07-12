@@ -2,7 +2,6 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions;
-using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects;
 namespace Service.UserServicesImpl;
