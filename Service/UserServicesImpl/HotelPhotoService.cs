@@ -40,7 +40,7 @@ public sealed class HotelPhotoService : IHotelPhotoService
         if (hotelPhoto is null)
             throw new HotelPhotoNotFoundException(id);
 
-        var hotelPhotoDto = _mapper.Map<HotelPhotoDto>(hotel);
+        var hotelPhotoDto = _mapper.Map<HotelPhotoDto>(hotelPhoto);
         return hotelPhotoDto;
     }
 }

@@ -40,7 +40,7 @@ public sealed class RoomPhotoService : IRoomPhotoService
         if (roomPhoto is null)
             throw new RoomPhotoNotFoundException(id);
 
-        var roomPhotoDto = _mapper.Map<RoomPhotoDto>(room);
+        var roomPhotoDto = _mapper.Map<RoomPhotoDto>(roomPhoto);
         return roomPhotoDto;
     }
 }

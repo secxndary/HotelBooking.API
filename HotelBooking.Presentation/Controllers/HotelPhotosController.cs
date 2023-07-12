@@ -2,7 +2,7 @@
 using Service.Contracts;
 namespace HotelBooking.Presentation.Controllers;
 
-[Route("api/hotelPhotos")]
+[Route("api/hotels/{hotelId}/photos")]
 [ApiController]
 public class HotelPhotosController : ControllerBase
 {
@@ -11,16 +11,16 @@ public class HotelPhotosController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetHotelPhotos()
+    public IActionResult GetHotelPhotos(Guid hotelId)
     {
-        var hotelPhotos = _service.HotelPhotoService.GetAllHotelPhotos(trackChanges: false);
+        var hotelPhotos = _service.HotelPhotoService.GetHotelPhotos(hotelId, trackChanges: false);
         return Ok(hotelPhotos);
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetHotelPhoto(Guid id)
+    public IActionResult GetHotelPhoto(Guid hotelId, Guid id)
     {
-        var hotelPhoto = _service.HotelPhotoService.GetHotelPhoto(id, trackChanges: false);
+        var hotelPhoto = _service.HotelPhotoService.GetHotelPhoto(hotelId, id, trackChanges: false);
         return Ok(hotelPhoto);
     }
 }

@@ -11,16 +11,16 @@ public class ReservationsController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetReservations()
+    public IActionResult GetReservations(Guid roomId)
     {
-        var reservations = _service.ReservationService.GetAllReservations(trackChanges: false);
+        var reservations = _service.ReservationService.GetReservations(roomId, trackChanges: false);
         return Ok(reservations);
     }
 
     [HttpGet("{id:guid}")]
-    public IActionResult GetReservation(Guid id)
+    public IActionResult GetReservation(Guid roomId, Guid id)
     {
-        var reservation = _service.ReservationService.GetReservation(id, trackChanges: false);
+        var reservation = _service.ReservationService.GetReservation(roomId, id, trackChanges: false);
         return Ok(reservation);
     }
 }
