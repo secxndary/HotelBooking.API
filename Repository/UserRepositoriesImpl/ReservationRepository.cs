@@ -8,5 +8,13 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         : base(repositoryContext)
     { }
 
+    public IEnumerable<Reservation> GetReservations(Guid roomId, bool trackChanges) =>
+        FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
+        .ToList();
 
+    public Reservation GetReservation(Guid roomId, Guid id, bool trackChanges) =>
+        FindByCondition(r =>
+            r.RoomId.Equals(roomId) &&
+            r.Id.Equals(id), trackChanges)
+        .SingleOrDefault();
 }

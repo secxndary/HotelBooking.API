@@ -8,5 +8,13 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
         : base(repositoryContext)
     { }
 
+    public IEnumerable<RoomPhoto> GetRoomPhotos(Guid roomId, bool trackChanges) =>
+        FindByCondition(p => p.RoomId.Equals(roomId), trackChanges)
+        .ToList();
 
+    public RoomPhoto GetRoomPhoto(Guid roomId, Guid id, bool trackChanges) =>
+        FindByCondition(p =>
+            p.RoomId.Equals(roomId) &&
+            p.Id.Equals(id), trackChanges)
+        .SingleOrDefault();
 }

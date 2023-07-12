@@ -10,10 +10,10 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
 
     public IEnumerable<Hotel> GetAllHotels(bool trackChanges) =>
         FindAll(trackChanges)
-            .OrderByDescending(h => h.Stars)
-            .ToList();
+        .OrderByDescending(h => h.Stars)
+        .ToList();
 
     public Hotel GetHotel(Guid id, bool trackChanges) =>
         FindByCondition(h => h.Id.Equals(id), trackChanges)
-            .SingleOrDefault();
+        .SingleOrDefault();
 }

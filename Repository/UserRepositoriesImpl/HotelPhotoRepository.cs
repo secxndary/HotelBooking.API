@@ -8,5 +8,13 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
         : base(repositoryContext)
     { }
 
+    public IEnumerable<HotelPhoto> GetHotelPhotos(Guid hotelId, bool trackChanges) =>
+        FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
+        .ToList();
 
+    public HotelPhoto GetHotelPhoto(Guid hotelId, Guid id, bool trackChanges) =>
+        FindByCondition(p =>
+            p.HotelId.Equals(hotelId) &&
+            p.Id.Equals(id), trackChanges)
+        .SingleOrDefault();
 }
