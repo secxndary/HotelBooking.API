@@ -2,7 +2,7 @@
 
 public class ReservationNotFoundException : NotFoundException
 {
-    public ReservationNotFoundException(Guid userId)
-        : base($"Reservation with id: {userId} doesn't exist in the database.")
+    public ReservationNotFoundException(Guid reservationId)
+        : base($"Reservation with id: {reservationId} doesn't exist in the database.")
     { }
 }

@@ -2,7 +2,7 @@
 
 public class RoomPhotoNotFoundException : NotFoundException
 {
-    public RoomPhotoNotFoundException(Guid userId)
-        : base($"Room photo with id: {userId} doesn't exist in the database.")
+    public RoomPhotoNotFoundException(Guid roomPhotoId)
+        : base($"Room photo with id: {roomPhotoId} doesn't exist in the database.")
     { }
 }

@@ -2,7 +2,7 @@
 
 public class FeedbackNotFoundException : NotFoundException
 {
-    public FeedbackNotFoundException(Guid userId)
-        : base($"Feedback with id: {userId} doesn't exist in the database.")
+    public FeedbackNotFoundException(Guid feedbackId)
+        : base($"Feedback with id: {feedbackId} doesn't exist in the database.")
     { }
 }

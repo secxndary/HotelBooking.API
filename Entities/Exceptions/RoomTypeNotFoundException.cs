@@ -2,7 +2,7 @@
 
 public class RoomTypeNotFoundException : NotFoundException
 {
-    public RoomTypeNotFoundException(Guid userId)
-        : base($"Room type with id: {userId} doesn't exist in the database.")
+    public RoomTypeNotFoundException(Guid roomTypeId)
+        : base($"Room type with id: {roomTypeId} doesn't exist in the database.")
     { }
 }
