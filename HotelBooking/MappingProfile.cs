@@ -18,5 +18,6 @@ public class MappingProfile : Profile
         CreateMap<HotelPhoto,  HotelPhotoDto>();
 
         CreateMap<HotelForCreationDto, Hotel>();
+        CreateMap<RoomForCreationDto, Room>();
     }
 }

@@ -20,4 +20,10 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
     public Room GetRoom(Guid id, bool trackChanges) =>
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void CreateRoomForHotel(Guid hotelId, Room room)
+    {
+        room.HotelId = hotelId;
+        Create(room);
+    }
 }
