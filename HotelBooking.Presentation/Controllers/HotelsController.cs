@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
-
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels")]

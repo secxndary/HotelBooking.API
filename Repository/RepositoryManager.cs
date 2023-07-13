@@ -1,6 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Contracts.Repository;
-using Repository.Implementations;
+using Repository.UserRepositoriesImpl;
 namespace Repository;
 
 public sealed class RepositoryManager : IRepositoryManager

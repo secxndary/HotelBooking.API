@@ -4,5 +4,6 @@ public record HotelForCreationDto
 (
     string Name,
     string Description,
-    int Stars
+    int Stars,
+    IEnumerable<RoomForCreationDto> Rooms
 );

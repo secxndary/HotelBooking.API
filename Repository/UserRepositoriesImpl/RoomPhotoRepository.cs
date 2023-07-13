@@ -1,6 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
-namespace Repository.Implementations;
+namespace Repository.UserRepositoriesImpl;
 
 public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoRepository
 {
