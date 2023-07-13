@@ -23,4 +23,11 @@ public class RolesController : ControllerBase
         var role = _service.RoleService.GetRole(id, trackChanges: false);
         return Ok(role);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteRole(Guid id)
+    {
+        _service.RoleService.DeleteRole(id, trackChanges: false);
+        return NoContent();
+    }
 }

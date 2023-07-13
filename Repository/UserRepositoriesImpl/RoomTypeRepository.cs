@@ -13,7 +13,10 @@ public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
         .OrderBy(r => r.Name)
         .ToList();
 
-    public RoomType GetRoomType(Guid id, bool trackChanges) =>
+    public RoomType? GetRoomType(Guid id, bool trackChanges) =>
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteRoomType(RoomType roomType) =>
+        Delete(roomType);
 }

@@ -13,9 +13,12 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
         .OrderBy(p => p.Path)
         .ToList();
 
-    public RoomPhoto GetRoomPhoto(Guid roomId, Guid id, bool trackChanges) =>
+    public RoomPhoto? GetRoomPhoto(Guid roomId, Guid id, bool trackChanges) =>
         FindByCondition(p =>
             p.RoomId.Equals(roomId) &&
             p.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteRoomPhoto(RoomPhoto roomPhoto) =>
+        Delete(roomPhoto);
 }

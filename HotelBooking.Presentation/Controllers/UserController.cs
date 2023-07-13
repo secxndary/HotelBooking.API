@@ -23,4 +23,11 @@ public class UserController : ControllerBase
         var user = _service.UserService.GetUser(id, trackChanges: false);
         return Ok(user);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteUser(Guid id)
+    {
+        _service.UserService.DeleteUser(id, trackChanges: false);
+        return NoContent();
+    }
 }

@@ -32,7 +32,18 @@ public sealed class RoleService : IRoleService
         var role = _repository.Role.GetRole(id, trackChanges);
         if (role is null)
             throw new RoleNotFoundException(id);
+
         var roleDto = _mapper.Map<RoleDto>(role);
         return roleDto;
+    }
+
+    public void DeleteRole(Guid id, bool trackChanges)
+    {
+        var role = _repository.Role.GetRole(id, trackChanges);
+        if (role is null)
+            throw new RoleNotFoundException(id);
+
+        _repository.Role.DeleteRole(role);
+        _repository.Save();
     }
 }

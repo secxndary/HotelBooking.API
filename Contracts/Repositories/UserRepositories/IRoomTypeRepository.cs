@@ -4,5 +4,6 @@ namespace Contracts.Repositories.UserRepositories;
 public interface IRoomTypeRepository
 {
     IEnumerable<RoomType> GetAllRoomTypes(bool trackChanges);
-    RoomType GetRoomType(Guid id, bool trackChanges);
+    RoomType? GetRoomType(Guid id, bool trackChanges);
+    void DeleteRoomType(RoomType roomType);
 }

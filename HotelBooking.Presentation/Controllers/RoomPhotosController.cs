@@ -2,7 +2,7 @@
 using Service.Contracts;
 namespace HotelBooking.Presentation.Controllers;
 
-[Route("api/hotels/{hotelId}/rooms/{roomId}/photos")]
+[Route("api/rooms/{roomId}/photos")]
 [ApiController]
 public class RoomPhotosController : ControllerBase
 {
@@ -22,5 +22,12 @@ public class RoomPhotosController : ControllerBase
     {
         var roomPhoto = _service.RoomPhotoService.GetRoomPhoto(roomId, id, trackChanges: false);
         return Ok(roomPhoto);
+    }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteRoomPhoto(Guid roomId, Guid id)
+    {
+        _service.RoomPhotoService.DeleteRoomPhoto(roomId, id, trackChanges: false);
+        return NoContent();
     }
 }

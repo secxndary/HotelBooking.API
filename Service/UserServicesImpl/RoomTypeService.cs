@@ -32,7 +32,18 @@ public sealed class RoomTypeService : IRoomTypeService
         var roomType = _repository.RoomType.GetRoomType(id, trackChanges);
         if (roomType is null)
             throw new RoomTypeNotFoundException(id);
+
         var roomTypeDto = _mapper.Map<RoomTypeDto>(roomType);
         return roomTypeDto;
+    }
+
+    public void DeleteRoomType(Guid id, bool trackChanges)
+    {
+        var roomType = _repository.RoomType.GetRoomType(id, trackChanges);
+        if (roomType is null)
+            throw new RoomTypeNotFoundException(id);
+
+        _repository.RoomType.DeleteRoomType(roomType);
+        _repository.Save();
     }
 }

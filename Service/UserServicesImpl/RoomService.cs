@@ -26,6 +26,7 @@ public sealed class RoomService : IRoomService
         var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
+
         var rooms = _repository.Room.GetRooms(hotelId, trackChanges);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
@@ -50,6 +51,7 @@ public sealed class RoomService : IRoomService
         var room = _repository.Room.GetRoom(id, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(id);
+
         var roomDto = _mapper.Map<RoomDto>(room);
         return roomDto;
     }

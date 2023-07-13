@@ -35,4 +35,14 @@ public sealed class UserService : IUserService
         var userDto = _mapper.Map<UserDto>(user);
         return userDto;
     }
+
+    public void DeleteUser(Guid id, bool trackChanges)
+    {
+        var user = _repository.User.GetUser(id, trackChanges);
+        if (user is null)
+            throw new UserNotFoundException(id);
+
+        _repository.User.DeleteUser(user);
+        _repository.Save();
+    }
 }

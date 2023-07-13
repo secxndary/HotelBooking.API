@@ -25,6 +25,7 @@ public sealed class ReservationService : IReservationService
         var room = _repository.Room.GetRoom(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
+
         var reservations = _repository.Reservation.GetReservations(roomId, trackChanges);
         var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
         return reservationsDto;
@@ -42,5 +43,19 @@ public sealed class ReservationService : IReservationService
 
         var reservationDto = _mapper.Map<ReservationDto>(reservation);
         return reservationDto;
+    }
+
+    public void DeleteReservationForRoom(Guid roomId, Guid id, bool trackChanges) 
+    {
+        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var reservation = _repository.Reservation.GetReservation(roomId, id, trackChanges);
+        if (reservation is null)
+            throw new ReservationNotFoundException(id);
+
+        _repository.Reservation.DeleteReservation(reservation);
+        _repository.Save();
     }
 }

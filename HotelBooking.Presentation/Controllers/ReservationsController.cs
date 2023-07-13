@@ -23,4 +23,11 @@ public class ReservationsController : ControllerBase
         var reservation = _service.ReservationService.GetReservation(roomId, id, trackChanges: false);
         return Ok(reservation);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteReservationForRoom(Guid roomId, Guid id)
+    {
+        _service.ReservationService.DeleteReservationForRoom(roomId, id, trackChanges: false);
+        return NoContent();
+    }
 }

@@ -25,6 +25,7 @@ public sealed class HotelPhotoService : IHotelPhotoService
         var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
+
         var hotelPhotos = _repository.HotelPhoto.GetHotelPhotos(hotelId, trackChanges);
         var hotelPhotosDto = _mapper.Map<IEnumerable<HotelPhotoDto>>(hotelPhotos);
         return hotelPhotosDto;
@@ -42,5 +43,19 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
         var hotelPhotoDto = _mapper.Map<HotelPhotoDto>(hotelPhoto);
         return hotelPhotoDto;
+    }
+
+    public void DeleteHotelPhoto(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var hotelPhoto = _repository.HotelPhoto.GetHotelPhoto(hotelId, id, trackChanges);
+        if (hotelPhoto is null)
+            throw new HotelPhotoNotFoundException(id);
+
+        _repository.HotelPhoto.DeleteHotelPhoto(hotelPhoto);
+        _repository.Save();
     }
 }

@@ -17,7 +17,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         FindByCondition(h => ids.Contains(h.Id), trackChanges)
         .ToList();
 
-    public Hotel GetHotel(Guid id, bool trackChanges) =>
+    public Hotel? GetHotel(Guid id, bool trackChanges) =>
         FindByCondition(h => h.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 

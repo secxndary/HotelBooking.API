@@ -43,4 +43,18 @@ public sealed class FeedbackService : IFeedbackService
         var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
         return feedbackDto;
     }
+
+    public void DeleteFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var feedback = _repository.Feedback.GetFeedback(hotelId, id, trackChanges);
+        if (feedback is null)
+            throw new FeedbackNotFoundException(id);
+
+        _repository.Feedback.DeleteFeedback(feedback);
+        _repository.Save();
+    }
 }

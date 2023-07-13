@@ -23,4 +23,11 @@ public class FeedbacksController : ControllerBase
         var feedback = _service.FeedbackService.GetFeedback(hotelId, id, trackChanges: false);
         return Ok(feedback);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteFeedbackForHotel(Guid hotelId, Guid id)
+    {
+        _service.FeedbackService.DeleteFeedbackForHotel(hotelId, id, trackChanges: false);
+        return NoContent();
+    }
 }

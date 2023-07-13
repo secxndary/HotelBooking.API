@@ -43,4 +43,18 @@ public sealed class RoomPhotoService : IRoomPhotoService
         var roomPhotoDto = _mapper.Map<RoomPhotoDto>(roomPhoto);
         return roomPhotoDto;
     }
+
+    public void DeleteRoomPhoto(Guid roomId, Guid id, bool trackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var roomPhoto = _repository.RoomPhoto.GetRoomPhoto(roomId, id, trackChanges);
+        if (roomPhoto is null)
+            throw new RoomPhotoNotFoundException(id);
+
+        _repository.RoomPhoto.DeleteRoomPhoto(roomPhoto);
+        _repository.Save();
+    }
 }

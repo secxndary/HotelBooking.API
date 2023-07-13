@@ -13,7 +13,10 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         .OrderBy(r => r.Name)
         .ToList();
 
-    public Role GetRole(Guid id, bool trackChanges) =>
+    public Role? GetRole(Guid id, bool trackChanges) =>
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteRole(Role role) =>
+        Delete(role);
 }

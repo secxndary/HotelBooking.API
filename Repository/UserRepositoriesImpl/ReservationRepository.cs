@@ -12,9 +12,12 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
         .ToList();
 
-    public Reservation GetReservation(Guid roomId, Guid id, bool trackChanges) =>
+    public Reservation? GetReservation(Guid roomId, Guid id, bool trackChanges) =>
         FindByCondition(r =>
             r.RoomId.Equals(roomId) &&
             r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteReservation(Reservation reservation) =>
+        Delete(reservation);
 }

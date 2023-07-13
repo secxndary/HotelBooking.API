@@ -23,4 +23,11 @@ public class RoomTypesController : ControllerBase
         var roomType = _service.RoomTypeService.GetRoomType(id, trackChanges: false);
         return Ok(roomType);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteRoomType(Guid id)
+    {
+        _service.RoomTypeService.DeleteRoomType(id, trackChanges: false);
+        return NoContent();
+    }
 }

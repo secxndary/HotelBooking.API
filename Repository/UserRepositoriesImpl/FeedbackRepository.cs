@@ -9,12 +9,16 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
     { }
 
     public IEnumerable<Feedback> GetFeedbacks(Guid hotelId, bool trackChanges) =>
-        FindByCondition(f => f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
+        FindByCondition(f => 
+            f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
         .ToList();
 
-    public Feedback GetFeedback(Guid hotelId, Guid id, bool trackChanges) =>
+    public Feedback? GetFeedback(Guid hotelId, Guid id, bool trackChanges) =>
         FindByCondition(f => 
             f.Reservation.Room.HotelId.Equals(hotelId) &&
             f.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteFeedback(Feedback feedback) =>
+        Delete(feedback);
 }

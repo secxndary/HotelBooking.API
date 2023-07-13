@@ -12,7 +12,10 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         FindAll(trackChanges)
         .ToList();
 
-    public User GetUser(Guid id, bool trackChanges) =>
+    public User? GetUser(Guid id, bool trackChanges) =>
         FindByCondition(u => u.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteUser(User user) =>
+        Delete(user);
 }

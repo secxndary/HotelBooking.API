@@ -13,9 +13,12 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
         .OrderBy(p => p.Path)
         .ToList();
 
-    public HotelPhoto GetHotelPhoto(Guid hotelId, Guid id, bool trackChanges) =>
+    public HotelPhoto? GetHotelPhoto(Guid hotelId, Guid id, bool trackChanges) =>
         FindByCondition(p =>
             p.HotelId.Equals(hotelId) &&
             p.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void DeleteHotelPhoto(HotelPhoto hotelPhoto) =>
+        Delete(hotelPhoto);
 }

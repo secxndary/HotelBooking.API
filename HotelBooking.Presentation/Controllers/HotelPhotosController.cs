@@ -23,4 +23,11 @@ public class HotelPhotosController : ControllerBase
         var hotelPhoto = _service.HotelPhotoService.GetHotelPhoto(hotelId, id, trackChanges: false);
         return Ok(hotelPhoto);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteHotelPhoto(Guid hotelId, Guid id)
+    {
+        _service.HotelPhotoService.DeleteHotelPhoto(hotelId, id, trackChanges: false);
+        return NoContent();
+    }
 }
