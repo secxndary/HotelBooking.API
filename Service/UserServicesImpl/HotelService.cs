@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
-using Entities.Exceptions;
+using Entities.Exceptions.NotFound;
+using Entities.Exceptions.BadRequest;
 using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects;
@@ -28,11 +29,25 @@ public sealed class HotelService : IHotelService
         return hotelsDto;
     }
 
+    public IEnumerable<HotelDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges)
+    {
+        if (ids is null)
+            throw new IdParametersBadRequestException();
+
+        var hotels = _repository.Hotel.GetByIds(ids, trackChanges);
+        if (hotels.Count() != ids.Count())
+            throw new CollectionByIdsBadRequestException();
+
+        var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotels);
+        return hotelsDto;
+    }
+
     public HotelDto GetHotel(Guid id, bool trackChanges)
     {
         var hotel = _repository.Hotel.GetHotel(id, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(id);
+
         var hotelDto = _mapper.Map<HotelDto>(hotel);
         return hotelDto;
     }

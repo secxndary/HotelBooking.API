@@ -1,4 +1,4 @@
-﻿namespace Entities.Exceptions;
+﻿namespace Entities.Exceptions.NotFound;
 
 public class RoleNotFoundException : NotFoundException
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Contracts;
 using Entities.ErrorModel;
-using Entities.Exceptions;
+using Entities.Exceptions.NotFound;
 using Microsoft.AspNetCore.Diagnostics;
 namespace HotelBooking.Extensions;
 
