@@ -13,6 +13,10 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         .OrderByDescending(h => h.Stars)
         .ToList();
 
+    public IEnumerable<Hotel> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+        FindByCondition(h => ids.Contains(h.Id), trackChanges)
+        .ToList();
+
     public Hotel GetHotel(Guid id, bool trackChanges) =>
         FindByCondition(h => h.Id.Equals(id), trackChanges)
         .SingleOrDefault();

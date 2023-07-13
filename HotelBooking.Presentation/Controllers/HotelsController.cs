@@ -18,6 +18,13 @@ public class HotelsController : ControllerBase
         return Ok(hotels);
     }
 
+    [HttpGet("collection/({ids})", Name = "HotelCollection")]
+    public IActionResult GetHotelCollection(IEnumerable<Guid> ids)
+    {
+        var hotels = _service.HotelService.GetByIds(ids, trackChanges: false);
+        return Ok(hotels);
+    }
+
     [HttpGet("{id:guid}", Name = "HotelById")]
     public IActionResult GetHotel(Guid id)
     {
@@ -32,5 +39,14 @@ public class HotelsController : ControllerBase
             return BadRequest("HotelForCreationDto object is null");
         var createdHotel = _service.HotelService.CreateHotel(hotel);
         return CreatedAtRoute("HotelById", new { id = createdHotel.Id }, createdHotel);
+    }
+
+    [HttpPost("collection")]
+    public IActionResult CreateHotelCollection(
+        [FromBody] 
+        IEnumerable<HotelForCreationDto> hotelCollection)
+    {
+        var result = _service.HotelService.CreateHotelCollection(hotelCollection);
+        return CreatedAtRoute("HotelCollection", new { result.ids }, result.hotels);
     }
 }

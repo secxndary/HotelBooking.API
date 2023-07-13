@@ -62,4 +62,20 @@ public sealed class HotelService : IHotelService
         var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
         return hotelToReturn;
     }
+
+    public (IEnumerable<HotelDto> hotels, string ids) CreateHotelCollection
+        (IEnumerable<HotelForCreationDto> hotelCollection)
+    {
+        if (hotelCollection is null)
+            throw new HotelCollectionBadRequest();
+
+        var hotelEntities = _mapper.Map<IEnumerable<Hotel>>(hotelCollection);
+        foreach (var hotel in hotelEntities)
+            _repository.Hotel.CreateHotel(hotel);
+        _repository.Save();
+
+        var hotelCollectionToReturn = _mapper.Map<IEnumerable<HotelDto>>(hotelEntities);
+        var ids = string.Join(",", hotelCollectionToReturn.Select(h => h.Id));
+        return (hotels: hotelCollectionToReturn, ids);
+    }
 }
