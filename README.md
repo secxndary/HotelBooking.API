@@ -13,4 +13,4 @@
     База данных — Microsoft SQL Server, строка подключения в appsettings.json
     В корне репозитория хранятся коллекции запросов (Postman/Insomnia)
     Присутствует Swagger-документация
-    Для запуска необходимо провести миграцию (Add-Migration, Update-Database) для добавления стартовых значений
+    Для запуска проекта необходимо провести миграцию (Add-Migration, Update-Database)
