@@ -16,4 +16,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
     public Hotel GetHotel(Guid id, bool trackChanges) =>
         FindByCondition(h => h.Id.Equals(id), trackChanges)
         .SingleOrDefault();
+
+    public void CreateHotel(Hotel hotel) => 
+        Create(hotel);
 }

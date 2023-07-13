@@ -2,6 +2,7 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions;
+using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects;
 namespace Service.UserServicesImpl;
@@ -34,5 +35,16 @@ public sealed class HotelService : IHotelService
             throw new HotelNotFoundException(id);
         var hotelDto = _mapper.Map<HotelDto>(hotel);
         return hotelDto;
+    }
+
+    public HotelDto CreateHotel(HotelForCreationDto hotel)
+    {
+        var hotelEntity = _mapper.Map<Hotel>(hotel);
+
+        _repository.Hotel.CreateHotel(hotelEntity);
+        _repository.Save();
+
+        var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
+        return hotelToReturn;
     }
 }
