@@ -52,4 +52,11 @@ public class HotelsController : ControllerBase
         var result = _service.HotelService.CreateHotelCollection(hotelCollection);
         return CreatedAtRoute("HotelCollection", new { result.ids }, result.hotels);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteHotel(Guid id)
+    {
+        _service.HotelService.DeleteHotel(id, trackChanges: false);
+        return NoContent();
+    }
 }

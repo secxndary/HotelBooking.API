@@ -33,4 +33,11 @@ public class RoomsController : ControllerBase
         var createdRoom = _service.RoomService.CreateRoomForHotel(hotelId, room, trackChanges: false);
         return CreatedAtRoute("GetRoomForHotel", new { hotelId, id = createdRoom.Id }, createdRoom);
     }
+
+    [HttpDelete("{id:guid}")]
+    public IActionResult DeleteRoomForHotel(Guid hotelId, Guid id)
+    {
+        _service.RoomService.DeleteRoomForHotel(hotelId, id, trackChanges: false);
+        return NoContent();
+    }
 }

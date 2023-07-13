@@ -78,4 +78,14 @@ public sealed class HotelService : IHotelService
         var ids = string.Join(",", hotelCollectionToReturn.Select(h => h.Id));
         return (hotels: hotelCollectionToReturn, ids);
     }
+
+    public void DeleteHotel(Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(id, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(id);
+        
+        _repository.Hotel.DeleteHotel(hotel);
+        _repository.Save();
+    }
 }

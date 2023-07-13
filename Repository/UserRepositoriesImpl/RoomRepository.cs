@@ -26,4 +26,7 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         room.HotelId = hotelId;
         Create(room);
     }
+
+    public void DeleteRoom(Room room) =>
+        Delete(room);
 }

@@ -67,4 +67,18 @@ public sealed class RoomService : IRoomService
         var roomToReturn = _mapper.Map<RoomDto>(roomEntity);
         return roomToReturn;
     }
+
+    public void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var room = _repository.Room.GetRoom(hotelId, id, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(id);
+        
+        _repository.Room.DeleteRoom(room);
+        _repository.Save();
+    }
 }

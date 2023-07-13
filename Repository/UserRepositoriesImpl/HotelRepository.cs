@@ -23,4 +23,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
 
     public void CreateHotel(Hotel hotel) => 
         Create(hotel);
+
+    public void DeleteHotel(Hotel hotel) =>
+       Delete(hotel);
 }

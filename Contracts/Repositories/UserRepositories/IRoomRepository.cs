@@ -7,4 +7,5 @@ public interface IRoomRepository
     Room GetRoom(Guid hotelId, Guid id, bool trackChanges);
     Room GetRoom(Guid id, bool trackChanges);
     void CreateRoomForHotel(Guid hotelId, Room room);
+    void DeleteRoom(Room room);
 }
