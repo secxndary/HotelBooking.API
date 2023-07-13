@@ -1,0 +1,735 @@
+{
+  "info": {
+    "name": "HotelBooking",
+    "_postman_id": "bf988464-9f3f-4094-8bdf-3c4ec1eda982",
+    "description": "",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Feedbacks",
+      "description": "",
+      "item": [
+        {
+          "id": "8981cb4d-b411-455f-b4c7-8c9fcfd71018",
+          "name": "Feedbacks by Hotel Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/894622e4-9303-4ee8-a25b-dbea1c26eb1a/feedbacks"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "937305a8-41a1-4915-92ca-17f476906470"
+            }
+          ]
+        },
+        {
+          "id": "d1c35638-a3f0-4fcb-b168-de87adae75f7",
+          "name": "Feedbacks by Hotel Id and Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/e418aacc-8a7c-4d78-b509-24dd42e823ee/feedbacks/5f0c42ec-4f0b-4d1a-b4d9-8b04513b204f"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "6dcaf8d5-be12-4ea4-a60c-86c8ced44e12"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hotel",
+      "description": "",
+      "item": [
+        {
+          "id": "c6288bd6-b6b6-4e4a-8ad9-c7aed94da0e8",
+          "name": "All hotels",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "eaf9eee2-ae23-413c-85fe-4ddc1ce0c338"
+            }
+          ]
+        },
+        {
+          "id": "fc250f3f-3fc9-4312-8520-e7c15bda8299",
+          "name": "Hotel by Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/f934d940-f542-400b-8182-aea42a9b0773"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/csv",
+                "description": "",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "7c4d2f85-877d-451b-9420-98dbd62ab7cf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HotelPhotos",
+      "description": "",
+      "item": [
+        {
+          "id": "fd6ce885-eb7b-4990-bcc3-8c40ea8b41b1",
+          "name": "HotelPhotos by Hotel Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/e418aacc-8a7c-4d78-b509-24dd42e823ee/photos"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "e817c081-9d61-4536-861b-2093d492ca81"
+            }
+          ]
+        },
+        {
+          "id": "b971bd8e-d290-4898-9878-d78dd9a49ceb",
+          "name": "HotelPhoto by Hotel Id and Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/e418aacc-8a7c-4d78-b509-24dd42e823ee/photos/f62ed813-562d-4e4f-95d1-ff385b11f016"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "31867b0e-8749-4cbe-9edf-6b10cd5a0fe1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reservations",
+      "description": "",
+      "item": [
+        {
+          "id": "b5d325c1-bdd6-4a30-83b4-424fcf8657a1",
+          "name": "Reservations by Room Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "rooms/f8fb0b5c-d693-4e8c-934f-2ad79dba1bdc/reservations"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "e329a153-655e-4c91-9a14-05bb07202481"
+            }
+          ]
+        },
+        {
+          "id": "f1b4d286-fecd-4532-a7fe-837c350247f0",
+          "name": "Reservation by Room Id and Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "rooms/f8fb0b5c-d693-4e8c-934f-2ad79dba1bdc/reservations/d013f366-32d2-419b-b413-ee71f557435f"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "dec5b409-1cf3-4331-9a63-049082e78279"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "description": "",
+      "item": [
+        {
+          "id": "6160c3c4-2ca1-4905-b485-80618db6192c",
+          "name": "All Roles",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "roles"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "ac39ebdf-671c-4505-8a46-2169114c3bee"
+            }
+          ]
+        },
+        {
+          "id": "d244745a-0094-48aa-ac33-89af3f9c0ecc",
+          "name": "Role by Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "roles/3278235f-c470-4ba5-bc64-95a57739c8fc"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "aed61245-39c7-4455-ad07-0d1f88dd9909"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RoomPhotos",
+      "description": "",
+      "item": [
+        {
+          "id": "d0d2aa87-bbf3-4fe1-a28b-b46994cc9f54",
+          "name": "RoomPhotos by Room Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/894622e4-9303-4ee8-a25b-dbea1c26eb1a/rooms/0bab8e32-e14b-4cd6-90ae-cf795fee80d8/photos"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "918a3733-47e3-48d0-b4b2-e9c8e185cdc1"
+            }
+          ]
+        },
+        {
+          "id": "081e4aa7-a7a8-40b6-b180-255127d199f6",
+          "name": "RoomPhoto by Room Id and Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/894622e4-9303-4ee8-a25b-dbea1c26eb1a/rooms/0bab8e32-e14b-4cd6-90ae-cf795fee80d8/photos/8585a06c-1e9c-499d-a700-33bf69bdff3b"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "1187a0e0-0b0b-4bc3-8b6d-8a153a1d01a9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Rooms",
+      "description": "",
+      "item": [
+        {
+          "id": "e052d46d-e6ef-4582-9aa9-1da4d2334c3b",
+          "name": "Rooms by Hotel Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/894622e4-9303-4ee8-a25b-dbea1c26eb1a/rooms"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "1b3ca1ea-02bf-4f7b-97e6-8e37bcd9cd0b"
+            }
+          ]
+        },
+        {
+          "id": "dc2140a0-ee01-42b4-851b-973ee5c99ad4",
+          "name": "Room by Hotel Id and Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "hotels/894622e4-9303-4ee8-a25b-dbea1c26eb1a/rooms/f1960e67-d4c1-4b40-a454-f39fb3a655f2"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "d761ab66-b40e-4d02-99b7-57e68b7fcd2d"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "RoomTypes",
+      "description": "",
+      "item": [
+        {
+          "id": "5f843d12-ecda-4389-ba8f-009c5b7b2478",
+          "name": "All RoomTypes",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "roomTypes"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "ba975c96-f5e9-4efa-a363-bb29cdf87a43"
+            }
+          ]
+        },
+        {
+          "id": "e9bbeef7-b1eb-40c2-ae48-3f4e103524c5",
+          "name": "RoomType by Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "roomTypes/984c5d2c-28f4-4ecc-ad45-d3c59d16fdbf"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "f2988655-08b2-45b6-a233-f2bb04ce1e3a"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "",
+      "item": [
+        {
+          "id": "c04009f4-8467-406f-955e-b989886f38d4",
+          "name": "All Users",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "users"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "d87c0df9-5d39-4b78-b02d-ff5db9915d66"
+            }
+          ]
+        },
+        {
+          "id": "f637c1ef-ccc3-4c10-a2c4-5b2c23c2f53b",
+          "name": "User by Id",
+          "request": {
+            "url": {
+              "protocol": "https",
+              "host": "localhost",
+              "path": [
+                "api",
+                "users/3a08ecca-7fbe-4886-ad58-61998c01c9e0"
+              ],
+              "port": "5001"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*",
+                "disabled": false
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "disabled": false
+            },
+            "description": ""
+          },
+          "response": [
+            {
+              "header": [],
+              "body": "any",
+              "code": 200,
+              "name": "Response_200",
+              "id": "a6362565-bedd-4119-b632-bd4d718e8be5"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [],
+  "auth": {
+    "type": "noauth"
+  }
+}
