@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelBooking.Presentation.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects;
 namespace HotelBooking.Presentation.Controllers;
@@ -19,7 +20,9 @@ public class HotelsController : ControllerBase
     }
 
     [HttpGet("collection/({ids})", Name = "HotelCollection")]
-    public IActionResult GetHotelCollection(IEnumerable<Guid> ids)
+    public IActionResult GetHotelCollection(
+        [ModelBinder(typeof(ArrayModelBinder))]
+        IEnumerable<Guid> ids)
     {
         var hotels = _service.HotelService.GetByIds(ids, trackChanges: false);
         return Ok(hotels);
