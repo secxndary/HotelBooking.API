@@ -18,6 +18,10 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
             r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public Reservation? GetReservation(Guid id, bool trackChanges) =>
+        FindByCondition(r => r.Id.Equals(id), trackChanges)
+        .SingleOrDefault();
+
     public void DeleteReservation(Reservation reservation) =>
         Delete(reservation);
 }
