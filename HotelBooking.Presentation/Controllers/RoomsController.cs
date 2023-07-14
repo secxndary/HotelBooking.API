@@ -4,7 +4,7 @@ using Shared.DataTransferObjects.InputDtos;
 
 namespace HotelBooking.Presentation.Controllers;
 
-[Route("api/hotels/{hotelId}/rooms")]
+[Route("api/hotels/{hotelId:guid}/rooms")]
 [ApiController]
 public class RoomsController : ControllerBase
 {

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
-
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels")]

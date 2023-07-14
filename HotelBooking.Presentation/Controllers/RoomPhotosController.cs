@@ -2,7 +2,7 @@
 using Service.Contracts;
 namespace HotelBooking.Presentation.Controllers;
 
-[Route("api/rooms/{roomId}/photos")]
+[Route("api/rooms/{roomId:guid}/photos")]
 [ApiController]
 public class RoomPhotosController : ControllerBase
 {
