@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Net.Http.Headers;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.OutputDtos;
+
 namespace HotelBooking;
 
 public class CsvOutputFormatter : TextOutputFormatter

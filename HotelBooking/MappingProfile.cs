@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Entities.Models;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
+
 namespace HotelBooking;
 
 public class MappingProfile : Profile

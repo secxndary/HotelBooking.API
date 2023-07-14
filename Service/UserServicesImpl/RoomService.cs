@@ -4,7 +4,9 @@ using Contracts.Repository;
 using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
+
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService

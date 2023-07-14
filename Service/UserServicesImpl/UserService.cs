@@ -3,7 +3,8 @@ using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
 using Service.Contracts.UserServices;
-using Shared.DataTransferObjects;
+using Shared.DataTransferObjects.OutputDtos;
+
 namespace Service.UserServicesImpl;
 
 public sealed class UserService : IUserService
