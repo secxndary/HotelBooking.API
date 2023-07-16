@@ -1,5 +1,4 @@
 ﻿using Shared.DataTransferObjects.OutputDtos;
-
 namespace Service.Contracts.UserServices;
 
 public interface IRoleService
