@@ -9371,3 +9371,32 @@
 2023-07-14 14:19:20.2978 Debug FileTarget(Name=logfile): Preparing for new file: 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt'
 2023-07-14 14:19:20.2978 Debug FileTarget(Name=logfile): Creating file appender: 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt'
 2023-07-14 14:19:20.2978 Trace FileTarget(Name=logfile): Opening C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt with allowFileSharedWriting=False
+2023-07-14 14:27:10.7356 Info AppDomain Shutting down. LogFactory closing...
+2023-07-14 14:27:10.7356 Debug Stopping file watching for path 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking' filter 'nlog.config'
+2023-07-14 14:27:10.7356 Trace Flushing all 1 targets...
+2023-07-14 14:27:10.7356 Trace ForEachItemInParallel() 1 items
+2023-07-14 14:27:10.7356 Trace FileTarget(Name=logfile): FlushAsync
+2023-07-14 14:27:10.7356 Trace Continuation invoked: 
+2023-07-14 14:27:10.7356 Trace Parallel task completed. 0 items remaining
+2023-07-14 14:27:10.7356 Debug Flush completed
+2023-07-14 14:27:10.7356 Trace FileTarget(Name=logfile): FlushAsync Done
+2023-07-14 14:27:10.7356 Debug Targets not configured for Logger: LoggerService.LoggerManager
+2023-07-14 14:27:10.7356 Debug Closing logging configuration...
+2023-07-14 14:27:10.7356 Trace Closing FileTarget(Name=logfile)
+2023-07-14 14:27:10.7356 Debug FileTarget(Name=logfile): Closing...
+2023-07-14 14:27:10.7503 Trace FileTarget(Name=logfile): FinalizeFile 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt, isArchiving: False'
+2023-07-14 14:27:10.7503 Debug FileTarget(Name=logfile): FileAppender Invalidate Closing File: 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt'
+2023-07-14 14:27:10.7503 Trace FileTarget: Closing 'C:\Users\valda\source\repos\WORK\HotelBooking\HotelBooking\bin\Debug\net6.0\.\logs\2023-07-14_logfile.txt'
+2023-07-14 14:27:10.7503 Debug FileTarget(Name=logfile): Closed.
+2023-07-14 14:27:10.7503 Trace Closing .\logs\${shortdate}_logfile.txt
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${literal}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${shortdate}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${literal}
+2023-07-14 14:27:10.7503 Trace Closing ${longdate} ${level:uppercase=true} ${message}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${longdate}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${literal}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${level}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${literal}
+2023-07-14 14:27:10.7503 Trace Closing Layout Renderer: ${message}
+2023-07-14 14:27:10.7503 Debug Finished closing logging configuration.
+2023-07-14 14:27:10.7503 Info LogFactory has been closed.

@@ -4,7 +4,6 @@ using Contracts.Repository;
 using Entities.Exceptions.NotFound;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.OutputDtos;
-
 namespace Service.UserServicesImpl;
 
 public sealed class RoomTypeService : IRoomTypeService

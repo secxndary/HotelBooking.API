@@ -6,7 +6,6 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
-
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService
