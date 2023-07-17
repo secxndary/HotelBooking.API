@@ -76,30 +76,6 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("api/hotels/{hotelId:guid}/feedbacks/{id:guid}")]
-    public IActionResult DeleteFeedbackForHotel(Guid hotelId, Guid id)
-    {
-        _service.FeedbackService.DeleteFeedbackForHotel(hotelId, id, trackChanges: false);
-        return NoContent();
-    }
-
-    [HttpDelete]
-    [Route("api/rooms/{reservationId:guid}/feedbacks/{id:guid}")]
-    public IActionResult DeleteFeedbackForRoom(Guid reservationId, Guid id)
-    {
-        _service.FeedbackService.DeleteFeedbackForRoom(reservationId, id, trackChanges: false);
-        return NoContent();
-    }
-
-    [HttpDelete]
-    [Route("api/reservations/{reservationId:guid}/feedbacks/{id:guid}")]
-    public IActionResult DeleteFeedbackForReservation(Guid reservationId, Guid id)
-    {
-        _service.FeedbackService.DeleteFeedbackForReservation(reservationId, id, trackChanges: false);
-        return NoContent();
-    }
-
-    [HttpDelete]
     [Route("api/feedbacks/{id:guid}")]
     public IActionResult DeleteFeedback(Guid id)
     {

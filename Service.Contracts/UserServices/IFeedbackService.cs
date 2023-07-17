@@ -12,8 +12,5 @@ public interface IFeedbackService
     FeedbackDto GetFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges);
     FeedbackDto GetFeedback(Guid id, bool trackChanges);
     FeedbackDto CreateFeedbackForReservation(Guid reservationId, FeedbackForCreationDto feedback, bool trackChanges);
-    void DeleteFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges);
-    void DeleteFeedbackForRoom(Guid roomId, Guid id, bool trackChanges);
-    void DeleteFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges);
     void DeleteFeedback(Guid id, bool trackChanges);
 }

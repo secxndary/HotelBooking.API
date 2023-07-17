@@ -122,48 +122,6 @@ public sealed class FeedbackService : IFeedbackService
         return feedbackToReturn;
     }
 
-    public void DeleteFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges)
-    {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
-
-        var feedback = _repository.Feedback.GetFeedbackForHotel(hotelId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        _repository.Feedback.DeleteFeedback(feedback);
-        _repository.Save();
-    }
-
-    public void DeleteFeedbackForRoom(Guid roomId, Guid id, bool trackChanges)
-    {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
-
-        var feedback = _repository.Feedback.GetFeedbackForRoom(roomId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        _repository.Feedback.DeleteFeedback(feedback);
-        _repository.Save();
-    }
-
-    public void DeleteFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges)
-    {
-        var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
-        if (reservation is null)
-            throw new ReservationNotFoundException(reservationId);
-
-        var feedback = _repository.Feedback.GetFeedbackForReservation(reservationId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        _repository.Feedback.DeleteFeedback(feedback);
-        _repository.Save();
-    }
-
     public void DeleteFeedback(Guid id, bool trackChanges)
     {
         var feedback = _repository.Feedback.GetFeedback(id, trackChanges);
