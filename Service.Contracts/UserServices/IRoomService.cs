@@ -1,5 +1,6 @@
 ﻿using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.Contracts.UserServices;
 
 public interface IRoomService
@@ -11,5 +12,7 @@ public interface IRoomService
     RoomDto CreateRoomForHotel(Guid hotelId, RoomForCreationDto room, bool trackChanges);
     (IEnumerable<RoomDto> rooms, string ids) CreateRoomCollection
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection);
+    void UpdateRoomForHotel(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate, 
+        bool hotelTrackChanges, bool roomTrackChanges);
     void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges);
 }

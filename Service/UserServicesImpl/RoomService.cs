@@ -7,6 +7,8 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
+
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService
@@ -103,6 +105,25 @@ public sealed class RoomService : IRoomService
         var roomsCollectionToReturn = _mapper.Map<IEnumerable<RoomDto>>(roomsEntities);
         var ids = string.Join(",", roomsCollectionToReturn.Select(r => r.Id));
         return (rooms: roomsCollectionToReturn, ids);
+    }
+
+    public void UpdateRoomForHotel(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate,
+        bool hotelTrackChanges, bool roomTrackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var roomType = _repository.RoomType.GetRoomType(roomForUpdate.RoomTypeId, false);
+        if (roomType is null)
+            throw new RoomTypeNotFoundException(roomForUpdate.RoomTypeId);
+
+        var roomEntity = _repository.Room.GetRoom(hotelId, id, roomTrackChanges);
+        if (roomEntity is null)
+            throw new RoomNotFoundException(id);
+
+        _mapper.Map(roomForUpdate, roomEntity);
+        _repository.Save();
     }
 
     public void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges)

@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Folder Include="Content\Images\" />
+    <Folder Include="internal_logs\" />
   </ItemGroup>
 
 </Project>
