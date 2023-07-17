@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Exceptions.BadRequest;
 using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
@@ -32,6 +33,23 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return roomPhotosDto;
     }
 
+    public IEnumerable<RoomPhotoDto> GetByIds(Guid roomId, IEnumerable<Guid> ids, bool trackChanges)
+    {
+        if (ids is null)
+            throw new IdParametersBadRequestException();
+
+        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var roomPhotos = _repository.RoomPhoto.GetByIds(roomId, ids, trackChanges);
+        if (roomPhotos.Count() != ids.Count())
+            throw new CollectionByIdsBadRequestException();
+
+        var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotos);
+        return roomPhotosDto;
+    }
+
     public RoomPhotoDto GetRoomPhoto(Guid roomId, Guid id, bool trackChanges)
     {
         var room = _repository.Room.GetRoom(roomId, trackChanges);
@@ -58,6 +76,22 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
         var roomPhotoToReturn = _mapper.Map<RoomPhotoDto>(roomPhotoEntity);
         return roomPhotoToReturn;
+    }
+
+    public (IEnumerable<RoomPhotoDto> roomPhotos, string ids) CreateRoomPhotoCollection
+        (Guid roomId, IEnumerable<RoomPhotoForCreationDto> roomPhotosCollection)
+    {
+        if (roomPhotosCollection is null)
+            throw new RoomPhotoCollectionBadRequest();
+
+        var roomPhotosEntities = _mapper.Map<IEnumerable<RoomPhoto>>(roomPhotosCollection);
+        foreach (var roomPhoto in roomPhotosEntities)
+            _repository.RoomPhoto.CreateRoomPhoto(roomId, roomPhoto);
+        _repository.Save();
+
+        var roomPhotosCollectionToReturn = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotosEntities);
+        var ids = string.Join(",", roomPhotosCollectionToReturn.Select(p => p.Id));
+        return (roomPhotos: roomPhotosCollectionToReturn, ids);
     }
 
     public void DeleteRoomPhoto(Guid roomId, Guid id, bool trackChanges)

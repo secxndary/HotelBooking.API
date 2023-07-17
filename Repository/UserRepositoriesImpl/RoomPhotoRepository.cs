@@ -13,6 +13,13 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
         .OrderBy(p => p.Path)
         .ToList();
 
+    public IEnumerable<RoomPhoto> GetByIds(Guid roomId, IEnumerable<Guid> ids, bool trackChanges) =>
+        FindByCondition(p =>
+            p.RoomId.Equals(roomId) &&
+            ids.Contains(p.Id), trackChanges)
+        .OrderBy(p => p.Path)
+        .ToList();
+    
     public RoomPhoto? GetRoomPhoto(Guid roomId, Guid id, bool trackChanges) =>
         FindByCondition(p =>
             p.RoomId.Equals(roomId) &&

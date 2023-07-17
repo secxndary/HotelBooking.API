@@ -13,6 +13,13 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
         .OrderBy(p => p.Path)
         .ToList();
 
+    public IEnumerable<HotelPhoto> GetByIds(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
+        FindByCondition(p =>
+            p.HotelId.Equals(hotelId) &&
+            ids.Contains(p.Id), trackChanges)
+        .OrderBy(p => p.Path)
+        .ToList();
+
     public HotelPhoto? GetHotelPhoto(Guid hotelId, Guid id, bool trackChanges) =>
         FindByCondition(p =>
             p.HotelId.Equals(hotelId) &&

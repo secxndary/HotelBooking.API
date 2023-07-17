@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Exceptions.BadRequest;
 using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
@@ -29,6 +30,23 @@ public sealed class RoomService : IRoomService
             throw new HotelNotFoundException(hotelId);
 
         var rooms = _repository.Room.GetRooms(hotelId, trackChanges);
+        var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
+        return roomsDto;
+    }
+
+    public IEnumerable<RoomDto> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges)
+    {
+        if (ids is null)
+            throw new IdParametersBadRequestException();
+
+        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var rooms = _repository.Room.GetByIdsForHotel(hotelId, ids, trackChanges);
+        if (rooms.Count() != ids.Count())
+            throw new CollectionByIdsBadRequestException();
+
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
     }
@@ -69,6 +87,22 @@ public sealed class RoomService : IRoomService
 
         var roomToReturn = _mapper.Map<RoomDto>(roomEntity);
         return roomToReturn;
+    }
+
+    public (IEnumerable<RoomDto> rooms, string ids) CreateRoomCollection
+        (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection)
+    {
+        if (roomsCollection is null)
+            throw new RoomCollectionBadRequest();
+
+        var roomsEntities = _mapper.Map<IEnumerable<Room>>(roomsCollection);
+        foreach (var room in roomsEntities)
+            _repository.Room.CreateRoomForHotel(hotelId, room);
+        _repository.Save();
+
+        var roomsCollectionToReturn = _mapper.Map<IEnumerable<RoomDto>>(roomsEntities);
+        var ids = string.Join(",", roomsCollectionToReturn.Select(r => r.Id));
+        return (rooms: roomsCollectionToReturn, ids);
     }
 
     public void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges)

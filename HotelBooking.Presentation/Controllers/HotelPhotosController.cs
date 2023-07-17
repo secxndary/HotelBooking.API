@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelBooking.Presentation.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
-
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels/{hotelId:guid}/photos")]
@@ -26,6 +26,15 @@ public class HotelPhotosController : ControllerBase
         return Ok(hotelPhoto);
     }
 
+    [HttpGet("collection/({ids})", Name = "HotelPhotoCollection")]
+    public IActionResult GetHotelPhotoCollection(
+        Guid hotelId,
+        [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+    {
+        var hotelPhotos = _service.HotelPhotoService.GetByIds(hotelId, ids, trackChanges: false);
+        return Ok(hotelPhotos);
+    }
+
     [HttpPost]
     public IActionResult CreateHotelPhoto(Guid hotelId, [FromBody] HotelPhotoForCreationDto hotelPhoto)
     {
@@ -33,6 +42,15 @@ public class HotelPhotosController : ControllerBase
             return BadRequest("HotelPhotoForCreationDto object is null");
         var createdHotelPhoto = _service.HotelPhotoService.CreateHotelPhoto(hotelId, hotelPhoto, trackChanges: false);
         return CreatedAtRoute("GetHotelPhotoForHotel", new { hotelId, id = createdHotelPhoto.Id }, createdHotelPhoto);
+    }
+
+    [HttpPost("collection")]
+    public IActionResult CreateHotelPhotoCollection(
+        Guid hotelId,
+        [FromBody] IEnumerable<HotelPhotoForCreationDto> hotelPhotoCollection)
+    {
+        var result = _service.HotelPhotoService.CreateHotelPhotoCollection(hotelId, hotelPhotoCollection);
+        return CreatedAtRoute("HotelPhotoCollection", new { hotelId, result.ids }, result.hotelPhotos);
     }
 
     [HttpDelete("{id:guid}")]

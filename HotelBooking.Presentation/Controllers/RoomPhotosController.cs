@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelBooking.Presentation.ModelBinders;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 namespace HotelBooking.Presentation.Controllers;
@@ -25,6 +26,15 @@ public class RoomPhotosController : ControllerBase
         return Ok(roomPhoto);
     }
 
+    [HttpGet("collection/({ids})", Name = "RoomPhotoCollection")]
+    public IActionResult GetRoomPhotoCollection(
+        Guid roomId,
+        [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
+    {
+        var roomPhotos = _service.RoomPhotoService.GetByIds(roomId, ids, trackChanges: false);
+        return Ok(roomPhotos);
+    }
+
     [HttpPost]
     public IActionResult CreateRoomPhoto(Guid roomId, [FromBody] RoomPhotoForCreationDto roomPhoto)
     {
@@ -32,6 +42,15 @@ public class RoomPhotosController : ControllerBase
             return BadRequest("RoomPhotoForCreationDto object is null");
         var createdRoomPhoto = _service.RoomPhotoService.CreateRoomPhoto(roomId, roomPhoto, trackChanges: false);
         return CreatedAtRoute("GetRoomPhotoForRoom", new { roomId, id = createdRoomPhoto.Id }, createdRoomPhoto);
+    }
+
+    [HttpPost("collection")]
+    public IActionResult CreateRoomPhotoCollection(
+        Guid roomId,
+        [FromBody] IEnumerable<RoomPhotoForCreationDto> roomPhotoCollection)
+    {
+        var result = _service.RoomPhotoService.CreateRoomPhotoCollection(roomId, roomPhotoCollection);
+        return CreatedAtRoute("RoomPhotoCollection", new { roomId, result.ids }, result.roomPhotos);
     }
 
     [HttpDelete("{id:guid}")]

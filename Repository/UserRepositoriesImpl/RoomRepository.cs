@@ -13,8 +13,17 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         .OrderBy(r => r.Price)
         .ToList();
 
+    public IEnumerable<Room> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
+        FindByCondition(r =>
+            r.HotelId.Equals(hotelId) &&
+            ids.Contains(r.Id), trackChanges)
+        .OrderBy(r => r.Price)
+        .ToList();
+
     public Room? GetRoom(Guid hotelId, Guid id, bool trackChanges) =>
-        FindByCondition(r => r.HotelId.Equals(hotelId) && r.Id.Equals(id), trackChanges)
+        FindByCondition(r => 
+            r.HotelId.Equals(hotelId) && 
+            r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
     public Room? GetRoom(Guid id, bool trackChanges) =>
