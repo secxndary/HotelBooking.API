@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects.InputDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
@@ -18,10 +19,10 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/rooms/{roomId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksForRoom(Guid roomId)
+    [Route("api/rooms/{reservationId:guid}/feedbacks")]
+    public IActionResult GetFeedbacksForRoom(Guid reservationId)
     {
-        var feedbacks = _service.FeedbackService.GetFeedbacksForRoom(roomId, trackChanges: false);
+        var feedbacks = _service.FeedbackService.GetFeedbacksForRoom(reservationId, trackChanges: false);
         return Ok(feedbacks);
     }
 
@@ -42,15 +43,14 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/rooms/{roomId:guid}/feedbacks/{id:guid}")]
-    public IActionResult GetFeedbackForRoom(Guid roomId, Guid id)
+    [Route("api/rooms/{reservationId:guid}/feedbacks/{id:guid}")]
+    public IActionResult GetFeedbackForRoom(Guid reservationId, Guid id)
     {
-        var feedback = _service.FeedbackService.GetFeedbackForRoom(roomId, id, trackChanges: false);
+        var feedback = _service.FeedbackService.GetFeedbackForRoom(reservationId, id, trackChanges: false);
         return Ok(feedback);
     }
 
-    [HttpGet]
-    [Route("api/reservations/{reservationId:guid}/feedbacks/{id:guid}")]
+    [HttpGet("api/reservations/{reservationId:guid}/feedbacks/{id:guid}", Name = "GetFeedbackForReservation")]
     public IActionResult GetFeedbackForReservation(Guid reservationId, Guid id)
     {
         var feedback = _service.FeedbackService.GetFeedbackForReservation(reservationId, id, trackChanges: false);
@@ -65,6 +65,16 @@ public class FeedbacksController : ControllerBase
         return Ok(feedback);
     }
 
+    [HttpPost]
+    [Route("api/reservations/{reservationId:guid}/feedbacks")]
+    public IActionResult CreateFeedback(Guid reservationId, [FromBody] FeedbackForCreationDto feedback)
+    {
+        if (feedback is null)
+            return BadRequest("FeedbackForCreationDto object is null");
+        var createdFeedback = _service.FeedbackService.CreateFeedbackForReservation(reservationId, feedback, false);
+        return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
+    }
+
     [HttpDelete]
     [Route("api/hotels/{hotelId:guid}/feedbacks/{id:guid}")]
     public IActionResult DeleteFeedbackForHotel(Guid hotelId, Guid id)
@@ -74,10 +84,10 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpDelete]
-    [Route("api/rooms/{roomId:guid}/feedbacks/{id:guid}")]
-    public IActionResult DeleteFeedbackForRoom(Guid roomId, Guid id)
+    [Route("api/rooms/{reservationId:guid}/feedbacks/{id:guid}")]
+    public IActionResult DeleteFeedbackForRoom(Guid reservationId, Guid id)
     {
-        _service.FeedbackService.DeleteFeedbackForRoom(roomId, id, trackChanges: false);
+        _service.FeedbackService.DeleteFeedbackForRoom(reservationId, id, trackChanges: false);
         return NoContent();
     }
 

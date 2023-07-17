@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects.InputDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/roomTypes")]
@@ -17,11 +18,20 @@ public class RoomTypesController : ControllerBase
         return Ok(roomTypes);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:guid}", Name = "RoomTypeById")]
     public IActionResult GetRoomType(Guid id)
     {
         var roomType = _service.RoomTypeService.GetRoomType(id, trackChanges: false);
         return Ok(roomType);
+    }
+
+    [HttpPost]
+    public IActionResult CreateRoomType([FromBody] RoomTypeForCreationDto roomType)
+    {
+        if (roomType is null)
+            return BadRequest("RoomTypeForCreationDto object is null");
+        var createdRoomType = _service.RoomTypeService.CreateRoomType(roomType);
+        return CreatedAtRoute("RoomTypeById", new { id = createdRoomType.Id }, createdRoomType);
     }
 
     [HttpDelete("{id:guid}")]

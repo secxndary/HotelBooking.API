@@ -22,6 +22,12 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateReservationForRoom(Guid roomId, Reservation reservation)
+    {
+        reservation.RoomId = roomId;
+        Create(reservation);
+    }
+
     public void DeleteReservation(Reservation reservation) =>
         Delete(reservation);
 }

@@ -1,9 +1,11 @@
-﻿using Shared.DataTransferObjects.OutputDtos;
+﻿using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
 namespace Service.Contracts.UserServices;
 
 public interface IRoleService
 {
     IEnumerable<RoleDto> GetAllRoles(bool trackChanges);
     RoleDto GetRole(Guid id, bool trackChanges);
+    RoleDto CreateRole(RoleForCreationDto role);
     void DeleteRole(Guid id, bool trackChanges);
 }

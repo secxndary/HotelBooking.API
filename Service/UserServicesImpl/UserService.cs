@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -34,6 +36,17 @@ public sealed class UserService : IUserService
             throw new UserNotFoundException(id);
         var userDto = _mapper.Map<UserDto>(user);
         return userDto;
+    }
+
+    public UserDto CreateUser(UserForCreationDto user)
+    {
+        var userEntity = _mapper.Map<User>(user);
+
+        _repository.User.CreateUser(userEntity);
+        _repository.Save();
+
+        var userToReturn = _mapper.Map<UserDto>(userEntity);
+        return userToReturn;
     }
 
     public void DeleteUser(Guid id, bool trackChanges)

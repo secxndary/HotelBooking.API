@@ -16,6 +16,9 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         FindByCondition(u => u.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateUser(User user) =>
+        Create(user);
+
     public void DeleteUser(User user) =>
         Delete(user);
 }

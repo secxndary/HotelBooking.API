@@ -1,4 +1,5 @@
-﻿using Shared.DataTransferObjects.OutputDtos;
+﻿using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
 namespace Service.Contracts.UserServices;
 
 public interface IFeedbackService
@@ -10,6 +11,7 @@ public interface IFeedbackService
     FeedbackDto GetFeedbackForRoom(Guid roomId, Guid id, bool trackChanges);
     FeedbackDto GetFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges);
     FeedbackDto GetFeedback(Guid id, bool trackChanges);
+    FeedbackDto CreateFeedbackForReservation(Guid reservationId, FeedbackForCreationDto feedback, bool trackChanges);
     void DeleteFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges);
     void DeleteFeedbackForRoom(Guid roomId, Guid id, bool trackChanges);
     void DeleteFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges);

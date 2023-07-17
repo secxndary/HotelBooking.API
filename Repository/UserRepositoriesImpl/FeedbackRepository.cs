@@ -45,6 +45,12 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
         FindByCondition(f => f.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateFeedbackForReservation(Guid reservationId, Feedback feedback)
+    {
+        feedback.ReservationId = reservationId;
+        Create(feedback);
+    }
+
     public void DeleteFeedback(Feedback feedback) =>
         Delete(feedback);
 }

@@ -19,6 +19,12 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
             p.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateRoomPhoto(Guid roomId, RoomPhoto roomPhoto)
+    {
+        roomPhoto.RoomId = roomId;
+        Create(roomPhoto);
+    }
+
     public void DeleteRoomPhoto(RoomPhoto roomPhoto) =>
         Delete(roomPhoto);
 }

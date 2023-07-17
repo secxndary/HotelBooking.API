@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -103,6 +105,21 @@ public sealed class FeedbackService : IFeedbackService
 
         var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
         return feedbackDto;
+    }
+
+    public FeedbackDto CreateFeedbackForReservation(Guid reservationId, 
+        FeedbackForCreationDto feedback, bool trackChanges)
+    {
+        var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
+        if (reservation is null)
+            throw new ReservationNotFoundException(reservationId);
+
+        var feedbackEntity = _mapper.Map<Feedback>(feedback);
+        _repository.Feedback.CreateFeedbackForReservation(reservationId, feedbackEntity);
+        _repository.Save();
+
+        var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);
+        return feedbackToReturn;
     }
 
     public void DeleteFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges)

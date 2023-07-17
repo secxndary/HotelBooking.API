@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -35,6 +37,17 @@ public sealed class RoleService : IRoleService
 
         var roleDto = _mapper.Map<RoleDto>(role);
         return roleDto;
+    }
+
+    public RoleDto CreateRole(RoleForCreationDto role)
+    {
+        var roleEntity = _mapper.Map<Role>(role);
+
+        _repository.Role.CreateRole(roleEntity);
+        _repository.Save();
+
+        var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
+        return roleToReturn;
     }
 
     public void DeleteRole(Guid id, bool trackChanges)

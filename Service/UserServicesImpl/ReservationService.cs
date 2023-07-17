@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -43,6 +45,21 @@ public sealed class ReservationService : IReservationService
 
         var reservationDto = _mapper.Map<ReservationDto>(reservation);
         return reservationDto;
+    }
+
+    public ReservationDto CreateReservationForRoom(Guid roomId, 
+        ReservationForCreationDto reservation, bool trackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var reservationEntity = _mapper.Map<Reservation>(reservation);
+        _repository.Reservation.CreateReservationForRoom(roomId, reservationEntity);
+        _repository.Save();
+
+        var reservationToReturn = _mapper.Map<ReservationDto>(reservationEntity); 
+        return reservationToReturn;
     }
 
     public void DeleteReservationForRoom(Guid roomId, Guid id, bool trackChanges) 

@@ -2,7 +2,6 @@
 using Entities.Models;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
-
 namespace HotelBooking;
 
 public class MappingProfile : Profile
@@ -19,7 +18,14 @@ public class MappingProfile : Profile
         CreateMap<RoomPhoto, RoomPhotoDto>();
         CreateMap<HotelPhoto,  HotelPhotoDto>();
 
-        CreateMap<HotelForCreationDto, Hotel>();
+        CreateMap<RoleForCreationDto, Role>();
+        CreateMap<UserForCreationDto, User>();
+        CreateMap<RoomTypeForCreationDto, RoomType>();
         CreateMap<RoomForCreationDto, Room>();
+        CreateMap<HotelForCreationDto, Hotel>();
+        CreateMap<ReservationForCreationDto, Reservation>();
+        CreateMap<FeedbackForCreationDto, Feedback>();
+        CreateMap<RoomPhotoForCreationDto, RoomPhoto>();
+        CreateMap<HotelPhotoForCreationDto, HotelPhoto>();
     }
 }

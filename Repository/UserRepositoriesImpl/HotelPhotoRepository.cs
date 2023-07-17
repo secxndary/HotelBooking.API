@@ -19,6 +19,12 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
             p.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateHotelPhoto(Guid hotelId, HotelPhoto hotelPhoto)
+    {
+        hotelPhoto.HotelId = hotelId;
+        Create(hotelPhoto);
+    }
+
     public void DeleteHotelPhoto(HotelPhoto hotelPhoto) =>
         Delete(hotelPhoto);
 }

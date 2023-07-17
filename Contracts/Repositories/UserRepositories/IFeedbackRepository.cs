@@ -10,5 +10,6 @@ public interface IFeedbackRepository
     Feedback? GetFeedbackForRoom(Guid roomId, Guid id, bool trackChanges);
     Feedback? GetFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges);
     Feedback? GetFeedback(Guid id, bool trackChanges);
+    void CreateFeedbackForReservation(Guid reservationId, Feedback feedback);
     void DeleteFeedback(Feedback feedback);
 }

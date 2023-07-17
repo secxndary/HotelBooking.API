@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects.InputDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/rooms/{roomId:guid}/reservations")]
@@ -17,11 +18,21 @@ public class ReservationsController : ControllerBase
         return Ok(reservations);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:guid}", Name = "ReservationById")]
     public IActionResult GetReservation(Guid roomId, Guid id)
     {
         var reservation = _service.ReservationService.GetReservation(roomId, id, trackChanges: false);
         return Ok(reservation);
+    }
+
+    [HttpPost]
+    public IActionResult CreateReservation(Guid roomId, [FromBody] ReservationForCreationDto reservation)
+    {
+        if (reservation is null)
+            return BadRequest("ReservationForCreationDto object is null");
+        var createdReservation = _service.ReservationService
+            .CreateReservationForRoom(roomId, reservation, trackChanges: false);
+        return CreatedAtRoute("ReservationById", new { roomId, id = createdReservation.Id }, createdReservation);
     }
 
     [HttpDelete("{id:guid}")]

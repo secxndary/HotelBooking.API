@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -35,6 +37,17 @@ public sealed class RoomTypeService : IRoomTypeService
 
         var roomTypeDto = _mapper.Map<RoomTypeDto>(roomType);
         return roomTypeDto;
+    }
+
+    public RoomTypeDto CreateRoomType(RoomTypeForCreationDto roomType)
+    {
+        var roomTypeEntity = _mapper.Map<RoomType>(roomType);
+
+        _repository.RoomType.CreateRoomType(roomTypeEntity);
+        _repository.Save();
+
+        var roomTypeToReturn = _mapper.Map<RoomTypeDto>(roomTypeEntity); 
+        return roomTypeToReturn;
     }
 
     public void DeleteRoomType(Guid id, bool trackChanges)

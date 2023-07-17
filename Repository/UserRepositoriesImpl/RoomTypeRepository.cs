@@ -17,6 +17,9 @@ public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateRoomType(RoomType roomType) =>
+        Create(roomType);
+
     public void DeleteRoomType(RoomType roomType) =>
         Delete(roomType);
 }

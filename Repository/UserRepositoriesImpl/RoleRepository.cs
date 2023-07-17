@@ -17,6 +17,9 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
         FindByCondition(r => r.Id.Equals(id), trackChanges)
         .SingleOrDefault();
 
+    public void CreateRole(Role role) =>
+        Create(role);
+
     public void DeleteRole(Role role) =>
         Delete(role);
 }

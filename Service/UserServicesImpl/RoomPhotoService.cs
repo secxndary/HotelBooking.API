@@ -2,7 +2,9 @@
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 namespace Service.UserServicesImpl;
 
@@ -42,6 +44,20 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
         var roomPhotoDto = _mapper.Map<RoomPhotoDto>(roomPhoto);
         return roomPhotoDto;
+    }
+
+    public RoomPhotoDto CreateRoomPhoto(Guid roomId, RoomPhotoForCreationDto roomPhoto, bool trackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var roomPhotoEntity = _mapper.Map<RoomPhoto>(roomPhoto);
+        _repository.RoomPhoto.CreateRoomPhoto(roomId, roomPhotoEntity);
+        _repository.Save();
+
+        var roomPhotoToReturn = _mapper.Map<RoomPhotoDto>(roomPhotoEntity);
+        return roomPhotoToReturn;
     }
 
     public void DeleteRoomPhoto(Guid roomId, Guid id, bool trackChanges)
