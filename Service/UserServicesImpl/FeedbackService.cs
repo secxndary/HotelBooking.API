@@ -56,48 +56,6 @@ public sealed class FeedbackService : IFeedbackService
         return feedbacksDto;
     }
 
-    public FeedbackDto GetFeedbackForHotel(Guid hotelId, Guid id, bool trackChanges)
-    {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
-
-        var feedback = _repository.Feedback.GetFeedbackForHotel(hotelId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
-        return feedbackDto;
-    }
-
-    public FeedbackDto GetFeedbackForRoom(Guid roomId, Guid id, bool trackChanges)
-    {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
-
-        var feedback = _repository.Feedback.GetFeedbackForRoom(roomId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
-        return feedbackDto;
-    }
-
-    public FeedbackDto GetFeedbackForReservation(Guid reservationId, Guid id, bool trackChanges)
-    {
-        var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
-        if (reservation is null)
-            throw new ReservationNotFoundException(reservationId);
-
-        var feedback = _repository.Feedback.GetFeedbackForReservation(reservationId, id, trackChanges);
-        if (feedback is null)
-            throw new FeedbackNotFoundException(id);
-
-        var feedbackDto = _mapper.Map<FeedbackDto>(feedback);
-        return feedbackDto;
-    }
-
     public FeedbackDto GetFeedback(Guid id, bool trackChanges)
     {
         var feedback = _repository.Feedback.GetFeedback(id, trackChanges);

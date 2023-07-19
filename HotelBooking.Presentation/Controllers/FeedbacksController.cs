@@ -36,29 +36,6 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/hotels/{hotelId:guid}/feedbacks/{id:guid}")]
-    public IActionResult GetFeedbackForHotel(Guid hotelId, Guid id)
-    {
-        var feedback = _service.FeedbackService.GetFeedbackForHotel(hotelId, id, trackChanges: false);
-        return Ok(feedback);
-    }
-
-    [HttpGet]
-    [Route("api/rooms/{reservationId:guid}/feedbacks/{id:guid}")]
-    public IActionResult GetFeedbackForRoom(Guid reservationId, Guid id)
-    {
-        var feedback = _service.FeedbackService.GetFeedbackForRoom(reservationId, id, trackChanges: false);
-        return Ok(feedback);
-    }
-
-    [HttpGet("api/reservations/{reservationId:guid}/feedbacks/{id:guid}", Name = "GetFeedbackForReservation")]
-    public IActionResult GetFeedbackForReservation(Guid reservationId, Guid id)
-    {
-        var feedback = _service.FeedbackService.GetFeedbackForReservation(reservationId, id, trackChanges: false);
-        return Ok(feedback);
-    }
-
-    [HttpGet]
     [Route("api/feedbacks/{id:guid}")]
     public IActionResult GetFeedback(Guid id)
     {
