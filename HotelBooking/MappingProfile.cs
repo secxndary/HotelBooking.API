@@ -29,7 +29,14 @@ public class MappingProfile : Profile
         CreateMap<RoomPhotoForCreationDto, RoomPhoto>();
         CreateMap<HotelPhotoForCreationDto, HotelPhoto>();
 
+        CreateMap<RoleForUpdateDto, Role>();
+        CreateMap<UserForUpdateDto, User>();
+        CreateMap<RoomTypeForUpdateDto, RoomType>();
         CreateMap<RoomForUpdateDto, Room>();
         CreateMap<HotelForUpdateDto, Hotel>();
+        CreateMap<ReservationForUpdateDto, Reservation>();
+        CreateMap<FeedbackForUpdateDto, Feedback>();
+        CreateMap<RoomPhotoForUpdateDto, RoomPhoto>();
+        CreateMap<HotelPhotoForUpdateDto, HotelPhoto>();
     }
 }
