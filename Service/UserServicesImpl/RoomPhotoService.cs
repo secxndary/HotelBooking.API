@@ -7,6 +7,8 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
+
 namespace Service.UserServicesImpl;
 
 public sealed class RoomPhotoService : IRoomPhotoService
@@ -92,6 +94,21 @@ public sealed class RoomPhotoService : IRoomPhotoService
         var roomPhotosCollectionToReturn = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotosEntities);
         var ids = string.Join(",", roomPhotosCollectionToReturn.Select(p => p.Id));
         return (roomPhotos: roomPhotosCollectionToReturn, ids);
+    }
+
+    public void UpdateRoomPhoto(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate,
+        bool roomTrackChanges, bool photoTrackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, roomTrackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var roomPhotoEntity = _repository.RoomPhoto.GetRoomPhoto(roomId, id, photoTrackChanges);
+        if (roomPhotoEntity is null)
+            throw new RoomPhotoNotFoundException(id);
+
+        _mapper.Map(roomPhotoForUpdate, roomPhotoEntity);
+        _repository.Save();
     }
 
     public void DeleteRoomPhoto(Guid roomId, Guid id, bool trackChanges)

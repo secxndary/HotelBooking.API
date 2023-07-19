@@ -1,5 +1,6 @@
 ﻿using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.Contracts.UserServices;
 
 public interface IHotelService
@@ -10,5 +11,6 @@ public interface IHotelService
     HotelDto CreateHotel(HotelForCreationDto hotel);
     (IEnumerable<HotelDto> hotels, string ids) CreateHotelCollection 
         (IEnumerable<HotelForCreationDto> hotelCollection);
+    void UpdateHotel(Guid id, HotelForUpdateDto hotel, bool trackChanges);
     void DeleteHotel(Guid id, bool trackChanges);
 }

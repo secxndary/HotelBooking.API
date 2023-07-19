@@ -6,6 +6,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class FeedbackService : IFeedbackService
@@ -107,7 +108,7 @@ public sealed class FeedbackService : IFeedbackService
         return feedbackDto;
     }
 
-    public FeedbackDto CreateFeedbackForReservation(Guid reservationId, 
+    public FeedbackDto CreateFeedbackForReservation(Guid reservationId,
         FeedbackForCreationDto feedback, bool trackChanges)
     {
         var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
@@ -120,6 +121,20 @@ public sealed class FeedbackService : IFeedbackService
 
         var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);
         return feedbackToReturn;
+    }
+
+    public void UpdateFeedback(Guid id, FeedbackForUpdateDto feedbackForUpdate, bool trackChanges)
+    {
+        var reservation = _repository.Reservation.GetReservation(feedbackForUpdate.ReservationId, false);
+        if (reservation is null)
+            throw new ReservationNotFoundException(feedbackForUpdate.ReservationId);
+
+        var feedbackEntity = _repository.Feedback.GetFeedback(id, trackChanges);
+        if (feedbackEntity is null)
+            throw new FeedbackNotFoundException(id);
+
+        _mapper.Map(feedbackForUpdate, feedbackEntity);
+        _repository.Save();
     }
 
     public void DeleteFeedback(Guid id, bool trackChanges)

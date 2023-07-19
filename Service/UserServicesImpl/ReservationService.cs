@@ -6,6 +6,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class ReservationService : IReservationService
@@ -60,6 +61,25 @@ public sealed class ReservationService : IReservationService
 
         var reservationToReturn = _mapper.Map<ReservationDto>(reservationEntity); 
         return reservationToReturn;
+    }
+
+    public void UpdateReservationForRoom(Guid roomId, Guid id, 
+        ReservationForUpdateDto reservation, bool trackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, trackChanges: false);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var user = _repository.User.GetUser(reservation.UserId, trackChanges: false);
+        if (user is null)
+            throw new UserNotFoundException(reservation.UserId);
+
+        var reservationEntity = _repository.Reservation.GetReservation(id, trackChanges);
+        if (reservationEntity is null)
+            throw new ReservationNotFoundException(id);
+
+        _mapper.Map(reservation, reservationEntity);
+        _repository.Save();
     }
 
     public void DeleteReservationForRoom(Guid roomId, Guid id, bool trackChanges) 

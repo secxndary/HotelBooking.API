@@ -6,6 +6,8 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
+
 namespace Service.UserServicesImpl;
 
 public sealed class UserService : IUserService
@@ -47,6 +49,20 @@ public sealed class UserService : IUserService
 
         var userToReturn = _mapper.Map<UserDto>(userEntity);
         return userToReturn;
+    }
+
+    public void UpdateUser(Guid id, UserForUpdateDto userForUpdate, bool trackChanges)
+    {
+        var role = _repository.Role.GetRole(userForUpdate.RoleId, trackChanges: false);
+        if (role is null)
+            throw new RoleNotFoundException(userForUpdate.RoleId);
+
+        var userEntity = _repository.User.GetUser(id, trackChanges);
+        if (userEntity is null)
+            throw new UserNotFoundException(id);
+
+        _mapper.Map(userForUpdate, userEntity);
+        _repository.Save();
     }
 
     public void DeleteUser(Guid id, bool trackChanges)

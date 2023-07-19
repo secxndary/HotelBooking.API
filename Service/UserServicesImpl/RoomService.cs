@@ -8,7 +8,6 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
-
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService

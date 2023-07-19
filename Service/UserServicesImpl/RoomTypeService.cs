@@ -6,6 +6,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class RoomTypeService : IRoomTypeService
@@ -48,6 +49,16 @@ public sealed class RoomTypeService : IRoomTypeService
 
         var roomTypeToReturn = _mapper.Map<RoomTypeDto>(roomTypeEntity); 
         return roomTypeToReturn;
+    }
+
+    public void UpdateRoomType(Guid id, RoomTypeForUpdateDto roomTypeForUpdate, bool trackChanges)
+    {
+        var roomTypeEntity = _repository.RoomType.GetRoomType(id, trackChanges);
+        if (roomTypeEntity is null)
+            throw new RoomTypeNotFoundException(id);
+
+        _mapper.Map(roomTypeForUpdate, roomTypeEntity);
+        _repository.Save();
     }
 
     public void DeleteRoomType(Guid id, bool trackChanges)

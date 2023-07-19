@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
@@ -73,6 +74,15 @@ public class FeedbacksController : ControllerBase
             return BadRequest("FeedbackForCreationDto object is null");
         var createdFeedback = _service.FeedbackService.CreateFeedbackForReservation(reservationId, feedback, false);
         return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
+    }
+
+    [HttpPut("api/feedbacks/{id:guid}")]
+    public IActionResult UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
+    {
+        if (feedback is null)
+            return BadRequest("FeedbackForUpdateDto object is null");
+        _service.FeedbackService.UpdateFeedback(id, feedback, trackChanges: true);
+        return NoContent();
     }
 
     [HttpDelete]

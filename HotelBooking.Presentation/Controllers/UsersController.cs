@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
-
+using Shared.DataTransferObjects.UpdateDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/users")]
@@ -33,6 +33,15 @@ public class UsersController : ControllerBase
             return BadRequest("UserForCreationDto object is null");
         var createdUser = _service.UserService.CreateUser(user);
         return CreatedAtRoute("UserById", new { id = createdUser.Id }, createdUser);
+    }
+
+    [HttpPut("{id:guid}")]
+    public IActionResult UpdateUser(Guid id, [FromBody] UserForUpdateDto user)
+    {
+        if (user is null)
+            return BadRequest("UserForUpdateDto object is null");
+        _service.UserService.UpdateUser(id, user, trackChanges: true);
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]

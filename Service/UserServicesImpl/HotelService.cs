@@ -7,6 +7,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class HotelService : IHotelService
@@ -78,6 +79,16 @@ public sealed class HotelService : IHotelService
         var hotelCollectionToReturn = _mapper.Map<IEnumerable<HotelDto>>(hotelEntities);
         var ids = string.Join(",", hotelCollectionToReturn.Select(h => h.Id));
         return (hotels: hotelCollectionToReturn, ids);
+    }
+
+    public void UpdateHotel(Guid id, HotelForUpdateDto hotelForUpdate, bool trackChanges)
+    {
+        var hotelEntity = _repository.Hotel.GetHotel(id, trackChanges);
+        if (hotelEntity is null)
+            throw new HotelNotFoundException(id);
+
+        _mapper.Map(hotelForUpdate, hotelEntity);
+        _repository.Save();
     }
 
     public void DeleteHotel(Guid id, bool trackChanges)

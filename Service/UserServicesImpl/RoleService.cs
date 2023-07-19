@@ -6,6 +6,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class RoleService : IRoleService
@@ -48,6 +49,16 @@ public sealed class RoleService : IRoleService
 
         var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
         return roleToReturn;
+    }
+
+    public void UpdateRole(Guid id, RoleForUpdateDto roleForUpdate, bool trackChanges)
+    {
+        var roleEntity = _repository.Role.GetRole(id, trackChanges);
+        if (roleEntity is null)
+            throw new RoleNotFoundException(id);
+
+        _mapper.Map(roleForUpdate, roleEntity);
+        _repository.Save();
     }
 
     public void DeleteRole(Guid id, bool trackChanges)

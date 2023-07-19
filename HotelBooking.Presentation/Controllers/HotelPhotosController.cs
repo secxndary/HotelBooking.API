@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels/{hotelId:guid}/photos")]
@@ -51,6 +52,16 @@ public class HotelPhotosController : ControllerBase
     {
         var result = _service.HotelPhotoService.CreateHotelPhotoCollection(hotelId, hotelPhotoCollection);
         return CreatedAtRoute("HotelPhotoCollection", new { hotelId, result.ids }, result.hotelPhotos);
+    }
+
+    [HttpPut("{id:guid}")]
+    public IActionResult UpdateHotelPhoto(Guid hotelId, Guid id, [FromBody] HotelPhotoForUpdateDto photo)
+    {
+        if (photo is null)
+            return BadRequest("HotelPhotoForUpdateDto object is null");
+        _service.HotelPhotoService.UpdateHotelPhoto(hotelId, id, photo, 
+            hotelTrackChanges: false, photoTrackChanges: true);
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]

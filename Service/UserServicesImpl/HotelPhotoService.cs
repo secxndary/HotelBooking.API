@@ -7,6 +7,7 @@ using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.UserServicesImpl;
 
 public sealed class HotelPhotoService : IHotelPhotoService
@@ -93,6 +94,21 @@ public sealed class HotelPhotoService : IHotelPhotoService
         var hotelPhotosCollectionToReturn = _mapper.Map<IEnumerable<HotelPhotoDto>>(hotelPhotosEntities);
         var ids = string.Join(",", hotelPhotosCollectionToReturn.Select(p => p.Id));
         return (hotelPhotos: hotelPhotosCollectionToReturn, ids);
+    }
+
+    public void UpdateHotelPhoto(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhotoForUpdate,
+        bool hotelTrackChanges, bool photoTrackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var hotelPhotoEntity = _repository.HotelPhoto.GetHotelPhoto(hotelId, id, photoTrackChanges);
+        if (hotelPhotoEntity is null)
+            throw new HotelPhotoNotFoundException(id);
+
+        _mapper.Map(hotelPhotoForUpdate, hotelPhotoEntity);
+        _repository.Save();
     }
 
     public void DeleteHotelPhoto(Guid hotelId, Guid id, bool trackChanges)

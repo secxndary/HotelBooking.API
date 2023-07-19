@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.UpdateDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/roles")]
@@ -32,6 +33,15 @@ public class RolesController : ControllerBase
             return BadRequest("RoleForCreationDto object is null");
         var createdRole = _service.RoleService.CreateRole(role);
         return CreatedAtRoute("RoleById", new { id = createdRole.Id }, createdRole);
+    }
+
+    [HttpPut("{id:guid}")]
+    public IActionResult UpdateRole(Guid id, [FromBody] RoleForUpdateDto role)
+    {
+        if (role is null)
+            return BadRequest("RoleForUpdateDto object is null");
+        _service.RoleService.UpdateRole(id, role, trackChanges: true);
+        return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
