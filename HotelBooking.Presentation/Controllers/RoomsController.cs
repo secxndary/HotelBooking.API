@@ -74,7 +74,6 @@ public class RoomsController : ControllerBase
 
         var (roomToPatch, roomEntity) = _service.RoomService.GetRoomForPatch(hotelId, id,
             hotelTrackChanges: false, roomTrackChanges: true);
-
         patchDoc.ApplyTo(roomToPatch);
 
         _service.RoomService.SaveChangesForPatch(roomToPatch, roomEntity);

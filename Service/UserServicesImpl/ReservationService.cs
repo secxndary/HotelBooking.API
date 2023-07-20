@@ -55,6 +55,10 @@ public sealed class ReservationService : IReservationService
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
+        var user = _repository.User.GetUser(reservation.UserId, trackChanges: false);
+        if (user is null)
+            throw new UserNotFoundException(reservation.UserId);
+
         var reservationEntity = _mapper.Map<Reservation>(reservation);
         _repository.Reservation.CreateReservationForRoom(roomId, reservationEntity);
         _repository.Save();
@@ -79,6 +83,27 @@ public sealed class ReservationService : IReservationService
             throw new ReservationNotFoundException(id);
 
         _mapper.Map(reservation, reservationEntity);
+        _repository.Save();
+    }
+
+    public (ReservationForUpdateDto reservationToPatch, Reservation reservationEntity) GetReservationForPatch
+        (Guid roomId, Guid id, bool roomTrackChanges, bool reservationTrackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, roomTrackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var reservationEntity = _repository.Reservation.GetReservation(roomId, id, reservationTrackChanges);
+        if (reservationEntity is null)
+            throw new ReservationNotFoundException(id);
+
+        var photoToPatch = _mapper.Map<ReservationForUpdateDto>(reservationEntity);
+        return (photoToPatch, reservationEntity);
+    }
+
+    public void SaveChangesForPatch(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)
+    {
+        _mapper.Map(reservationToPatch, reservationEntity);
         _repository.Save();
     }
 

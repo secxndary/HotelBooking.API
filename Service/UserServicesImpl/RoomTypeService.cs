@@ -61,6 +61,23 @@ public sealed class RoomTypeService : IRoomTypeService
         _repository.Save();
     }
 
+    public (RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity) GetRoomTypeForPatch
+        (Guid id, bool trackChanges)
+    {
+        var roomTypeEntity = _repository.RoomType.GetRoomType(id, trackChanges);
+        if (roomTypeEntity is null)
+            throw new RoomTypeNotFoundException(id);
+
+        var roomTypeToPatch = _mapper.Map<RoomTypeForUpdateDto>(roomTypeEntity);
+        return (roomTypeToPatch, roomTypeEntity);
+    }
+
+    public void SaveChangesForPatch(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)
+    {
+        _mapper.Map(roomTypeToPatch, roomTypeEntity);
+        _repository.Save();
+    }
+
     public void DeleteRoomType(Guid id, bool trackChanges)
     {
         var roomType = _repository.RoomType.GetRoomType(id, trackChanges);

@@ -8,7 +8,6 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
-
 namespace Service.UserServicesImpl;
 
 public sealed class RoomPhotoService : IRoomPhotoService
@@ -108,6 +107,27 @@ public sealed class RoomPhotoService : IRoomPhotoService
             throw new RoomPhotoNotFoundException(id);
 
         _mapper.Map(roomPhotoForUpdate, roomPhotoEntity);
+        _repository.Save();
+    }
+
+    public (RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity) GetRoomPhotoForPatch
+        (Guid roomId, Guid id, bool roomTrackChanges, bool photoTrackChanges)
+    {
+        var room = _repository.Room.GetRoom(roomId, roomTrackChanges);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+
+        var roomPhotoEntity = _repository.RoomPhoto.GetRoomPhoto(roomId, id, photoTrackChanges);
+        if (roomPhotoEntity is null)
+            throw new RoomPhotoNotFoundException(id);
+
+        var photoToPatch = _mapper.Map<RoomPhotoForUpdateDto>(roomPhotoEntity);
+        return (photoToPatch, roomPhotoEntity);
+    }
+
+    public void SaveChangesForPatch(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)
+    {
+        _mapper.Map(roomPhotoToPatch, roomPhotoEntity);
         _repository.Save();
     }
 

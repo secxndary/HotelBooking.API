@@ -8,8 +8,6 @@ public interface IRoomService
 {
     IEnumerable<RoomDto> GetRooms(Guid hotelId, bool trackChanges);
     IEnumerable<RoomDto> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
-    (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
-        (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges);
     RoomDto GetRoom(Guid hotelId, Guid id, bool trackChanges);
     RoomDto GetRoom(Guid id, bool trackChanges);
     RoomDto CreateRoomForHotel(Guid hotelId, RoomForCreationDto room, bool trackChanges);
@@ -17,6 +15,8 @@ public interface IRoomService
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection);
     void UpdateRoomForHotel(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate, 
         bool hotelTrackChanges, bool roomTrackChanges);
-    void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges);
+    (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
+        (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges);
     void SaveChangesForPatch(RoomForUpdateDto roomToPatch, Room roomEntity);
+    void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges);
 }

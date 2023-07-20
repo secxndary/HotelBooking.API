@@ -94,6 +94,27 @@ public sealed class FeedbackService : IFeedbackService
         _mapper.Map(feedbackForUpdate, feedbackEntity);
         _repository.Save();
     }
+        
+    public (FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity) GetFeedbackForPatch
+        (Guid id, bool trackChanges)
+    {
+        var feedbackEntity = _repository.Feedback.GetFeedback(id, trackChanges);
+        if (feedbackEntity is null)
+            throw new FeedbackNotFoundException(id);
+
+        var feedbackToPatch = _mapper.Map<FeedbackForUpdateDto>(feedbackEntity);
+        return (feedbackToPatch, feedbackEntity);
+    }
+
+    public void SaveChangesForPatch(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)
+    {
+        var reservation = _repository.Reservation.GetReservation(feedbackToPatch.ReservationId, false);
+        if (reservation is null)
+            throw new ReservationNotFoundException(feedbackToPatch.ReservationId);
+
+        _mapper.Map(feedbackToPatch, feedbackEntity);
+        _repository.Save();
+    }
 
     public void DeleteFeedback(Guid id, bool trackChanges)
     {

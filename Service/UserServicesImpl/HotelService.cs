@@ -91,6 +91,22 @@ public sealed class HotelService : IHotelService
         _repository.Save();
     }
 
+    public (HotelForUpdateDto hotelToPatch, Hotel hotelEntity) GetHotelForPatch(Guid id, bool trackChanges)
+    {
+        var hotelEntity = _repository.Hotel.GetHotel(id, trackChanges);
+        if (hotelEntity is null)
+            throw new HotelNotFoundException(id);
+
+        var hotelToPatch = _mapper.Map<HotelForUpdateDto>(hotelEntity);
+        return (hotelToPatch, hotelEntity);
+    }
+
+    public void SaveChangesForPatch(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)
+    {
+        _mapper.Map(hotelToPatch, hotelEntity);
+        _repository.Save();
+    }
+
     public void DeleteHotel(Guid id, bool trackChanges)
     {
         var hotel = _repository.Hotel.GetHotel(id, trackChanges);

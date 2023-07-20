@@ -111,6 +111,27 @@ public sealed class HotelPhotoService : IHotelPhotoService
         _repository.Save();
     }
 
+    public (HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity) GetHotelPhotoForPatch
+        (Guid hotelId, Guid id, bool hotelTrackChanges, bool photoTrackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var hotelPhotoEntity = _repository.HotelPhoto.GetHotelPhoto(hotelId, id, photoTrackChanges);
+        if (hotelPhotoEntity is null)
+            throw new HotelPhotoNotFoundException(id);
+
+        var photoToPatch = _mapper.Map<HotelPhotoForUpdateDto>(hotelPhotoEntity);
+        return (photoToPatch, hotelPhotoEntity);
+    }
+
+    public void SaveChangesForPatch(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)
+    {
+        _mapper.Map(hotelPhotoToPatch, hotelPhotoEntity);
+        _repository.Save();
+    }
+
     public void DeleteHotelPhoto(Guid hotelId, Guid id, bool trackChanges)
     {
         var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);

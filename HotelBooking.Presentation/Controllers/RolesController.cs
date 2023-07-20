@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -41,6 +42,21 @@ public class RolesController : ControllerBase
         if (role is null)
             return BadRequest("RoleForUpdateDto object is null");
         _service.RoleService.UpdateRole(id, role, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateRole(
+        Guid id,
+        [FromBody] JsonPatchDocument<RoleForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (roleToPatch, roleEntity) = _service.RoleService.GetRoleForPatch(id, trackChanges: true);
+        patchDoc.ApplyTo(roleToPatch);
+
+        _service.RoleService.SaveChangesForPatch(roleToPatch, roleEntity);
         return NoContent();
     }
 

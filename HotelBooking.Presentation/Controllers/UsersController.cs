@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -41,6 +42,21 @@ public class UsersController : ControllerBase
         if (user is null)
             return BadRequest("UserForUpdateDto object is null");
         _service.UserService.UpdateUser(id, user, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateUser(
+        Guid id, 
+        [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (userToPatch, userEntity) = _service.UserService.GetUserForPatch(id, trackChanges: true);
+        patchDoc.ApplyTo(userToPatch);
+
+        _service.UserService.SaveChangesForPatch(userToPatch, userEntity);
         return NoContent();
     }
 

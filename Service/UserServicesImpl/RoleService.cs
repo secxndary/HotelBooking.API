@@ -61,6 +61,23 @@ public sealed class RoleService : IRoleService
         _repository.Save();
     }
 
+    public (RoleForUpdateDto roleToPatch, Role roleEntity) GetRoleForPatch
+        (Guid id, bool trackChanges)
+    {
+        var roleEntity = _repository.Role.GetRole(id, trackChanges);
+        if (roleEntity is null)
+            throw new RoleNotFoundException(id);
+
+        var roleToPatch = _mapper.Map<RoleForUpdateDto>(roleEntity);
+        return (roleToPatch, roleEntity);
+    }
+
+    public void SaveChangesForPatch(RoleForUpdateDto roleToPatch, Role roleEntity)
+    {
+        _mapper.Map(roleToPatch, roleEntity);
+        _repository.Save();
+    }
+
     public void DeleteRole(Guid id, bool trackChanges)
     {
         var role = _repository.Role.GetRole(id, trackChanges);

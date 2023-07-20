@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
-
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/rooms/{roomId:guid}/reservations")]
@@ -43,6 +43,21 @@ public class ReservationsController : ControllerBase
         if (reservation is null)
             return BadRequest("ReservationForUpdateDto object is null");
         _service.ReservationService.UpdateReservationForRoom(roomId, id, reservation, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateReservation(Guid roomId, Guid id,
+        [FromBody] JsonPatchDocument<ReservationForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (reservationToPatch, reservationEntity) = _service.ReservationService.GetReservationForPatch
+            (roomId, id, roomTrackChanges: false, reservationTrackChanges: true);
+        patchDoc.ApplyTo(reservationToPatch);
+
+        _service.ReservationService.SaveChangesForPatch(reservationToPatch, reservationEntity);
         return NoContent();
     }
 

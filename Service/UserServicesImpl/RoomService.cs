@@ -52,21 +52,6 @@ public sealed class RoomService : IRoomService
         return roomsDto;
     }
 
-    public (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
-        (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges)
-    {
-        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
-
-        var roomEntity = _repository.Room.GetRoom(hotelId, id, roomTrackChanges);
-        if (roomEntity is null)
-            throw new RoomNotFoundException(id);
-        
-        var roomToPatch = _mapper.Map<RoomForUpdateDto>(roomEntity);
-        return (roomToPatch, roomEntity);
-    }
-
     public RoomDto GetRoom(Guid hotelId, Guid id, bool trackChanges)
     {
         var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
@@ -140,6 +125,27 @@ public sealed class RoomService : IRoomService
         _repository.Save();
     }
 
+    public (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
+        (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges)
+    {
+        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+
+        var roomEntity = _repository.Room.GetRoom(hotelId, id, roomTrackChanges);
+        if (roomEntity is null)
+            throw new RoomNotFoundException(id);
+
+        var roomToPatch = _mapper.Map<RoomForUpdateDto>(roomEntity);
+        return (roomToPatch, roomEntity);
+    }
+
+    public void SaveChangesForPatch(RoomForUpdateDto roomToPatch, Room roomEntity)
+    {
+        _mapper.Map(roomToPatch, roomEntity);
+        _repository.Save();
+    }
+
     public void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges)
     {
         var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
@@ -151,12 +157,6 @@ public sealed class RoomService : IRoomService
             throw new RoomNotFoundException(id);
         
         _repository.Room.DeleteRoom(room);
-        _repository.Save();
-    }
-
-    public void SaveChangesForPatch(RoomForUpdateDto roomToPatch, Room roomEntity)
-    {
-        _mapper.Map(roomToPatch, roomEntity);
         _repository.Save();
     }
 }

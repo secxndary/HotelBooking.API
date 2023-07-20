@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -41,6 +42,21 @@ public class RoomTypesController : ControllerBase
         if (roomType is null)
             return BadRequest("RoomTypeForUpdateDto object is null");
         _service.RoomTypeService.UpdateRoomType(id, roomType, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateRoomType(
+        Guid id,
+        [FromBody] JsonPatchDocument<RoomTypeForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (roomTypeToPatch, roomTypeEntity) = _service.RoomTypeService.GetRoomTypeForPatch(id, trackChanges: true);
+        patchDoc.ApplyTo(roomTypeToPatch);
+
+        _service.RoomTypeService.SaveChangesForPatch(roomTypeToPatch, roomTypeEntity);
         return NoContent();
     }
 

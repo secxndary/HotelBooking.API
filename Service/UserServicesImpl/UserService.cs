@@ -7,7 +7,6 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
-
 namespace Service.UserServicesImpl;
 
 public sealed class UserService : IUserService
@@ -36,12 +35,17 @@ public sealed class UserService : IUserService
         var user = _repository.User.GetUser(id, trackChanges);
         if (user is null)
             throw new UserNotFoundException(id);
+
         var userDto = _mapper.Map<UserDto>(user);
         return userDto;
     }
 
     public UserDto CreateUser(UserForCreationDto user)
     {
+        var role = _repository.Role.GetRole(user.RoleId, trackChanges: false);
+        if (role is null)
+            throw new RoleNotFoundException(user.RoleId);
+
         var userEntity = _mapper.Map<User>(user);
 
         _repository.User.CreateUser(userEntity);
@@ -62,6 +66,26 @@ public sealed class UserService : IUserService
             throw new UserNotFoundException(id);
 
         _mapper.Map(userForUpdate, userEntity);
+        _repository.Save();
+    }
+
+    public (UserForUpdateDto userToPatch, User userEntity) GetUserForPatch(Guid id, bool trackChanges)
+    {
+        var userEntity = _repository.User.GetUser(id, trackChanges);
+        if (userEntity is null)
+            throw new UserNotFoundException(id);
+
+        var userToPatch = _mapper.Map<UserForUpdateDto>(userEntity);
+        return (userToPatch, userEntity);
+    }
+
+    public void SaveChangesForPatch(UserForUpdateDto userToPatch, User userEntity)
+    {
+        var role = _repository.Role.GetRole(userToPatch.RoleId, trackChanges: false);
+        if (role is null)
+            throw new RoleNotFoundException(userToPatch.RoleId);
+
+        _mapper.Map(userToPatch, userEntity);
         _repository.Save();
     }
 

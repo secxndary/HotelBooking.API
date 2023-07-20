@@ -1,4 +1,5 @@
-﻿using Shared.DataTransferObjects.InputDtos;
+﻿using Entities.Models;
+using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 namespace Service.Contracts.UserServices;
@@ -13,5 +14,8 @@ public interface IHotelPhotoService
         (Guid hotelId, IEnumerable<HotelPhotoForCreationDto> hotelPhotosCollection);
     void UpdateHotelPhoto(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhoto,
         bool hotelTrackChanges, bool photoTrackChanges);
+    (HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity) GetHotelPhotoForPatch
+       (Guid hotelId, Guid id, bool hotelTrackChanges, bool photoTrackChanges);
+    void SaveChangesForPatch(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity);
     void DeleteHotelPhoto(Guid hotelId, Guid id, bool trackChanges);
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -20,10 +21,10 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/rooms/{reservationId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksForRoom(Guid reservationId)
+    [Route("api/rooms/{roomId:guid}/feedbacks")]
+    public IActionResult GetFeedbacksForRoom(Guid roomId)
     {
-        var feedbacks = _service.FeedbackService.GetFeedbacksForRoom(reservationId, trackChanges: false);
+        var feedbacks = _service.FeedbackService.GetFeedbacksForRoom(roomId, trackChanges: false);
         return Ok(feedbacks);
     }
 
@@ -59,6 +60,21 @@ public class FeedbacksController : ControllerBase
         if (feedback is null)
             return BadRequest("FeedbackForUpdateDto object is null");
         _service.FeedbackService.UpdateFeedback(id, feedback, trackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("api/feedbacks/{id:guid}")]
+    public IActionResult PartiallyUpdateFeedback(
+        Guid id,
+        [FromBody] JsonPatchDocument<FeedbackForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (feedbackToPatch, feedbackEntity) = _service.FeedbackService.GetFeedbackForPatch(id, trackChanges: true);
+        patchDoc.ApplyTo(feedbackToPatch);
+
+        _service.FeedbackService.SaveChangesForPatch(feedbackToPatch, feedbackEntity);
         return NoContent();
     }
 

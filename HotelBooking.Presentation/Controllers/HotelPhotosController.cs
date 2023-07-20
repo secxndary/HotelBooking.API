@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Presentation.ModelBinders;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -61,6 +62,21 @@ public class HotelPhotosController : ControllerBase
             return BadRequest("HotelPhotoForUpdateDto object is null");
         _service.HotelPhotoService.UpdateHotelPhoto(hotelId, id, photo, 
             hotelTrackChanges: false, photoTrackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateHotelPhoto(Guid hotelId, Guid id,
+        [FromBody] JsonPatchDocument<HotelPhotoForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (hotelPhotoToPatch, hotelPhotoEntity) = _service.HotelPhotoService.GetHotelPhotoForPatch
+            (hotelId, id, hotelTrackChanges: false, photoTrackChanges: true);
+        patchDoc.ApplyTo(hotelPhotoToPatch);
+
+        _service.HotelPhotoService.SaveChangesForPatch(hotelPhotoToPatch, hotelPhotoEntity);
         return NoContent();
     }
 
