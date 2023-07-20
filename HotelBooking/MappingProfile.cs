@@ -29,14 +29,14 @@ public class MappingProfile : Profile
         CreateMap<RoomPhotoForCreationDto, RoomPhoto>();
         CreateMap<HotelPhotoForCreationDto, HotelPhoto>();
 
-        CreateMap<RoleForUpdateDto, Role>();
-        CreateMap<UserForUpdateDto, User>();
-        CreateMap<RoomTypeForUpdateDto, RoomType>();
-        CreateMap<RoomForUpdateDto, Room>();
-        CreateMap<HotelForUpdateDto, Hotel>();
-        CreateMap<ReservationForUpdateDto, Reservation>();
-        CreateMap<FeedbackForUpdateDto, Feedback>();
-        CreateMap<RoomPhotoForUpdateDto, RoomPhoto>();
-        CreateMap<HotelPhotoForUpdateDto, HotelPhoto>();
+        CreateMap<RoleForUpdateDto, Role>().ReverseMap();
+        CreateMap<UserForUpdateDto, User>().ReverseMap();
+        CreateMap<RoomTypeForUpdateDto, RoomType>().ReverseMap();
+        CreateMap<RoomForUpdateDto, Room>().ReverseMap();
+        CreateMap<HotelForUpdateDto, Hotel>().ReverseMap();
+        CreateMap<ReservationForUpdateDto, Reservation>().ReverseMap();
+        CreateMap<FeedbackForUpdateDto, Feedback>().ReverseMap();
+        CreateMap<RoomPhotoForUpdateDto, RoomPhoto>().ReverseMap();
+        CreateMap<HotelPhotoForUpdateDto, HotelPhoto>().ReverseMap();
     }
 }

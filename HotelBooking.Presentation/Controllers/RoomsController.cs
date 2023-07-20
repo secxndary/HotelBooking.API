@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Presentation.ModelBinders;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -61,6 +62,22 @@ public class RoomsController : ControllerBase
             return BadRequest("RoomForUpdateDto object is null");
         _service.RoomService.UpdateRoomForHotel(hotelId, id, room,
             hotelTrackChanges: false, roomTrackChanges: true);
+        return NoContent();
+    }
+
+    [HttpPatch("{id:guid}")]
+    public IActionResult PartiallyUpdateRoomForHotel(Guid hotelId, Guid id,
+        [FromBody] JsonPatchDocument<RoomForUpdateDto> patchDoc)
+    {
+        if (patchDoc is null)
+            return BadRequest("patchDoc object is null");
+
+        var (roomToPatch, roomEntity) = _service.RoomService.GetRoomForPatch(hotelId, id,
+            hotelTrackChanges: false, roomTrackChanges: true);
+
+        patchDoc.ApplyTo(roomToPatch);
+
+        _service.RoomService.SaveChangesForPatch(roomToPatch, roomEntity);
         return NoContent();
     }
 
