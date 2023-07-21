@@ -64,6 +64,10 @@ public class HotelPhotosController : ControllerBase
     {
         if (photo is null)
             return BadRequest("HotelPhotoForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.HotelPhotoService.UpdateHotelPhoto(hotelId, id, photo, 
             hotelTrackChanges: false, photoTrackChanges: true);
         return NoContent();

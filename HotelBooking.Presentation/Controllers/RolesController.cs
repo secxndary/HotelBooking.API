@@ -45,6 +45,10 @@ public class RolesController : ControllerBase
     {
         if (role is null)
             return BadRequest("RoleForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.RoleService.UpdateRole(id, role, trackChanges: true);
         return NoContent();
     }

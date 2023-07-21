@@ -63,6 +63,10 @@ public class FeedbacksController : ControllerBase
     {
         if (feedback is null)
             return BadRequest("FeedbackForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.FeedbackService.UpdateFeedback(id, feedback, trackChanges: true);
         return NoContent();
     }

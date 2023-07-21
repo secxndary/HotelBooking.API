@@ -45,6 +45,10 @@ public class RoomTypesController : ControllerBase
     {
         if (roomType is null)
             return BadRequest("RoomTypeForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.RoomTypeService.UpdateRoomType(id, roomType, trackChanges: true);
         return NoContent();
     }

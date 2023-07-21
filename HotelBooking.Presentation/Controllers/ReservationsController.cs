@@ -46,6 +46,10 @@ public class ReservationsController : ControllerBase
     {
         if (reservation is null)
             return BadRequest("ReservationForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.ReservationService.UpdateReservationForRoom(roomId, id, reservation, trackChanges: true);
         return NoContent();
     }

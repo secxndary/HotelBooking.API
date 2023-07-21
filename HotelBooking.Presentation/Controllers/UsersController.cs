@@ -45,6 +45,10 @@ public class UsersController : ControllerBase
     {
         if (user is null)
             return BadRequest("UserForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.UserService.UpdateUser(id, user, trackChanges: true);
         return NoContent();
     }

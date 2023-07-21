@@ -64,6 +64,10 @@ public class HotelsController : ControllerBase
     {
         if (hotel is null)
             return BadRequest("HotelForUpdateDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.HotelService.UpdateHotel(id, hotel, trackChanges: true);
         return NoContent();
     }
