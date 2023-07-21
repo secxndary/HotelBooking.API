@@ -3,8 +3,8 @@ namespace Contracts.Repositories.UserRepositories;
 
 public interface IRoomTypeRepository
 {
-    IEnumerable<RoomType> GetAllRoomTypes(bool trackChanges);
-    RoomType? GetRoomType(Guid id, bool trackChanges);
+    Task<IEnumerable<RoomType>> GetAllRoomTypesAsync(bool trackChanges);
+    Task<RoomType?> GetRoomTypeAsync(Guid id, bool trackChanges);
     void CreateRoomType(RoomType roomType);
     void DeleteRoomType(RoomType roomType);
 }

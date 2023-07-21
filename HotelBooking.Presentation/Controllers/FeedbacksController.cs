@@ -14,39 +14,39 @@ public class FeedbacksController : ControllerBase
 
     [HttpGet]
     [Route("api/hotels/{hotelId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksForHotel(Guid hotelId)
+    public async Task<IActionResult> GetFeedbacksForHotel(Guid hotelId)
     {
-        var feedbacks = _service.FeedbackService.GetFeedbacksForHotel(hotelId, trackChanges: false);
+        var feedbacks = await _service.FeedbackService.GetFeedbacksForHotelAsync(hotelId, trackChanges: false);
         return Ok(feedbacks);
     }
 
     [HttpGet]
     [Route("api/rooms/{roomId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksForRoom(Guid roomId)
+    public async Task<IActionResult> GetFeedbacksForRoom(Guid roomId)
     {
-        var feedbacks = _service.FeedbackService.GetFeedbacksForRoom(roomId, trackChanges: false);
+        var feedbacks = await _service.FeedbackService.GetFeedbacksForRoomAsync(roomId, trackChanges: false);
         return Ok(feedbacks);
     }
 
     [HttpGet]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksForReservation(Guid reservationId)
+    public async Task<IActionResult> GetFeedbacksForReservation(Guid reservationId)
     {
-        var feedbacks = _service.FeedbackService.GetFeedbacksForReservation(reservationId, trackChanges: false);
+        var feedbacks = await _service.FeedbackService.GetFeedbacksForReservationAsync(reservationId, trackChanges: false);
         return Ok(feedbacks);
     }
 
     [HttpGet]
     [Route("api/feedbacks/{id:guid}")]
-    public IActionResult GetFeedback(Guid id)
+    public async Task<IActionResult> GetFeedback(Guid id)
     {
-        var feedback = _service.FeedbackService.GetFeedback(id, trackChanges: false);
+        var feedback = await _service.FeedbackService.GetFeedbackAsync(id, trackChanges: false);
         return Ok(feedback);
     }
 
     [HttpPost]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
-    public IActionResult CreateFeedback(Guid reservationId, [FromBody] FeedbackForCreationDto feedback)
+    public async Task<IActionResult> CreateFeedback(Guid reservationId, [FromBody] FeedbackForCreationDto feedback)
     {
         if (feedback is null)
             return BadRequest("FeedbackForCreationDto object is null");
@@ -54,12 +54,12 @@ public class FeedbacksController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdFeedback = _service.FeedbackService.CreateFeedbackForReservation(reservationId, feedback, false);
+        var createdFeedback = await _service.FeedbackService.CreateFeedbackForReservationAsync(reservationId, feedback, false);
         return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
     }
 
     [HttpPut("api/feedbacks/{id:guid}")]
-    public IActionResult UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
+    public async Task<IActionResult> UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
     {
         if (feedback is null)
             return BadRequest("FeedbackForUpdateDto object is null");
@@ -67,34 +67,34 @@ public class FeedbacksController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.FeedbackService.UpdateFeedback(id, feedback, trackChanges: true);
+        await _service.FeedbackService.UpdateFeedbackAsync(id, feedback, trackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("api/feedbacks/{id:guid}")]
-    public IActionResult PartiallyUpdateFeedback(
+    public async Task<IActionResult> PartiallyUpdateFeedback(
         Guid id,
         [FromBody] JsonPatchDocument<FeedbackForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (feedbackToPatch, feedbackEntity) = _service.FeedbackService.GetFeedbackForPatch(id, trackChanges: true);
+        var (feedbackToPatch, feedbackEntity) = await _service.FeedbackService.GetFeedbackForPatchAsync(id, trackChanges: true);
         patchDoc.ApplyTo(feedbackToPatch);
 
         TryValidateModel(feedbackToPatch);
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.FeedbackService.SaveChangesForPatch(feedbackToPatch, feedbackEntity);
+        await _service.FeedbackService.SaveChangesForPatchAsync(feedbackToPatch, feedbackEntity);
         return NoContent();
     }
 
     [HttpDelete]
     [Route("api/feedbacks/{id:guid}")]
-    public IActionResult DeleteFeedback(Guid id)
+    public async Task<IActionResult> DeleteFeedback(Guid id)
     {
-        _service.FeedbackService.DeleteFeedback(id, trackChanges: false);
+        await _service.FeedbackService.DeleteFeedbackAsync(id, trackChanges: false);
         return NoContent();
     }
 }

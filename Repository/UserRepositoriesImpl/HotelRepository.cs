@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
@@ -8,18 +9,19 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         : base(repositoryContext)
     { }
 
-    public IEnumerable<Hotel> GetAllHotels(bool trackChanges) =>
-        FindAll(trackChanges)
+
+    public async Task<IEnumerable<Hotel>> GetAllHotelsAsync(bool trackChanges) =>
+        await FindAll(trackChanges)
         .OrderByDescending(h => h.Stars)
-        .ToList();
+        .ToListAsync();
 
-    public IEnumerable<Hotel> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
-        FindByCondition(h => ids.Contains(h.Id), trackChanges)
-        .ToList();
+    public async Task<IEnumerable<Hotel>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) =>
+        await FindByCondition(h => ids.Contains(h.Id), trackChanges)
+        .ToListAsync();
 
-    public Hotel? GetHotel(Guid id, bool trackChanges) =>
-        FindByCondition(h => h.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+    public async Task<Hotel?> GetHotelAsync(Guid id, bool trackChanges) =>
+        await FindByCondition(h => h.Id.Equals(id), trackChanges)
+        .SingleOrDefaultAsync();
 
     public void CreateHotel(Hotel hotel) => 
         Create(hotel);

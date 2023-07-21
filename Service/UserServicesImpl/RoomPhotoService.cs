@@ -24,26 +24,26 @@ public sealed class RoomPhotoService : IRoomPhotoService
     }
 
 
-    public IEnumerable<RoomPhotoDto> GetRoomPhotos(Guid roomId, bool trackChanges)
+    public async Task<IEnumerable<RoomPhotoDto>> GetRoomPhotosAsync(Guid roomId, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
-        var roomPhotos = _repository.RoomPhoto.GetRoomPhotos(roomId, trackChanges);
+        var roomPhotos = await _repository.RoomPhoto.GetRoomPhotosAsync(roomId, trackChanges);
         var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotos);
         return roomPhotosDto;
     }
 
-    public IEnumerable<RoomPhotoDto> GetByIds(Guid roomId, IEnumerable<Guid> ids, bool trackChanges)
+    public async Task<IEnumerable<RoomPhotoDto>> GetByIdsAsync(Guid roomId, IEnumerable<Guid> ids, bool trackChanges)
     {
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var roomPhotos = _repository.RoomPhoto.GetByIds(roomId, ids, trackChanges);
+        var roomPhotos = await _repository.RoomPhoto.GetByIdsAsync(roomId, ids, trackChanges);
         if (roomPhotos.Count() != ids.Count())
             throw new CollectionByIdsBadRequestException();
 
@@ -51,13 +51,13 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return roomPhotosDto;
     }
 
-    public RoomPhotoDto GetRoomPhoto(Guid roomId, Guid id, bool trackChanges)
+    public async Task<RoomPhotoDto> GetRoomPhotoAsync(Guid roomId, Guid id, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var roomPhoto = _repository.RoomPhoto.GetRoomPhoto(roomId, id, trackChanges);
+        var roomPhoto = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges);
         if (roomPhoto is null)
             throw new RoomPhotoNotFoundException(id);
 
@@ -65,21 +65,21 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return roomPhotoDto;
     }
 
-    public RoomPhotoDto CreateRoomPhoto(Guid roomId, RoomPhotoForCreationDto roomPhoto, bool trackChanges)
+    public async Task<RoomPhotoDto> CreateRoomPhotoAsync(Guid roomId, RoomPhotoForCreationDto roomPhoto, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
         var roomPhotoEntity = _mapper.Map<RoomPhoto>(roomPhoto);
         _repository.RoomPhoto.CreateRoomPhoto(roomId, roomPhotoEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var roomPhotoToReturn = _mapper.Map<RoomPhotoDto>(roomPhotoEntity);
         return roomPhotoToReturn;
     }
 
-    public (IEnumerable<RoomPhotoDto> roomPhotos, string ids) CreateRoomPhotoCollection
+    public async Task<(IEnumerable<RoomPhotoDto> roomPhotos, string ids)> CreateRoomPhotoCollectionAsync
         (Guid roomId, IEnumerable<RoomPhotoForCreationDto> roomPhotosCollection)
     {
         if (roomPhotosCollection is null)
@@ -88,36 +88,36 @@ public sealed class RoomPhotoService : IRoomPhotoService
         var roomPhotosEntities = _mapper.Map<IEnumerable<RoomPhoto>>(roomPhotosCollection);
         foreach (var roomPhoto in roomPhotosEntities)
             _repository.RoomPhoto.CreateRoomPhoto(roomId, roomPhoto);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var roomPhotosCollectionToReturn = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotosEntities);
         var ids = string.Join(",", roomPhotosCollectionToReturn.Select(p => p.Id));
         return (roomPhotos: roomPhotosCollectionToReturn, ids);
     }
 
-    public void UpdateRoomPhoto(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate,
+    public async Task UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate,
         bool roomTrackChanges, bool photoTrackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, roomTrackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, roomTrackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var roomPhotoEntity = _repository.RoomPhoto.GetRoomPhoto(roomId, id, photoTrackChanges);
+        var roomPhotoEntity = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, photoTrackChanges);
         if (roomPhotoEntity is null)
             throw new RoomPhotoNotFoundException(id);
 
         _mapper.Map(roomPhotoForUpdate, roomPhotoEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public (RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity) GetRoomPhotoForPatch
+    public async Task<(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)> GetRoomPhotoForPatchAsync
         (Guid roomId, Guid id, bool roomTrackChanges, bool photoTrackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, roomTrackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, roomTrackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var roomPhotoEntity = _repository.RoomPhoto.GetRoomPhoto(roomId, id, photoTrackChanges);
+        var roomPhotoEntity = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, photoTrackChanges);
         if (roomPhotoEntity is null)
             throw new RoomPhotoNotFoundException(id);
 
@@ -125,23 +125,23 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return (photoToPatch, roomPhotoEntity);
     }
 
-    public void SaveChangesForPatch(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)
+    public async Task SaveChangesForPatchAsync(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)
     {
         _mapper.Map(roomPhotoToPatch, roomPhotoEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void DeleteRoomPhoto(Guid roomId, Guid id, bool trackChanges)
+    public async Task DeleteRoomPhotoAsync(Guid roomId, Guid id, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var roomPhoto = _repository.RoomPhoto.GetRoomPhoto(roomId, id, trackChanges);
+        var roomPhoto = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges);
         if (roomPhoto is null)
             throw new RoomPhotoNotFoundException(id);
 
         _repository.RoomPhoto.DeleteRoomPhoto(roomPhoto);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }

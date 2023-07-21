@@ -40,5 +40,5 @@ public sealed class RepositoryManager : IRepositoryManager
     public IFeedbackRepository Feedback => _feedbackRepository.Value;
     public IRoomPhotoRepository RoomPhoto => _roomPhotoRepository.Value;
     public IHotelPhotoRepository HotelPhoto => _hotelPhotoRepository.Value;
-    public void Save() => _repositoryContext.SaveChanges();
+    public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
 }

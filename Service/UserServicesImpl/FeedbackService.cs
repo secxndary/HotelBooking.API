@@ -23,42 +23,42 @@ public sealed class FeedbackService : IFeedbackService
     }
 
 
-    public IEnumerable<FeedbackDto> GetFeedbacksForHotel(Guid hotelId, bool trackChanges)
+    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForHotelAsync(Guid hotelId, bool trackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var feedbacks = _repository.Feedback.GetFeedbacksForHotel(hotelId, trackChanges);
+        var feedbacks = await _repository.Feedback.GetFeedbacksForHotelAsync(hotelId, trackChanges);
         var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
         return feedbacksDto;
     }
 
-    public IEnumerable<FeedbackDto> GetFeedbacksForRoom(Guid roomId, bool trackChanges)
+    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(roomId, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(roomId);
 
-        var feedbacks = _repository.Feedback.GetFeedbacksForRoom(roomId, trackChanges);
+        var feedbacks = await _repository.Feedback.GetFeedbacksForRoomAsync(roomId, trackChanges);
         var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
         return feedbacksDto;
     }
 
-    public IEnumerable<FeedbackDto> GetFeedbacksForReservation(Guid reservationId, bool trackChanges)
+    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges)
     {
-        var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
+        var reservation = await _repository.Reservation.GetReservationAsync(reservationId, trackChanges);
         if (reservation is null)
             throw new ReservationNotFoundException(reservationId);
 
-        var feedbacks = _repository.Feedback.GetFeedbacksForReservation(reservationId, trackChanges);
+        var feedbacks = await _repository.Feedback.GetFeedbacksForReservationAsync(reservationId, trackChanges);
         var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
         return feedbacksDto;
     }
 
-    public FeedbackDto GetFeedback(Guid id, bool trackChanges)
+    public async Task<FeedbackDto> GetFeedbackAsync(Guid id, bool trackChanges)
     {
-        var feedback = _repository.Feedback.GetFeedback(id, trackChanges);
+        var feedback = await _repository.Feedback.GetFeedbackAsync(id, trackChanges);
         if (feedback is null)
             throw new FeedbackNotFoundException(id);
 
@@ -66,39 +66,39 @@ public sealed class FeedbackService : IFeedbackService
         return feedbackDto;
     }
 
-    public FeedbackDto CreateFeedbackForReservation(Guid reservationId,
+    public async Task<FeedbackDto> CreateFeedbackForReservationAsync(Guid reservationId,
         FeedbackForCreationDto feedback, bool trackChanges)
     {
-        var reservation = _repository.Reservation.GetReservation(reservationId, trackChanges);
+        var reservation = await _repository.Reservation.GetReservationAsync(reservationId, trackChanges);
         if (reservation is null)
             throw new ReservationNotFoundException(reservationId);
 
         var feedbackEntity = _mapper.Map<Feedback>(feedback);
         _repository.Feedback.CreateFeedbackForReservation(reservationId, feedbackEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);
         return feedbackToReturn;
     }
 
-    public void UpdateFeedback(Guid id, FeedbackForUpdateDto feedbackForUpdate, bool trackChanges)
+    public async Task UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate, bool trackChanges)
     {
-        var reservation = _repository.Reservation.GetReservation(feedbackForUpdate.ReservationId, false);
+        var reservation = await _repository.Reservation.GetReservationAsync(feedbackForUpdate.ReservationId, false);
         if (reservation is null)
             throw new ReservationNotFoundException(feedbackForUpdate.ReservationId);
 
-        var feedbackEntity = _repository.Feedback.GetFeedback(id, trackChanges);
+        var feedbackEntity = await _repository.Feedback.GetFeedbackAsync(id, trackChanges);
         if (feedbackEntity is null)
             throw new FeedbackNotFoundException(id);
 
         _mapper.Map(feedbackForUpdate, feedbackEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
-        
-    public (FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity) GetFeedbackForPatch
+
+    public async Task<(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)> GetFeedbackForPatchAsync
         (Guid id, bool trackChanges)
     {
-        var feedbackEntity = _repository.Feedback.GetFeedback(id, trackChanges);
+        var feedbackEntity = await _repository.Feedback.GetFeedbackAsync(id, trackChanges);
         if (feedbackEntity is null)
             throw new FeedbackNotFoundException(id);
 
@@ -106,23 +106,23 @@ public sealed class FeedbackService : IFeedbackService
         return (feedbackToPatch, feedbackEntity);
     }
 
-    public void SaveChangesForPatch(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)
+    public async Task SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)
     {
-        var reservation = _repository.Reservation.GetReservation(feedbackToPatch.ReservationId, false);
+        var reservation = await _repository.Reservation.GetReservationAsync(feedbackToPatch.ReservationId, false);
         if (reservation is null)
             throw new ReservationNotFoundException(feedbackToPatch.ReservationId);
 
         _mapper.Map(feedbackToPatch, feedbackEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void DeleteFeedback(Guid id, bool trackChanges)
+    public async Task DeleteFeedbackAsync(Guid id, bool trackChanges)
     {
-        var feedback = _repository.Feedback.GetFeedback(id, trackChanges);
+        var feedback = await _repository.Feedback.GetFeedbackAsync(id, trackChanges);
         if (feedback is null)
             throw new FeedbackNotFoundException(id);
 
         _repository.Feedback.DeleteFeedback(feedback);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }

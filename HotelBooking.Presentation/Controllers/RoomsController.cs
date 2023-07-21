@@ -15,30 +15,30 @@ public class RoomsController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetRoomsForHotel(Guid hotelId)
+    public async Task<IActionResult> GetRoomsForHotel(Guid hotelId)
     {
-        var rooms = _service.RoomService.GetRooms(hotelId, trackChanges: false);
+        var rooms = await _service.RoomService.GetRoomsAsync(hotelId, trackChanges: false);
         return Ok(rooms);
     }
 
     [HttpGet("{id:guid}", Name = "GetRoomForHotel")]
-    public IActionResult GetRoomForHotel(Guid hotelId, Guid id)
+    public async Task<IActionResult> GetRoomForHotel(Guid hotelId, Guid id)
     {
-        var room = _service.RoomService.GetRoom(hotelId, id, trackChanges: false);
+        var room = await _service.RoomService.GetRoomAsync(hotelId, id, trackChanges: false);
         return Ok(room);
     }
 
     [HttpGet("collection/({ids})", Name = "RoomCollection")]
-    public IActionResult GetRoomCollection(
+    public async Task<IActionResult> GetRoomCollection(
         Guid hotelId,
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var rooms = _service.RoomService.GetByIdsForHotel(hotelId, ids, trackChanges: false);
+        var rooms = await _service.RoomService.GetByIdsForHotelAsync(hotelId, ids, trackChanges: false);
         return Ok(rooms);
     }
 
     [HttpPost]
-    public IActionResult CreateRoom(Guid hotelId, [FromBody] RoomForCreationDto room)
+    public async Task<IActionResult> CreateRoom(Guid hotelId, [FromBody] RoomForCreationDto room)
     {
         if (room is null)
             return BadRequest("RoomForCreationDto object is null");
@@ -46,21 +46,21 @@ public class RoomsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdRoom = _service.RoomService.CreateRoomForHotel(hotelId, room, trackChanges: false);
+        var createdRoom = await _service.RoomService.CreateRoomForHotelAsync(hotelId, room, trackChanges: false);
         return CreatedAtRoute("GetRoomForHotel", new { hotelId, id = createdRoom.Id }, createdRoom);
     }
 
     [HttpPost("collection")]
-    public IActionResult CreateRoomCollection(
+    public async Task<IActionResult> CreateRoomCollection(
         Guid hotelId, 
         [FromBody] IEnumerable<RoomForCreationDto> roomCollection)
     {
-        var result = _service.RoomService.CreateRoomCollection(hotelId, roomCollection);
+        var result = await _service.RoomService.CreateRoomCollectionAsync(hotelId, roomCollection);
         return CreatedAtRoute("RoomCollection", new { hotelId, result.ids }, result.rooms);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateRoomForHotel(Guid hotelId, Guid id, [FromBody] RoomForUpdateDto room)
+    public async Task<IActionResult> UpdateRoomForHotel(Guid hotelId, Guid id, [FromBody] RoomForUpdateDto room)
     {
         if (room is null)
             return BadRequest("RoomForUpdateDto object is null");
@@ -68,19 +68,19 @@ public class RoomsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoomService.UpdateRoomForHotel(hotelId, id, room,
+        await _service.RoomService.UpdateRoomForHotelAsync(hotelId, id, room,
             hotelTrackChanges: false, roomTrackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public IActionResult PartiallyUpdateRoomForHotel(Guid hotelId, Guid id,
+    public async Task<IActionResult> PartiallyUpdateRoomForHotel(Guid hotelId, Guid id,
         [FromBody] JsonPatchDocument<RoomForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roomToPatch, roomEntity) = _service.RoomService.GetRoomForPatch(hotelId, id,
+        var (roomToPatch, roomEntity) = await _service.RoomService.GetRoomForPatchAsync(hotelId, id,
             hotelTrackChanges: false, roomTrackChanges: true);
         patchDoc.ApplyTo(roomToPatch, ModelState);
 
@@ -88,14 +88,14 @@ public class RoomsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoomService.SaveChangesForPatch(roomToPatch, roomEntity);
+        await _service.RoomService.SaveChangesForPatchAsync(roomToPatch, roomEntity);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteRoomForHotel(Guid hotelId, Guid id)
+    public async Task<IActionResult> DeleteRoomForHotel(Guid hotelId, Guid id)
     {
-        _service.RoomService.DeleteRoomForHotel(hotelId, id, trackChanges: false);
+        await _service.RoomService.DeleteRoomForHotelAsync(hotelId, id, trackChanges: false);
         return NoContent();
     }
 }

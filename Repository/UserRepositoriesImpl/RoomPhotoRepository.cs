@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoRepository
@@ -8,23 +9,24 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
         : base(repositoryContext)
     { }
 
-    public IEnumerable<RoomPhoto> GetRoomPhotos(Guid roomId, bool trackChanges) =>
-        FindByCondition(p => p.RoomId.Equals(roomId), trackChanges)
-        .OrderBy(p => p.Path)
-        .ToList();
 
-    public IEnumerable<RoomPhoto> GetByIds(Guid roomId, IEnumerable<Guid> ids, bool trackChanges) =>
-        FindByCondition(p =>
+    public async Task<IEnumerable<RoomPhoto>> GetRoomPhotosAsync(Guid roomId, bool trackChanges) =>
+        await FindByCondition(p => p.RoomId.Equals(roomId), trackChanges)
+        .OrderBy(p => p.Path)
+        .ToListAsync();
+
+    public async Task<IEnumerable<RoomPhoto>> GetByIdsAsync(Guid roomId, IEnumerable<Guid> ids, bool trackChanges) =>
+        await FindByCondition(p =>
             p.RoomId.Equals(roomId) &&
             ids.Contains(p.Id), trackChanges)
         .OrderBy(p => p.Path)
-        .ToList();
-    
-    public RoomPhoto? GetRoomPhoto(Guid roomId, Guid id, bool trackChanges) =>
-        FindByCondition(p =>
+        .ToListAsync();
+
+    public async Task<RoomPhoto?> GetRoomPhotoAsync(Guid roomId, Guid id, bool trackChanges) =>
+        await FindByCondition(p =>
             p.RoomId.Equals(roomId) &&
             p.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+        .SingleOrDefaultAsync();
 
     public void CreateRoomPhoto(Guid roomId, RoomPhoto roomPhoto)
     {

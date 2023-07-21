@@ -15,30 +15,30 @@ public class RoomPhotosController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetRoomPhotos(Guid roomId)
+    public async Task<IActionResult> GetRoomPhotos(Guid roomId)
     {
-        var roomPhotos = _service.RoomPhotoService.GetRoomPhotos(roomId, trackChanges: false);
+        var roomPhotos = await _service.RoomPhotoService.GetRoomPhotosAsync(roomId, trackChanges: false);
         return Ok(roomPhotos);
     }
 
     [HttpGet("{id:guid}", Name = "GetRoomPhotoForRoom")]
-    public IActionResult GetRoomPhoto(Guid roomId, Guid id)
+    public async Task<IActionResult> GetRoomPhoto(Guid roomId, Guid id)
     {
-        var roomPhoto = _service.RoomPhotoService.GetRoomPhoto(roomId, id, trackChanges: false);
+        var roomPhoto = await _service.RoomPhotoService.GetRoomPhotoAsync(roomId, id, trackChanges: false);
         return Ok(roomPhoto);
     }
 
     [HttpGet("collection/({ids})", Name = "RoomPhotoCollection")]
-    public IActionResult GetRoomPhotoCollection(
+    public async Task<IActionResult> GetRoomPhotoCollection(
         Guid roomId,
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var roomPhotos = _service.RoomPhotoService.GetByIds(roomId, ids, trackChanges: false);
+        var roomPhotos = await _service.RoomPhotoService.GetByIdsAsync(roomId, ids, trackChanges: false);
         return Ok(roomPhotos);
     }
 
     [HttpPost]
-    public IActionResult CreateRoomPhoto(Guid roomId, [FromBody] RoomPhotoForCreationDto roomPhoto)
+    public async Task<IActionResult> CreateRoomPhoto(Guid roomId, [FromBody] RoomPhotoForCreationDto roomPhoto)
     {
         if (roomPhoto is null)
             return BadRequest("RoomPhotoForCreationDto object is null");
@@ -46,21 +46,21 @@ public class RoomPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdRoomPhoto = _service.RoomPhotoService.CreateRoomPhoto(roomId, roomPhoto, trackChanges: false);
+        var createdRoomPhoto = await _service.RoomPhotoService.CreateRoomPhotoAsync(roomId, roomPhoto, trackChanges: false);
         return CreatedAtRoute("GetRoomPhotoForRoom", new { roomId, id = createdRoomPhoto.Id }, createdRoomPhoto);
     }
 
     [HttpPost("collection")]
-    public IActionResult CreateRoomPhotoCollection(
+    public async Task<IActionResult> CreateRoomPhotoCollection(
         Guid roomId,
         [FromBody] IEnumerable<RoomPhotoForCreationDto> roomPhotoCollection)
     {
-        var result = _service.RoomPhotoService.CreateRoomPhotoCollection(roomId, roomPhotoCollection);
+        var result = await _service.RoomPhotoService.CreateRoomPhotoCollectionAsync(roomId, roomPhotoCollection);
         return CreatedAtRoute("RoomPhotoCollection", new { roomId, result.ids }, result.roomPhotos);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateRoomPhoto(Guid roomId, Guid id, [FromBody] RoomPhotoForUpdateDto photo)
+    public async Task<IActionResult> UpdateRoomPhoto(Guid roomId, Guid id, [FromBody] RoomPhotoForUpdateDto photo)
     {
         if (photo is null)
             return BadRequest("RoomPhotoForUpdateDto object is null");
@@ -68,19 +68,19 @@ public class RoomPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoomPhotoService.UpdateRoomPhoto(roomId, id, photo,
+        await _service.RoomPhotoService.UpdateRoomPhotoAsync(roomId, id, photo,
             roomTrackChanges: false, photoTrackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public IActionResult PartiallyUpdateRoomPhoto(Guid roomId, Guid id,
+    public async Task<IActionResult> PartiallyUpdateRoomPhoto(Guid roomId, Guid id,
         [FromBody] JsonPatchDocument<RoomPhotoForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roomPhotoToPatch, roomPhotoEntity) = _service.RoomPhotoService.GetRoomPhotoForPatch
+        var (roomPhotoToPatch, roomPhotoEntity) = await _service.RoomPhotoService.GetRoomPhotoForPatchAsync
             (roomId, id, roomTrackChanges: false, photoTrackChanges: true);
         patchDoc.ApplyTo(roomPhotoToPatch);
 
@@ -88,14 +88,14 @@ public class RoomPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoomPhotoService.SaveChangesForPatch(roomPhotoToPatch, roomPhotoEntity);
+        await _service.RoomPhotoService.SaveChangesForPatchAsync(roomPhotoToPatch, roomPhotoEntity);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteRoomPhoto(Guid roomId, Guid id)
+    public async Task<IActionResult> DeleteRoomPhoto(Guid roomId, Guid id)
     {
-        _service.RoomPhotoService.DeleteRoomPhoto(roomId, id, trackChanges: false);
+        await _service.RoomPhotoService.DeleteRoomPhotoAsync(roomId, id, trackChanges: false);
         return NoContent();
     }
 }

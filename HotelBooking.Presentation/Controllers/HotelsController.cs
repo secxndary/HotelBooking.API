@@ -15,30 +15,30 @@ public class HotelsController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetHotels()
+    public async Task<IActionResult> GetHotels()
     {
-        var hotels = _service.HotelService.GetAllHotels(trackChanges: false);
+        var hotels = await _service.HotelService.GetAllHotelsAsync(trackChanges: false);
         return Ok(hotels);
     }
 
     [HttpGet("collection/({ids})", Name = "HotelCollection")]
-    public IActionResult GetHotelCollection(
+    public async Task<IActionResult> GetHotelCollection(
         [ModelBinder(typeof(ArrayModelBinder))]
         IEnumerable<Guid> ids)
     {
-        var hotels = _service.HotelService.GetByIds(ids, trackChanges: false);
+        var hotels = await _service.HotelService.GetByIdsAsync(ids, trackChanges: false);
         return Ok(hotels);
     }
 
     [HttpGet("{id:guid}", Name = "HotelById")]
-    public IActionResult GetHotel(Guid id)
+    public async Task<IActionResult> GetHotel(Guid id)
     {
-        var hotel = _service.HotelService.GetHotel(id, trackChanges: false);
+        var hotel = await _service.HotelService.GetHotelAsync(id, trackChanges: false);
         return Ok(hotel);
     }
 
     [HttpPost]
-    public IActionResult CreateHotel([FromBody] HotelForCreationDto hotel)
+    public async Task<IActionResult> CreateHotel([FromBody] HotelForCreationDto hotel)
     {
         if (hotel is null)
             return BadRequest("HotelForCreationDto object is null");
@@ -46,21 +46,21 @@ public class HotelsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdHotel = _service.HotelService.CreateHotel(hotel);
+        var createdHotel = await _service.HotelService.CreateHotelAsync(hotel);
         return CreatedAtRoute("HotelById", new { id = createdHotel.Id }, createdHotel);
     }
 
     [HttpPost("collection")]
-    public IActionResult CreateHotelCollection(
+    public async Task<IActionResult> CreateHotelCollection(
         [FromBody] 
         IEnumerable<HotelForCreationDto> hotelCollection)
     {
-        var result = _service.HotelService.CreateHotelCollection(hotelCollection);
+        var result = await _service.HotelService.CreateHotelCollectionAsync(hotelCollection);
         return CreatedAtRoute("HotelCollection", new { result.ids }, result.hotels);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateHotel(Guid id, [FromBody] HotelForUpdateDto hotel)
+    public async Task<IActionResult> UpdateHotel(Guid id, [FromBody] HotelForUpdateDto hotel)
     {
         if (hotel is null)
             return BadRequest("HotelForUpdateDto object is null");
@@ -68,33 +68,34 @@ public class HotelsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.HotelService.UpdateHotel(id, hotel, trackChanges: true);
+        await _service.HotelService.UpdateHotelAsync(id, hotel, trackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public IActionResult PartiallyUpdateHotel(
+    public async Task<IActionResult> PartiallyUpdateHotel(
         Guid id,
         [FromBody] JsonPatchDocument<HotelForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (hotelToPatch, hotelEntity) = _service.HotelService.GetHotelForPatch(id, trackChanges: true);
+        var (hotelToPatch, hotelEntity) = await _service.HotelService.GetHotelForPatchAsync
+            (id, trackChanges: true);
         patchDoc.ApplyTo(hotelToPatch);
 
         TryValidateModel(hotelToPatch);
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.HotelService.SaveChangesForPatch(hotelToPatch, hotelEntity);
+        await _service.HotelService.SaveChangesForPatchAsync(hotelToPatch, hotelEntity);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteHotel(Guid id)
+    public async Task<IActionResult> DeleteHotel(Guid id)
     {
-        _service.HotelService.DeleteHotel(id, trackChanges: false);
+        await _service.HotelService.DeleteHotelAsync(id, trackChanges: false);
         return NoContent();
     }
 }

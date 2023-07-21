@@ -6,17 +6,17 @@ namespace Service.Contracts.UserServices;
 
 public interface IRoomService
 {
-    IEnumerable<RoomDto> GetRooms(Guid hotelId, bool trackChanges);
-    IEnumerable<RoomDto> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
-    RoomDto GetRoom(Guid hotelId, Guid id, bool trackChanges);
-    RoomDto GetRoom(Guid id, bool trackChanges);
-    RoomDto CreateRoomForHotel(Guid hotelId, RoomForCreationDto room, bool trackChanges);
-    (IEnumerable<RoomDto> rooms, string ids) CreateRoomCollection
+    Task<IEnumerable<RoomDto>> GetRoomsAsync(Guid hotelId, bool trackChanges);
+    Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
+    Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges);
+    Task<RoomDto> GetRoomAsync(Guid id, bool trackChanges);
+    Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room, bool trackChanges);
+    Task<(IEnumerable<RoomDto> rooms, string ids)> CreateRoomCollectionAsync
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection);
-    void UpdateRoomForHotel(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate, 
+    Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate, 
         bool hotelTrackChanges, bool roomTrackChanges);
-    (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
+    Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync
         (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges);
-    void SaveChangesForPatch(RoomForUpdateDto roomToPatch, Room roomEntity);
-    void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges);
+    Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity);
+    Task DeleteRoomForHotelAsync(Guid hotelId, Guid id, bool trackChanges);
 }

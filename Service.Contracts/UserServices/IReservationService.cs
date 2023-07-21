@@ -6,12 +6,12 @@ namespace Service.Contracts.UserServices;
 
 public interface IReservationService
 {
-    IEnumerable<ReservationDto> GetReservations(Guid roomId, bool trackChanges);
-    ReservationDto GetReservation(Guid roomId, Guid id, bool trackChanges);
-    ReservationDto CreateReservationForRoom(Guid roomId, ReservationForCreationDto reservation, bool trackChanges);
-    void UpdateReservationForRoom(Guid roomId, Guid id, ReservationForUpdateDto reservation, bool trackChanges);
-    (ReservationForUpdateDto reservationToPatch, Reservation reservationEntity) GetReservationForPatch
+    Task<IEnumerable<ReservationDto>> GetReservationsAsync(Guid roomId, bool trackChanges);
+    Task<ReservationDto> GetReservationAsync(Guid roomId, Guid id, bool trackChanges);
+    Task<ReservationDto> CreateReservationForRoomAsync(Guid roomId, ReservationForCreationDto reservation, bool trackChanges);
+    Task UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation, bool trackChanges);
+    Task<(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)> GetReservationForPatchAsync
         (Guid roomId, Guid id, bool roomTrackChanges, bool reservationTrackChanges);
-    void SaveChangesForPatch(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity);
-    void DeleteReservationForRoom(Guid roomId, Guid id, bool trackChanges);
+    Task SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity);
+    Task DeleteReservationForRoomAsync(Guid roomId, Guid id, bool trackChanges);
 }

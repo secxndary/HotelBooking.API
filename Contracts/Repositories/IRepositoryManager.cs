@@ -12,5 +12,5 @@ public interface IRepositoryManager
     IFeedbackRepository Feedback { get; }
     IRoomPhotoRepository RoomPhoto { get; }
     IHotelPhotoRepository HotelPhoto { get; }
-    void Save();
+    Task SaveAsync();
 }

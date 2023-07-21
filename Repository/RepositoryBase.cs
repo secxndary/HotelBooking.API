@@ -3,7 +3,7 @@ using Contracts.Repository;
 using Microsoft.EntityFrameworkCore;
 namespace Repository;
 
-public abstract class RepositoryBase<T> : IRepositoryBase<T> where T: class
+public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
     protected RepositoryContext RepositoryContext;
 

@@ -23,16 +23,16 @@ public sealed class RoomTypeService : IRoomTypeService
     }
 
 
-    public IEnumerable<RoomTypeDto> GetAllRoomTypes(bool trackChanges)
+    public async Task<IEnumerable<RoomTypeDto>> GetAllRoomTypesAsync(bool trackChanges)
     {
-        var roomTypes = _repository.RoomType.GetAllRoomTypes(trackChanges);
+        var roomTypes = await _repository.RoomType.GetAllRoomTypesAsync(trackChanges);
         var roomTypesDto = _mapper.Map<IEnumerable<RoomTypeDto>>(roomTypes);
         return roomTypesDto;
     }
 
-    public RoomTypeDto GetRoomType(Guid id, bool trackChanges)
+    public async Task<RoomTypeDto> GetRoomTypeAsync(Guid id, bool trackChanges)
     {
-        var roomType = _repository.RoomType.GetRoomType(id, trackChanges);
+        var roomType = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges);
         if (roomType is null)
             throw new RoomTypeNotFoundException(id);
 
@@ -40,31 +40,31 @@ public sealed class RoomTypeService : IRoomTypeService
         return roomTypeDto;
     }
 
-    public RoomTypeDto CreateRoomType(RoomTypeForCreationDto roomType)
+    public async Task<RoomTypeDto> CreateRoomTypeAsync(RoomTypeForCreationDto roomType)
     {
         var roomTypeEntity = _mapper.Map<RoomType>(roomType);
 
         _repository.RoomType.CreateRoomType(roomTypeEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var roomTypeToReturn = _mapper.Map<RoomTypeDto>(roomTypeEntity); 
         return roomTypeToReturn;
     }
 
-    public void UpdateRoomType(Guid id, RoomTypeForUpdateDto roomTypeForUpdate, bool trackChanges)
+    public async Task UpdateRoomTypeAsync(Guid id, RoomTypeForUpdateDto roomTypeForUpdate, bool trackChanges)
     {
-        var roomTypeEntity = _repository.RoomType.GetRoomType(id, trackChanges);
+        var roomTypeEntity = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges);
         if (roomTypeEntity is null)
             throw new RoomTypeNotFoundException(id);
 
         _mapper.Map(roomTypeForUpdate, roomTypeEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public (RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity) GetRoomTypeForPatch
+    public async Task<(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)> GetRoomTypeForPatchAsync
         (Guid id, bool trackChanges)
     {
-        var roomTypeEntity = _repository.RoomType.GetRoomType(id, trackChanges);
+        var roomTypeEntity = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges);
         if (roomTypeEntity is null)
             throw new RoomTypeNotFoundException(id);
 
@@ -72,19 +72,19 @@ public sealed class RoomTypeService : IRoomTypeService
         return (roomTypeToPatch, roomTypeEntity);
     }
 
-    public void SaveChangesForPatch(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)
+    public async Task SaveChangesForPatchAsync(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)
     {
         _mapper.Map(roomTypeToPatch, roomTypeEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void DeleteRoomType(Guid id, bool trackChanges)
+    public async Task DeleteRoomTypeAsync(Guid id, bool trackChanges)
     {
-        var roomType = _repository.RoomType.GetRoomType(id, trackChanges);
+        var roomType = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges);
         if (roomType is null)
             throw new RoomTypeNotFoundException(id);
 
         _repository.RoomType.DeleteRoomType(roomType);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }

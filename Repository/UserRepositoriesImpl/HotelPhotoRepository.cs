@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepository
@@ -8,23 +9,24 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
         : base(repositoryContext)
     { }
 
-    public IEnumerable<HotelPhoto> GetHotelPhotos(Guid hotelId, bool trackChanges) =>
-        FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
-        .OrderBy(p => p.Path)
-        .ToList();
 
-    public IEnumerable<HotelPhoto> GetByIds(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
-        FindByCondition(p =>
+    public async Task<IEnumerable<HotelPhoto>> GetHotelPhotosAsync(Guid hotelId, bool trackChanges) =>
+        await FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
+        .OrderBy(p => p.Path)
+        .ToListAsync();
+
+    public async Task<IEnumerable<HotelPhoto>> GetByIdsAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
+        await FindByCondition(p =>
             p.HotelId.Equals(hotelId) &&
             ids.Contains(p.Id), trackChanges)
         .OrderBy(p => p.Path)
-        .ToList();
+        .ToListAsync();
 
-    public HotelPhoto? GetHotelPhoto(Guid hotelId, Guid id, bool trackChanges) =>
-        FindByCondition(p =>
+    public async Task<HotelPhoto?> GetHotelPhotoAsync(Guid hotelId, Guid id, bool trackChanges) =>
+        await FindByCondition(p =>
             p.HotelId.Equals(hotelId) &&
             p.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+        .SingleOrDefaultAsync();
 
     public void CreateHotelPhoto(Guid hotelId, HotelPhoto hotelPhoto)
     {

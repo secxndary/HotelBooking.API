@@ -14,21 +14,21 @@ public class RolesController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetRoles()
+    public async Task<IActionResult> GetRoles()
     {
-        var roles = _service.RoleService.GetAllRoles(trackChanges: false);
+        var roles = await _service.RoleService.GetAllRolesAsync(trackChanges: false);
         return Ok(roles);
     }
 
     [HttpGet("{id:guid}", Name = "RoleById")]
-    public IActionResult GetRole(Guid id)
+    public async Task<IActionResult> GetRole(Guid id)
     {
-        var role = _service.RoleService.GetRole(id, trackChanges: false);
+        var role = await _service.RoleService.GetRoleAsync(id, trackChanges: false);
         return Ok(role);
     }
 
     [HttpPost]
-    public IActionResult CreateRole([FromBody] RoleForCreationDto role)
+    public async Task<IActionResult> CreateRole([FromBody] RoleForCreationDto role)
     {
         if (role is null)
             return BadRequest("RoleForCreationDto object is null");
@@ -36,12 +36,12 @@ public class RolesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdRole = _service.RoleService.CreateRole(role);
+        var createdRole = await _service.RoleService.CreateRoleAsync(role);
         return CreatedAtRoute("RoleById", new { id = createdRole.Id }, createdRole);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateRole(Guid id, [FromBody] RoleForUpdateDto role)
+    public async Task<IActionResult> UpdateRole(Guid id, [FromBody] RoleForUpdateDto role)
     {
         if (role is null)
             return BadRequest("RoleForUpdateDto object is null");
@@ -49,33 +49,33 @@ public class RolesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoleService.UpdateRole(id, role, trackChanges: true);
+        await _service.RoleService.UpdateRoleAsync(id, role, trackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public IActionResult PartiallyUpdateRole(
+    public async Task<IActionResult> PartiallyUpdateRole(
         Guid id,
         [FromBody] JsonPatchDocument<RoleForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roleToPatch, roleEntity) = _service.RoleService.GetRoleForPatch(id, trackChanges: true);
+        var (roleToPatch, roleEntity) = await _service.RoleService.GetRoleForPatchAsync(id, trackChanges: true);
         patchDoc.ApplyTo(roleToPatch);
 
         TryValidateModel(roleToPatch);
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.RoleService.SaveChangesForPatch(roleToPatch, roleEntity);
+        await _service.RoleService.SaveChangesForPatchAsync(roleToPatch, roleEntity);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteRole(Guid id)
+    public async Task<IActionResult> DeleteRole(Guid id)
     {
-        _service.RoleService.DeleteRole(id, trackChanges: false);
+        await _service.RoleService.DeleteRoleAsync(id, trackChanges: false);
         return NoContent();
     }
 }

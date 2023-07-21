@@ -23,16 +23,16 @@ public sealed class UserService : IUserService
     }
 
 
-    public IEnumerable<UserDto> GetAllUsers(bool trackChanges)
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges)
     {
-        var users = _repository.User.GetAllUsers(trackChanges);
+        var users = await _repository.User.GetAllUsersAsync(trackChanges);
         var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
         return usersDto;
     }
 
-    public UserDto GetUser(Guid id, bool trackChanges)
+    public async Task<UserDto> GetUserAsync(Guid id, bool trackChanges)
     {
-        var user = _repository.User.GetUser(id, trackChanges);
+        var user = await _repository.User.GetUserAsync(id, trackChanges);
         if (user is null)
             throw new UserNotFoundException(id);
 
@@ -40,38 +40,38 @@ public sealed class UserService : IUserService
         return userDto;
     }
 
-    public UserDto CreateUser(UserForCreationDto user)
+    public async Task<UserDto> CreateUserAsync(UserForCreationDto user)
     {
-        var role = _repository.Role.GetRole(user.RoleId, trackChanges: false);
+        var role = await _repository.Role.GetRoleAsync(user.RoleId, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(user.RoleId);
 
         var userEntity = _mapper.Map<User>(user);
 
         _repository.User.CreateUser(userEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var userToReturn = _mapper.Map<UserDto>(userEntity);
         return userToReturn;
     }
 
-    public void UpdateUser(Guid id, UserForUpdateDto userForUpdate, bool trackChanges)
+    public async Task UpdateUserAsync(Guid id, UserForUpdateDto userForUpdate, bool trackChanges)
     {
-        var role = _repository.Role.GetRole(userForUpdate.RoleId, trackChanges: false);
+        var role = await _repository.Role.GetRoleAsync(userForUpdate.RoleId, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(userForUpdate.RoleId);
 
-        var userEntity = _repository.User.GetUser(id, trackChanges);
+        var userEntity = await _repository.User.GetUserAsync(id, trackChanges);
         if (userEntity is null)
             throw new UserNotFoundException(id);
 
         _mapper.Map(userForUpdate, userEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public (UserForUpdateDto userToPatch, User userEntity) GetUserForPatch(Guid id, bool trackChanges)
+    public async Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id, bool trackChanges)
     {
-        var userEntity = _repository.User.GetUser(id, trackChanges);
+        var userEntity = await _repository.User.GetUserAsync(id, trackChanges);
         if (userEntity is null)
             throw new UserNotFoundException(id);
 
@@ -79,23 +79,23 @@ public sealed class UserService : IUserService
         return (userToPatch, userEntity);
     }
 
-    public void SaveChangesForPatch(UserForUpdateDto userToPatch, User userEntity)
+    public async Task SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity)
     {
-        var role = _repository.Role.GetRole(userToPatch.RoleId, trackChanges: false);
+        var role = await _repository.Role.GetRoleAsync(userToPatch.RoleId, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(userToPatch.RoleId);
 
         _mapper.Map(userToPatch, userEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void DeleteUser(Guid id, bool trackChanges)
+    public async Task DeleteUserAsync(Guid id, bool trackChanges)
     {
-        var user = _repository.User.GetUser(id, trackChanges);
+        var user = await _repository.User.GetUserAsync(id, trackChanges);
         if (user is null)
             throw new UserNotFoundException(id);
 
         _repository.User.DeleteUser(user);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }

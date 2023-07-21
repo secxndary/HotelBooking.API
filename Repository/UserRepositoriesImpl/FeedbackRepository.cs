@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
@@ -8,24 +9,25 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
         : base(repositoryContext)
     { }
 
-    public IEnumerable<Feedback> GetFeedbacksForHotel(Guid hotelId, bool trackChanges) =>
-        FindByCondition(f => 
+
+    public async Task<IEnumerable<Feedback>> GetFeedbacksForHotelAsync(Guid hotelId, bool trackChanges) =>
+        await FindByCondition(f => 
             f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
-        .ToList();
+        .ToListAsync();
 
-    public IEnumerable<Feedback> GetFeedbacksForRoom(Guid roomId, bool trackChanges) =>
-        FindByCondition(f =>
+    public async Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges) =>
+        await FindByCondition(f =>
             f.Reservation.RoomId.Equals(roomId), trackChanges)
-        .ToList();
+        .ToListAsync();
 
-    public IEnumerable<Feedback> GetFeedbacksForReservation(Guid reservationId, bool trackChanges) =>
-        FindByCondition(f =>
+    public async Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges) =>
+        await FindByCondition(f =>
             f.ReservationId.Equals(reservationId), trackChanges)
-        .ToList();
+        .ToListAsync();
 
-    public Feedback? GetFeedback(Guid id, bool trackChanges) =>
-        FindByCondition(f => f.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+    public async Task<Feedback?> GetFeedbackAsync(Guid id, bool trackChanges) =>
+        await FindByCondition(f => f.Id.Equals(id), trackChanges)
+        .SingleOrDefaultAsync();
 
     public void CreateFeedbackForReservation(Guid reservationId, Feedback feedback)
     {

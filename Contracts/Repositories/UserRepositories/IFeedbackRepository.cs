@@ -3,10 +3,10 @@ namespace Contracts.Repositories.UserRepositories;
 
 public interface IFeedbackRepository
 {
-    IEnumerable<Feedback> GetFeedbacksForHotel(Guid hotelId, bool trackChanges);
-    IEnumerable<Feedback> GetFeedbacksForRoom(Guid roomId, bool trackChanges);
-    IEnumerable<Feedback> GetFeedbacksForReservation(Guid reservationId, bool trackChanges);
-    Feedback? GetFeedback(Guid id, bool trackChanges);
+    Task<IEnumerable<Feedback>> GetFeedbacksForHotelAsync(Guid hotelId, bool trackChanges);
+    Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges);
+    Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges);
+    Task<Feedback?> GetFeedbackAsync(Guid id, bool trackChanges);
     void CreateFeedbackForReservation(Guid reservationId, Feedback feedback);
     void DeleteFeedback(Feedback feedback);
 }

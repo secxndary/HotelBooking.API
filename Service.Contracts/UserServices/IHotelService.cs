@@ -6,14 +6,14 @@ namespace Service.Contracts.UserServices;
 
 public interface IHotelService
 {
-    IEnumerable<HotelDto> GetAllHotels(bool trackChanges);
-    IEnumerable<HotelDto> GetByIds(IEnumerable<Guid> ids, bool trackChanges);
-    HotelDto GetHotel(Guid id, bool trackChanges);
-    HotelDto CreateHotel(HotelForCreationDto hotel);
-    (IEnumerable<HotelDto> hotels, string ids) CreateHotelCollection 
+    Task<IEnumerable<HotelDto>> GetAllHotelsAsync(bool trackChanges);
+    Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
+    Task<HotelDto> GetHotelAsync(Guid id, bool trackChanges);
+    Task<HotelDto> CreateHotelAsync(HotelForCreationDto hotel);
+    Task<(IEnumerable<HotelDto> hotels, string ids)> CreateHotelCollectionAsync 
         (IEnumerable<HotelForCreationDto> hotelCollection);
-    void UpdateHotel(Guid id, HotelForUpdateDto hotel, bool trackChanges);
-    (HotelForUpdateDto hotelToPatch, Hotel hotelEntity) GetHotelForPatch(Guid id, bool trackChanges);
-    void SaveChangesForPatch(HotelForUpdateDto hotelToPatch, Hotel hotelEntity);
-    void DeleteHotel(Guid id, bool trackChanges);
+    Task UpdateHotelAsync(Guid id, HotelForUpdateDto hotel, bool trackChanges);
+    Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync(Guid id, bool trackChanges);
+    Task SaveChangesForPatchAsync(HotelForUpdateDto hotelToPatch, Hotel hotelEntity);
+    Task DeleteHotelAsync(Guid id, bool trackChanges);
 }

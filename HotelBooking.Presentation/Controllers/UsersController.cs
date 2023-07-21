@@ -14,21 +14,21 @@ public class UsersController : ControllerBase
 
 
     [HttpGet]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        var users = _service.UserService.GetAllUsers(trackChanges: false);
+        var users = await _service.UserService.GetAllUsersAsync(trackChanges: false);
         return Ok(users);
     }
 
     [HttpGet("{id:guid}", Name = "UserById")]
-    public IActionResult GetUser(Guid id)
+    public async Task<IActionResult> GetUser(Guid id)
     {
-        var user = _service.UserService.GetUser(id, trackChanges: false);
+        var user = await _service.UserService.GetUserAsync(id, trackChanges: false);
         return Ok(user);
     }
 
     [HttpPost]
-    public IActionResult CreateUser([FromBody] UserForCreationDto user)
+    public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user)
     {
         if (user is null)
             return BadRequest("UserForCreationDto object is null");
@@ -36,12 +36,12 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdUser = _service.UserService.CreateUser(user);
+        var createdUser = await _service.UserService.CreateUserAsync(user);
         return CreatedAtRoute("UserById", new { id = createdUser.Id }, createdUser);
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateUser(Guid id, [FromBody] UserForUpdateDto user)
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto user)
     {
         if (user is null)
             return BadRequest("UserForUpdateDto object is null");
@@ -49,33 +49,33 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.UserService.UpdateUser(id, user, trackChanges: true);
+        await _service.UserService.UpdateUserAsync(id, user, trackChanges: true);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public IActionResult PartiallyUpdateUser(
+    public async Task<IActionResult> PartiallyUpdateUser(
         Guid id, 
         [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (userToPatch, userEntity) = _service.UserService.GetUserForPatch(id, trackChanges: true);
+        var (userToPatch, userEntity) = await _service.UserService.GetUserForPatchAsync(id, trackChanges: true);
         patchDoc.ApplyTo(userToPatch);
 
         TryValidateModel(userToPatch);
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _service.UserService.SaveChangesForPatch(userToPatch, userEntity);
+        await _service.UserService.SaveChangesForPatchAsync(userToPatch, userEntity);
         return NoContent();
     }
 
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteUser(Guid id)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        _service.UserService.DeleteUser(id, trackChanges: false);
+        await _service.UserService.DeleteUserAsync(id, trackChanges: false);
         return NoContent();
     }
 }

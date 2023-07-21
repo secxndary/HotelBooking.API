@@ -6,11 +6,11 @@ namespace Service.Contracts.UserServices;
 
 public interface IUserService
 {
-    IEnumerable<UserDto> GetAllUsers(bool trackChanges);
-    UserDto GetUser(Guid id, bool trackChanges);
-    UserDto CreateUser(UserForCreationDto user);
-    void UpdateUser(Guid id, UserForUpdateDto user, bool trackChanges);
-    (UserForUpdateDto userToPatch, User userEntity) GetUserForPatch(Guid id, bool trackChanges);
-    void SaveChangesForPatch(UserForUpdateDto userToPatch, User userEntity);
-    void DeleteUser(Guid id, bool trackChanges);
+    Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges);
+    Task<UserDto> GetUserAsync(Guid id, bool trackChanges);
+    Task<UserDto> CreateUserAsync(UserForCreationDto user);
+    Task UpdateUserAsync(Guid id, UserForUpdateDto user, bool trackChanges);
+    Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id, bool trackChanges);
+    Task SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity);
+    Task DeleteUserAsync(Guid id, bool trackChanges);
 }

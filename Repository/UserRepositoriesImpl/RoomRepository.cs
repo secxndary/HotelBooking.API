@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class RoomRepository : RepositoryBase<Room>, IRoomRepository
@@ -8,27 +9,27 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         : base(repositoryContext)
     { }
 
-    public IEnumerable<Room> GetRooms(Guid hotelId, bool trackChanges) =>
-        FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
+    public async Task<IEnumerable<Room>> GetRoomsAsync(Guid hotelId, bool trackChanges) =>
+        await FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
         .OrderBy(r => r.Price)
-        .ToList();
+        .ToListAsync();
 
-    public IEnumerable<Room> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
-        FindByCondition(r =>
+    public async Task<IEnumerable<Room>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
+        await FindByCondition(r =>
             r.HotelId.Equals(hotelId) &&
             ids.Contains(r.Id), trackChanges)
         .OrderBy(r => r.Price)
-        .ToList();
+        .ToListAsync();
 
-    public Room? GetRoom(Guid hotelId, Guid id, bool trackChanges) =>
-        FindByCondition(r => 
+    public async Task<Room?> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges) =>
+        await FindByCondition(r => 
             r.HotelId.Equals(hotelId) && 
             r.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+        .SingleOrDefaultAsync();
 
-    public Room? GetRoom(Guid id, bool trackChanges) =>
-        FindByCondition(r => r.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+    public async Task<Room?> GetRoomAsync(Guid id, bool trackChanges) =>
+        await FindByCondition(r => r.Id.Equals(id), trackChanges)
+        .SingleOrDefaultAsync();
 
     public void CreateRoomForHotel(Guid hotelId, Room room)
     {

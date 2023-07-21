@@ -1,5 +1,6 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Repository.UserRepositoriesImpl;
 
 public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
@@ -8,14 +9,15 @@ public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
         : base(repositoryContext)
     { }
 
-    public IEnumerable<RoomType> GetAllRoomTypes(bool trackChanges) =>
-        FindAll(trackChanges)
-        .OrderBy(r => r.Name)
-        .ToList();
 
-    public RoomType? GetRoomType(Guid id, bool trackChanges) =>
-        FindByCondition(r => r.Id.Equals(id), trackChanges)
-        .SingleOrDefault();
+    public async Task<IEnumerable<RoomType>> GetAllRoomTypesAsync(bool trackChanges) =>
+        await FindAll(trackChanges)
+        .OrderBy(r => r.Name)
+        .ToListAsync();
+
+    public async Task<RoomType?> GetRoomTypeAsync(Guid id, bool trackChanges) =>
+        await FindByCondition(r => r.Id.Equals(id), trackChanges)
+        .SingleOrDefaultAsync();
 
     public void CreateRoomType(RoomType roomType) =>
         Create(roomType);

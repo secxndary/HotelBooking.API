@@ -3,8 +3,8 @@ namespace Contracts.Repositories.UserRepositories;
 
 public interface IRoleRepository
 {
-    IEnumerable<Role> GetAllRoles(bool trackChanges);
-    Role? GetRole(Guid id, bool trackChanges);
+    Task<IEnumerable<Role>> GetAllRolesAsync(bool trackChanges);
+    Task<Role?> GetRoleAsync(Guid id, bool trackChanges);
     void CreateRole(Role role);
     void DeleteRole(Role role);
 }

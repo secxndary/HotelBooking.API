@@ -24,27 +24,27 @@ public sealed class RoomService : IRoomService
     }
 
 
-    public IEnumerable<RoomDto> GetRooms(Guid hotelId, bool trackChanges)
+    public async Task<IEnumerable<RoomDto>> GetRoomsAsync(Guid hotelId, bool trackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var rooms = _repository.Room.GetRooms(hotelId, trackChanges);
+        var rooms = await _repository.Room.GetRoomsAsync(hotelId, trackChanges);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
     }
 
-    public IEnumerable<RoomDto> GetByIdsForHotel(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges)
+    public async Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges)
     {
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var rooms = _repository.Room.GetByIdsForHotel(hotelId, ids, trackChanges);
+        var rooms = await _repository.Room.GetByIdsForHotelAsync(hotelId, ids, trackChanges);
         if (rooms.Count() != ids.Count())
             throw new CollectionByIdsBadRequestException();
 
@@ -52,13 +52,13 @@ public sealed class RoomService : IRoomService
         return roomsDto;
     }
 
-    public RoomDto GetRoom(Guid hotelId, Guid id, bool trackChanges)
+    public async Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
         
-        var room = _repository.Room.GetRoom(hotelId, id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(id);
         
@@ -66,9 +66,9 @@ public sealed class RoomService : IRoomService
         return roomDto;
     }
 
-    public RoomDto GetRoom(Guid id, bool trackChanges)
+    public async Task<RoomDto> GetRoomAsync(Guid id, bool trackChanges)
     {
-        var room = _repository.Room.GetRoom(id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(id, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(id);
 
@@ -76,21 +76,21 @@ public sealed class RoomService : IRoomService
         return roomDto;
     }
 
-    public RoomDto CreateRoomForHotel(Guid hotelId, RoomForCreationDto room, bool trackChanges)
+    public async Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room, bool trackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
         var roomEntity = _mapper.Map<Room>(room);
         _repository.Room.CreateRoomForHotel(hotelId, roomEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var roomToReturn = _mapper.Map<RoomDto>(roomEntity);
         return roomToReturn;
     }
 
-    public (IEnumerable<RoomDto> rooms, string ids) CreateRoomCollection
+    public async Task<(IEnumerable<RoomDto> rooms, string ids)> CreateRoomCollectionAsync
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection)
     {
         if (roomsCollection is null)
@@ -99,40 +99,40 @@ public sealed class RoomService : IRoomService
         var roomsEntities = _mapper.Map<IEnumerable<Room>>(roomsCollection);
         foreach (var room in roomsEntities)
             _repository.Room.CreateRoomForHotel(hotelId, room);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var roomsCollectionToReturn = _mapper.Map<IEnumerable<RoomDto>>(roomsEntities);
         var ids = string.Join(",", roomsCollectionToReturn.Select(r => r.Id));
         return (rooms: roomsCollectionToReturn, ids);
     }
 
-    public void UpdateRoomForHotel(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate,
+    public async Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate,
         bool hotelTrackChanges, bool roomTrackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, hotelTrackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var roomType = _repository.RoomType.GetRoomType(roomForUpdate.RoomTypeId, false);
+        var roomType = await _repository.RoomType.GetRoomTypeAsync(roomForUpdate.RoomTypeId, false);
         if (roomType is null)
             throw new RoomTypeNotFoundException(roomForUpdate.RoomTypeId);
 
-        var roomEntity = _repository.Room.GetRoom(hotelId, id, roomTrackChanges);
+        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, roomTrackChanges);
         if (roomEntity is null)
             throw new RoomNotFoundException(id);
 
         _mapper.Map(roomForUpdate, roomEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public (RoomForUpdateDto roomToPatch, Room roomEntity) GetRoomForPatch
+    public async Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync
         (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, hotelTrackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, hotelTrackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var roomEntity = _repository.Room.GetRoom(hotelId, id, roomTrackChanges);
+        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, roomTrackChanges);
         if (roomEntity is null)
             throw new RoomNotFoundException(id);
 
@@ -140,23 +140,23 @@ public sealed class RoomService : IRoomService
         return (roomToPatch, roomEntity);
     }
 
-    public void SaveChangesForPatch(RoomForUpdateDto roomToPatch, Room roomEntity)
+    public async Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity)
     {
         _mapper.Map(roomToPatch, roomEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public void DeleteRoomForHotel(Guid hotelId, Guid id, bool trackChanges)
+    public async Task DeleteRoomForHotelAsync(Guid hotelId, Guid id, bool trackChanges)
     {
-        var hotel = _repository.Hotel.GetHotel(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var room = _repository.Room.GetRoom(hotelId, id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges);
         if (room is null)
             throw new RoomNotFoundException(id);
         
         _repository.Room.DeleteRoom(room);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 }
