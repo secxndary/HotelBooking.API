@@ -18,7 +18,6 @@ public class User
     public string? Email { get; set; }
 
     [Required(ErrorMessage = "Password is a required field.")]
-    [MaxLength(50, ErrorMessage = "Maximum length for the Password is 50 characters.")]
     public string? Password { get; set; }
 
     [ForeignKey(nameof(Role))]

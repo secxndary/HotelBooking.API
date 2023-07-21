@@ -15,7 +15,6 @@ public record UserForCreationDto
     public string? Email { get; init; }
 
     [Required(ErrorMessage = "Password is a required field.")]
-    [MaxLength(50, ErrorMessage = "Maximum length for the Password is 50 characters.")]
     public string? Password { get; init; }
 
     [Required(ErrorMessage = "RoleId is a required field.")]
