@@ -1,10 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record UserForUpdateDto
-(
-    string FirstName,
-    string LastName,
-    string Email,
-    string Password,
-    Guid RoleId
-);
+public record UserForUpdateDto : UserForManipulationDto;

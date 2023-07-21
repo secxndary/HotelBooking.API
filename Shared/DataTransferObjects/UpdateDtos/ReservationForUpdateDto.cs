@@ -1,8 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record ReservationForUpdateDto
-(
-    DateTime DateEntry,
-    DateTime DateExit,
-    Guid UserId
-);
+public record ReservationForUpdateDto : ReservationForManipulationDto;

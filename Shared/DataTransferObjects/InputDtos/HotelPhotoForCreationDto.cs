@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Shared.DataTransferObjects.Contracts;
 namespace Shared.DataTransferObjects.InputDtos;
 
-public record HotelPhotoForCreationDto
-{
-    [Required(ErrorMessage = "Path is a required field.")]
-    public string? Path { get; init; }
-}
+public record HotelPhotoForCreationDto : HotelPhotoForManipulationDto;

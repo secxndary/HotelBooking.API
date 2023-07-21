@@ -1,7 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record RoomTypeForUpdateDto
-(
-    string Name,
-    string Description
-);
+public record RoomTypeForUpdateDto : RoomTypeForManipulationDto;

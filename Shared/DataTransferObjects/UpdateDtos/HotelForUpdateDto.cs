@@ -1,10 +1,4 @@
-﻿using Shared.DataTransferObjects.InputDtos;
+﻿using Shared.DataTransferObjects.Contracts;
 namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record HotelForUpdateDto
-(
-    string Name,
-    string Description,
-    int Stars,
-    IEnumerable<RoomForCreationDto> Rooms
-);
+public record HotelForUpdateDto : HotelForManipulationDto;

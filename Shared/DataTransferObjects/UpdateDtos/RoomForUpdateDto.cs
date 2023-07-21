@@ -1,9 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record RoomForUpdateDto
-(
-    int Price,
-    int Quantity,
-    int SleepingPlaces,
-    Guid RoomTypeId
-);
+public record RoomForUpdateDto : RoomForManipulationDto;

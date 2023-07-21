@@ -1,6 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record HotelPhotoForUpdateDto
-(
-    string Path
-);
+public record HotelPhotoForUpdateDto : HotelPhotoForManipulationDto;

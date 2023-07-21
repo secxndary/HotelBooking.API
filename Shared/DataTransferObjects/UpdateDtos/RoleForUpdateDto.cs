@@ -1,7 +1,4 @@
-﻿namespace Shared.DataTransferObjects.UpdateDtos;
+﻿using Shared.DataTransferObjects.Contracts;
+namespace Shared.DataTransferObjects.UpdateDtos;
 
-public record RoleForUpdateDto
-(
-    string Name,
-    string Description
-);
+public record RoleForUpdateDto : RoleForManipulationDto;
