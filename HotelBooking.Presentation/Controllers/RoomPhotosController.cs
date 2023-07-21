@@ -42,6 +42,10 @@ public class RoomPhotosController : ControllerBase
     {
         if (roomPhoto is null)
             return BadRequest("RoomPhotoForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdRoomPhoto = _service.RoomPhotoService.CreateRoomPhoto(roomId, roomPhoto, trackChanges: false);
         return CreatedAtRoute("GetRoomPhotoForRoom", new { roomId, id = createdRoomPhoto.Id }, createdRoomPhoto);
     }

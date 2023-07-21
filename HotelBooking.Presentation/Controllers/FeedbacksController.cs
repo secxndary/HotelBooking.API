@@ -50,6 +50,10 @@ public class FeedbacksController : ControllerBase
     {
         if (feedback is null)
             return BadRequest("FeedbackForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdFeedback = _service.FeedbackService.CreateFeedbackForReservation(reservationId, feedback, false);
         return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
     }

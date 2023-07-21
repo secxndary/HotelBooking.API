@@ -32,6 +32,10 @@ public class RoomTypesController : ControllerBase
     {
         if (roomType is null)
             return BadRequest("RoomTypeForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdRoomType = _service.RoomTypeService.CreateRoomType(roomType);
         return CreatedAtRoute("RoomTypeById", new { id = createdRoomType.Id }, createdRoomType);
     }

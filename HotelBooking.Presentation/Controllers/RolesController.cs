@@ -32,6 +32,10 @@ public class RolesController : ControllerBase
     {
         if (role is null)
             return BadRequest("RoleForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdRole = _service.RoleService.CreateRole(role);
         return CreatedAtRoute("RoleById", new { id = createdRole.Id }, createdRole);
     }

@@ -32,6 +32,10 @@ public class ReservationsController : ControllerBase
     {
         if (reservation is null)
             return BadRequest("ReservationForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdReservation = _service.ReservationService
             .CreateReservationForRoom(roomId, reservation, trackChanges: false);
         return CreatedAtRoute("ReservationById", new { roomId, id = createdReservation.Id }, createdReservation);

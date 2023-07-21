@@ -42,6 +42,10 @@ public class HotelPhotosController : ControllerBase
     {
         if (hotelPhoto is null)
             return BadRequest("HotelPhotoForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdHotelPhoto = _service.HotelPhotoService.CreateHotelPhoto(hotelId, hotelPhoto, trackChanges: false);
         return CreatedAtRoute("GetHotelPhotoForHotel", new { hotelId, id = createdHotelPhoto.Id }, createdHotelPhoto);
     }

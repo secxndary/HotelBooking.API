@@ -42,6 +42,10 @@ public class RoomsController : ControllerBase
     {
         if (room is null)
             return BadRequest("RoomForCreationDto object is null");
+
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         var createdRoom = _service.RoomService.CreateRoomForHotel(hotelId, room, trackChanges: false);
         return CreatedAtRoute("GetRoomForHotel", new { hotelId, id = createdRoom.Id }, createdRoom);
     }
