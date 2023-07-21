@@ -64,6 +64,10 @@ public class RoomTypesController : ControllerBase
         var (roomTypeToPatch, roomTypeEntity) = _service.RoomTypeService.GetRoomTypeForPatch(id, trackChanges: true);
         patchDoc.ApplyTo(roomTypeToPatch);
 
+        TryValidateModel(roomTypeToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.RoomTypeService.SaveChangesForPatch(roomTypeToPatch, roomTypeEntity);
         return NoContent();
     }

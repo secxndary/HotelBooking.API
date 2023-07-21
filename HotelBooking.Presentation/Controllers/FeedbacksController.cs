@@ -82,6 +82,10 @@ public class FeedbacksController : ControllerBase
         var (feedbackToPatch, feedbackEntity) = _service.FeedbackService.GetFeedbackForPatch(id, trackChanges: true);
         patchDoc.ApplyTo(feedbackToPatch);
 
+        TryValidateModel(feedbackToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.FeedbackService.SaveChangesForPatch(feedbackToPatch, feedbackEntity);
         return NoContent();
     }

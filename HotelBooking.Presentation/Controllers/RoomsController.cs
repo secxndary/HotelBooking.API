@@ -82,7 +82,11 @@ public class RoomsController : ControllerBase
 
         var (roomToPatch, roomEntity) = _service.RoomService.GetRoomForPatch(hotelId, id,
             hotelTrackChanges: false, roomTrackChanges: true);
-        patchDoc.ApplyTo(roomToPatch);
+        patchDoc.ApplyTo(roomToPatch, ModelState);
+
+        TryValidateModel(roomToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
 
         _service.RoomService.SaveChangesForPatch(roomToPatch, roomEntity);
         return NoContent();

@@ -83,6 +83,10 @@ public class HotelsController : ControllerBase
         var (hotelToPatch, hotelEntity) = _service.HotelService.GetHotelForPatch(id, trackChanges: true);
         patchDoc.ApplyTo(hotelToPatch);
 
+        TryValidateModel(hotelToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.HotelService.SaveChangesForPatch(hotelToPatch, hotelEntity);
         return NoContent();
     }

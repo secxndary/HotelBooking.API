@@ -65,6 +65,10 @@ public class ReservationsController : ControllerBase
             (roomId, id, roomTrackChanges: false, reservationTrackChanges: true);
         patchDoc.ApplyTo(reservationToPatch);
 
+        TryValidateModel(reservationToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.ReservationService.SaveChangesForPatch(reservationToPatch, reservationEntity);
         return NoContent();
     }

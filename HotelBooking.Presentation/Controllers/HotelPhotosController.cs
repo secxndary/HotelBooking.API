@@ -84,6 +84,10 @@ public class HotelPhotosController : ControllerBase
             (hotelId, id, hotelTrackChanges: false, photoTrackChanges: true);
         patchDoc.ApplyTo(hotelPhotoToPatch);
 
+        TryValidateModel(hotelPhotoToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.HotelPhotoService.SaveChangesForPatch(hotelPhotoToPatch, hotelPhotoEntity);
         return NoContent();
     }

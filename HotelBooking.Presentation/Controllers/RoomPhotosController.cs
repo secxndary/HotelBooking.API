@@ -84,6 +84,10 @@ public class RoomPhotosController : ControllerBase
             (roomId, id, roomTrackChanges: false, photoTrackChanges: true);
         patchDoc.ApplyTo(roomPhotoToPatch);
 
+        TryValidateModel(roomPhotoToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.RoomPhotoService.SaveChangesForPatch(roomPhotoToPatch, roomPhotoEntity);
         return NoContent();
     }

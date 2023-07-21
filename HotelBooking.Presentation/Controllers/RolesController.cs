@@ -64,6 +64,10 @@ public class RolesController : ControllerBase
         var (roleToPatch, roleEntity) = _service.RoleService.GetRoleForPatch(id, trackChanges: true);
         patchDoc.ApplyTo(roleToPatch);
 
+        TryValidateModel(roleToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.RoleService.SaveChangesForPatch(roleToPatch, roleEntity);
         return NoContent();
     }

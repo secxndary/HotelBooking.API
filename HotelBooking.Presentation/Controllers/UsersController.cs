@@ -64,6 +64,10 @@ public class UsersController : ControllerBase
         var (userToPatch, userEntity) = _service.UserService.GetUserForPatch(id, trackChanges: true);
         patchDoc.ApplyTo(userToPatch);
 
+        TryValidateModel(userToPatch);
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
         _service.UserService.SaveChangesForPatch(userToPatch, userEntity);
         return NoContent();
     }
