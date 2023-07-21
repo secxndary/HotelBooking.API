@@ -1,8 +1,8 @@
 ﻿namespace Shared.DataTransferObjects.InputDtos;
 
 public record FeedbackForCreationDto
-(
-    string TextPositive,
-    string TextNegative,
-    Guid ReservationId
-);
+{
+    public string? TextPositive { get; init; }
+    public string? TextNegative { get; init; }
+    public Guid ReservationId { get; init; }
+}
