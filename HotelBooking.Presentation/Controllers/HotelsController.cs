@@ -66,8 +66,8 @@ public class HotelsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelService.UpdateHotelAsync(id, hotel);
-        return NoContent();
+        var updatedHotel = await _service.HotelService.UpdateHotelAsync(id, hotel);
+        return Ok(updatedHotel);
     }
 
     [HttpPatch("{id:guid}")]
@@ -84,8 +84,8 @@ public class HotelsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelService.SaveChangesForPatchAsync(hotelToPatch, hotelEntity);
-        return NoContent();
+        var updatedHotel = await _service.HotelService.SaveChangesForPatchAsync(hotelToPatch, hotelEntity);
+        return Ok(updatedHotel);
     }
 
     [HttpDelete("{id:guid}")]

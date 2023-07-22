@@ -81,7 +81,7 @@ public sealed class HotelService : IHotelService
         return (hotels: hotelCollectionToReturn, ids);
     }
 
-    public async Task UpdateHotelAsync(Guid id, HotelForUpdateDto hotelForUpdate)
+    public async Task<HotelDto> UpdateHotelAsync(Guid id, HotelForUpdateDto hotelForUpdate)
     {
         var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges: true);
         if (hotelEntity is null)
@@ -89,6 +89,9 @@ public sealed class HotelService : IHotelService
 
         _mapper.Map(hotelForUpdate, hotelEntity);
         await _repository.SaveAsync();
+        
+        var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
+        return hotelToReturn;
     }
 
     public async Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync(Guid id)
@@ -101,10 +104,13 @@ public sealed class HotelService : IHotelService
         return (hotelToPatch, hotelEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)
+    public async Task<HotelDto> SaveChangesForPatchAsync(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)
     {
         _mapper.Map(hotelToPatch, hotelEntity);
         await _repository.SaveAsync();
+
+        var hotelToReturn = _mapper.Map<HotelDto>(hotelEntity);
+        return hotelToReturn;
     }
 
     public async Task DeleteHotelAsync(Guid id)

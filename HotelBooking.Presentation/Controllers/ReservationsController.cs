@@ -51,8 +51,8 @@ public class ReservationsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.ReservationService.UpdateReservationForRoomAsync(roomId, id, reservation);
-        return NoContent();
+        var updatedReservation = await _service.ReservationService.UpdateReservationForRoomAsync(roomId, id, reservation);
+        return Ok(updatedReservation);
     }
 
     [HttpPatch("{id:guid}")]
@@ -69,8 +69,8 @@ public class ReservationsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.ReservationService.SaveChangesForPatchAsync(reservationToPatch, reservationEntity);
-        return NoContent();
+        var updatedReservation = await _service.ReservationService.SaveChangesForPatchAsync(reservationToPatch, reservationEntity);
+        return Ok(updatedReservation);
     }
 
     [HttpDelete("{id:guid}")]

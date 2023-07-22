@@ -81,7 +81,7 @@ public sealed class FeedbackService : IFeedbackService
         return feedbackToReturn;
     }
 
-    public async Task UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate)
+    public async Task<FeedbackDto> UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate)
     {
         var reservation = await _repository.Reservation.GetReservationAsync
             (feedbackForUpdate.ReservationId, trackChanges: false);
@@ -94,6 +94,9 @@ public sealed class FeedbackService : IFeedbackService
 
         _mapper.Map(feedbackForUpdate, feedbackEntity);
         await _repository.SaveAsync();
+
+        var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);
+        return feedbackToReturn;
     }
 
     public async Task<(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)> GetFeedbackForPatchAsync(Guid id)
@@ -106,7 +109,7 @@ public sealed class FeedbackService : IFeedbackService
         return (feedbackToPatch, feedbackEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)
+    public async Task<FeedbackDto> SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)
     {
         var reservation = await _repository.Reservation.GetReservationAsync
             (feedbackToPatch.ReservationId, trackChanges: false);
@@ -115,6 +118,9 @@ public sealed class FeedbackService : IFeedbackService
 
         _mapper.Map(feedbackToPatch, feedbackEntity);
         await _repository.SaveAsync();
+
+        var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);
+        return feedbackToReturn;
     }
 
     public async Task DeleteFeedbackAsync(Guid id)

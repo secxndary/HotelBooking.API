@@ -96,7 +96,7 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return (roomPhotos: roomPhotosCollectionToReturn, ids);
     }
 
-    public async Task UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate)
+    public async Task<RoomPhotoDto> UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate)
     {
         var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
         if (room is null)
@@ -108,6 +108,9 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
         _mapper.Map(roomPhotoForUpdate, roomPhotoEntity);
         await _repository.SaveAsync();
+
+        var roomPhotoToReturn = _mapper.Map<RoomPhotoDto>(roomPhotoEntity);
+        return roomPhotoToReturn;
     }
 
     public async Task<(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)> GetRoomPhotoForPatchAsync
@@ -125,10 +128,13 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return (photoToPatch, roomPhotoEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)
+    public async Task<RoomPhotoDto> SaveChangesForPatchAsync(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)
     {
         _mapper.Map(roomPhotoToPatch, roomPhotoEntity);
         await _repository.SaveAsync();
+
+        var roomPhotoToReturn = _mapper.Map<RoomPhotoDto>(roomPhotoEntity);
+        return roomPhotoToReturn;
     }
 
     public async Task DeleteRoomPhotoAsync(Guid roomId, Guid id)

@@ -106,7 +106,7 @@ public sealed class RoomService : IRoomService
         return (rooms: roomsCollectionToReturn, ids);
     }
 
-    public async Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate)
+    public async Task<RoomDto> UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate)
     {
         var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
@@ -122,6 +122,9 @@ public sealed class RoomService : IRoomService
 
         _mapper.Map(roomForUpdate, roomEntity);
         await _repository.SaveAsync();
+
+        var roomToReturn = _mapper.Map<RoomDto>(roomEntity);
+        return roomToReturn;
     }
 
     public async Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync(Guid hotelId, Guid id)
@@ -138,10 +141,13 @@ public sealed class RoomService : IRoomService
         return (roomToPatch, roomEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity)
+    public async Task<RoomDto> SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity)
     {
         _mapper.Map(roomToPatch, roomEntity);
         await _repository.SaveAsync();
+
+        var roomToReturn = _mapper.Map<RoomDto>(roomEntity);
+        return roomToReturn;
     }
 
     public async Task DeleteRoomForHotelAsync(Guid hotelId, Guid id)

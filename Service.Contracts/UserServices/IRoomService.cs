@@ -13,8 +13,8 @@ public interface IRoomService
     Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room);
     Task<(IEnumerable<RoomDto> rooms, string ids)> CreateRoomCollectionAsync
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection);
-    Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate);
+    Task<RoomDto> UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate);
     Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync(Guid hotelId, Guid id);
-    Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity);
+    Task<RoomDto> SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity);
     Task DeleteRoomForHotelAsync(Guid hotelId, Guid id);
 }

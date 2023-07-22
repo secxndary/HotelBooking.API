@@ -66,7 +66,7 @@ public sealed class ReservationService : IReservationService
         return reservationToReturn;
     }
 
-    public async Task UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation)
+    public async Task<ReservationDto> UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation)
     {
         var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
         if (room is null)
@@ -82,6 +82,9 @@ public sealed class ReservationService : IReservationService
 
         _mapper.Map(reservation, reservationEntity);
         await _repository.SaveAsync();
+
+        var reservationToReturn = _mapper.Map<ReservationDto>(reservationEntity);
+        return reservationToReturn;
     }
 
     public async Task<(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)> 
@@ -99,10 +102,13 @@ public sealed class ReservationService : IReservationService
         return (photoToPatch, reservationEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)
+    public async Task<ReservationDto> SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)
     {
         _mapper.Map(reservationToPatch, reservationEntity);
         await _repository.SaveAsync();
+
+        var reservationToReturn = _mapper.Map<ReservationDto>(reservationEntity);
+        return reservationToReturn;
     }
 
     public async Task DeleteReservationForRoomAsync(Guid roomId, Guid id) 

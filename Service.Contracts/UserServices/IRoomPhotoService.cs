@@ -12,9 +12,9 @@ public interface IRoomPhotoService
     Task<RoomPhotoDto> CreateRoomPhotoAsync(Guid roomId, RoomPhotoForCreationDto roomPhoto);
     Task<(IEnumerable<RoomPhotoDto> roomPhotos, string ids)> CreateRoomPhotoCollectionAsync
         (Guid roomId, IEnumerable<RoomPhotoForCreationDto> roomPhotosCollection);
-    Task UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhoto);
+    Task<RoomPhotoDto> UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhoto);
     Task<(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)> GetRoomPhotoForPatchAsync
         (Guid roomId, Guid id);
-    Task SaveChangesForPatchAsync(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity);
+    Task<RoomPhotoDto> SaveChangesForPatchAsync(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity);
     Task DeleteRoomPhotoAsync(Guid roomId, Guid id);
 }

@@ -9,9 +9,9 @@ public interface IReservationService
     Task<IEnumerable<ReservationDto>> GetReservationsAsync(Guid roomId);
     Task<ReservationDto> GetReservationAsync(Guid roomId, Guid id);
     Task<ReservationDto> CreateReservationForRoomAsync(Guid roomId, ReservationForCreationDto reservation);
-    Task UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation);
+    Task<ReservationDto> UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation);
     Task<(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)> GetReservationForPatchAsync
         (Guid roomId, Guid id);
-    Task SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity);
+    Task<ReservationDto> SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity);
     Task DeleteReservationForRoomAsync(Guid roomId, Guid id);
 }

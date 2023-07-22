@@ -51,7 +51,7 @@ public sealed class RoleService : IRoleService
         return roleToReturn;
     }
 
-    public async Task UpdateRoleAsync(Guid id, RoleForUpdateDto roleForUpdate)
+    public async Task<RoleDto> UpdateRoleAsync(Guid id, RoleForUpdateDto roleForUpdate)
     {
         var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges: true);
         if (roleEntity is null)
@@ -59,6 +59,9 @@ public sealed class RoleService : IRoleService
 
         _mapper.Map(roleForUpdate, roleEntity);
         await _repository.SaveAsync();
+
+        var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
+        return roleToReturn;
     }
 
     public async Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync(Guid id)
@@ -71,10 +74,13 @@ public sealed class RoleService : IRoleService
         return (roleToPatch, roleEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(RoleForUpdateDto roleToPatch, Role roleEntity)
+    public async Task<RoleDto> SaveChangesForPatchAsync(RoleForUpdateDto roleToPatch, Role roleEntity)
     {
         _mapper.Map(roleToPatch, roleEntity);
         await _repository.SaveAsync();
+
+        var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
+        return roleToReturn;
     }
 
     public async Task DeleteRoleAsync(Guid id)

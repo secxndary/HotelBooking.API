@@ -11,8 +11,8 @@ public interface IFeedbackService
     Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId);
     Task<FeedbackDto> GetFeedbackAsync(Guid id);
     Task<FeedbackDto> CreateFeedbackForReservationAsync(Guid reservationId, FeedbackForCreationDto feedback);
-    Task UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate);
+    Task<FeedbackDto> UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate);
     Task<(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)> GetFeedbackForPatchAsync(Guid id);
-    Task SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity);
+    Task<FeedbackDto> SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity);
     Task DeleteFeedbackAsync(Guid id);
 }

@@ -67,8 +67,8 @@ public class RoomPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomPhotoService.UpdateRoomPhotoAsync(roomId, id, photo);
-        return NoContent();
+        var updatedRoomPhoto = await _service.RoomPhotoService.UpdateRoomPhotoAsync(roomId, id, photo);
+        return Ok(updatedRoomPhoto);
     }
 
     [HttpPatch("{id:guid}")]
@@ -85,8 +85,8 @@ public class RoomPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomPhotoService.SaveChangesForPatchAsync(roomPhotoToPatch, roomPhotoEntity);
-        return NoContent();
+        var updatedRoomPhoto = await _service.RoomPhotoService.SaveChangesForPatchAsync(roomPhotoToPatch, roomPhotoEntity);
+        return Ok(updatedRoomPhoto);
     }
 
     [HttpDelete("{id:guid}")]

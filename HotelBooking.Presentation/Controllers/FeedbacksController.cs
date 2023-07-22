@@ -67,8 +67,8 @@ public class FeedbacksController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.FeedbackService.UpdateFeedbackAsync(id, feedback);
-        return NoContent();
+        var updatedFeedback = await _service.FeedbackService.UpdateFeedbackAsync(id, feedback);
+        return Ok(updatedFeedback);
     }
 
     [HttpPatch("api/feedbacks/{id:guid}")]
@@ -85,8 +85,8 @@ public class FeedbacksController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.FeedbackService.SaveChangesForPatchAsync(feedbackToPatch, feedbackEntity);
-        return NoContent();
+        var updatedFeedback = await _service.FeedbackService.SaveChangesForPatchAsync(feedbackToPatch, feedbackEntity);
+        return Ok(updatedFeedback);
     }
 
     [HttpDelete]

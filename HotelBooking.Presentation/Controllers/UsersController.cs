@@ -49,8 +49,8 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.UserService.UpdateUserAsync(id, user);
-        return NoContent();
+        var updatedUser = await _service.UserService.UpdateUserAsync(id, user);
+        return Ok(updatedUser);
     }
 
     [HttpPatch("{id:guid}")]
@@ -67,8 +67,8 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.UserService.SaveChangesForPatchAsync(userToPatch, userEntity);
-        return NoContent();
+        var updatedUser = await _service.UserService.SaveChangesForPatchAsync(userToPatch, userEntity);
+        return Ok(updatedUser);
     }
 
     [HttpDelete("{id:guid}")]

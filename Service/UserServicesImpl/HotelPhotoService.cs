@@ -96,7 +96,7 @@ public sealed class HotelPhotoService : IHotelPhotoService
         return (hotelPhotos: hotelPhotosCollectionToReturn, ids);
     }
 
-    public async Task UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhotoForUpdate)
+    public async Task<HotelPhotoDto> UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhotoForUpdate)
     {
         var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
@@ -108,6 +108,9 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
         _mapper.Map(hotelPhotoForUpdate, hotelPhotoEntity);
         await _repository.SaveAsync();
+        
+        var hotelPhotoToReturn = _mapper.Map<HotelPhotoDto>(hotelPhotoEntity);
+        return hotelPhotoToReturn;
     }
 
     public async Task<(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)> GetHotelPhotoForPatchAsync
@@ -125,10 +128,13 @@ public sealed class HotelPhotoService : IHotelPhotoService
         return (photoToPatch, hotelPhotoEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)
+    public async Task<HotelPhotoDto> SaveChangesForPatchAsync(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)
     {
         _mapper.Map(hotelPhotoToPatch, hotelPhotoEntity);
         await _repository.SaveAsync();
+
+        var hotelPhotoToReturn = _mapper.Map<HotelPhotoDto>(hotelPhotoEntity);
+        return hotelPhotoToReturn;
     }
 
     public async Task DeleteHotelPhotoAsync(Guid hotelId, Guid id)

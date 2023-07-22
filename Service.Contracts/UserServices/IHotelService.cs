@@ -12,8 +12,8 @@ public interface IHotelService
     Task<HotelDto> CreateHotelAsync(HotelForCreationDto hotel);
     Task<(IEnumerable<HotelDto> hotels, string ids)> CreateHotelCollectionAsync 
         (IEnumerable<HotelForCreationDto> hotelCollection);
-    Task UpdateHotelAsync(Guid id, HotelForUpdateDto hotel);
+    Task<HotelDto> UpdateHotelAsync(Guid id, HotelForUpdateDto hotel);
     Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync(Guid id);
-    Task SaveChangesForPatchAsync(HotelForUpdateDto hotelToPatch, Hotel hotelEntity);
+    Task<HotelDto> SaveChangesForPatchAsync(HotelForUpdateDto hotelToPatch, Hotel hotelEntity);
     Task DeleteHotelAsync(Guid id);
 }

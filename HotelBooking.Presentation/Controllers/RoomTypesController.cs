@@ -49,8 +49,8 @@ public class RoomTypesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomTypeService.UpdateRoomTypeAsync(id, roomType);
-        return NoContent();
+        var updatedRoomType = await _service.RoomTypeService.UpdateRoomTypeAsync(id, roomType);
+        return Ok(updatedRoomType);
     }
 
     [HttpPatch("{id:guid}")]
@@ -67,8 +67,8 @@ public class RoomTypesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomTypeService.SaveChangesForPatchAsync(roomTypeToPatch, roomTypeEntity);
-        return NoContent();
+        var updatedRoomType = await _service.RoomTypeService.SaveChangesForPatchAsync(roomTypeToPatch, roomTypeEntity);
+        return Ok(updatedRoomType);
     }
 
     [HttpDelete("{id:guid}")]

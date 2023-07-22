@@ -49,8 +49,8 @@ public class RolesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoleService.UpdateRoleAsync(id, role);
-        return NoContent();
+        var updatedRole = await _service.RoleService.UpdateRoleAsync(id, role);
+        return Ok(updatedRole);
     }
 
     [HttpPatch("{id:guid}")]
@@ -67,8 +67,8 @@ public class RolesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoleService.SaveChangesForPatchAsync(roleToPatch, roleEntity);
-        return NoContent();
+        var updatedRole = await _service.RoleService.SaveChangesForPatchAsync(roleToPatch, roleEntity);
+        return Ok(updatedRole);
     }
 
     [HttpDelete("{id:guid}")]

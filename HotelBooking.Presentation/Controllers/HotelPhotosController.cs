@@ -68,8 +68,8 @@ public class HotelPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelPhotoService.UpdateHotelPhotoAsync(hotelId, id, photo);
-        return NoContent();
+        var updatedHotelPhoto = await _service.HotelPhotoService.UpdateHotelPhotoAsync(hotelId, id, photo);
+        return Ok(updatedHotelPhoto);
     }
 
     [HttpPatch("{id:guid}")]
@@ -86,8 +86,8 @@ public class HotelPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelPhotoService.SaveChangesForPatchAsync(hotelPhotoToPatch, hotelPhotoEntity);
-        return NoContent();
+        var updatedHotelPhoto = await _service.HotelPhotoService.SaveChangesForPatchAsync(hotelPhotoToPatch, hotelPhotoEntity);
+        return Ok(updatedHotelPhoto);
     }
 
     [HttpDelete("{id:guid}")]

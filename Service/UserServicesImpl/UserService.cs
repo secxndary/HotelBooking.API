@@ -54,7 +54,7 @@ public sealed class UserService : IUserService
         return userToReturn;
     }
 
-    public async Task UpdateUserAsync(Guid id, UserForUpdateDto userForUpdate)
+    public async Task<UserDto> UpdateUserAsync(Guid id, UserForUpdateDto userForUpdate)
     {
         var role = await _repository.Role.GetRoleAsync(userForUpdate.RoleId, trackChanges: false);
         if (role is null)
@@ -66,6 +66,9 @@ public sealed class UserService : IUserService
 
         _mapper.Map(userForUpdate, userEntity);
         await _repository.SaveAsync();
+
+        var userToReturn = _mapper.Map<UserDto>(userEntity);
+        return userToReturn;
     }
 
     public async Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id)
@@ -78,7 +81,7 @@ public sealed class UserService : IUserService
         return (userToPatch, userEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity)
+    public async Task<UserDto> SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity)
     {
         var role = await _repository.Role.GetRoleAsync(userToPatch.RoleId, trackChanges: false);
         if (role is null)
@@ -86,6 +89,9 @@ public sealed class UserService : IUserService
 
         _mapper.Map(userToPatch, userEntity);
         await _repository.SaveAsync();
+
+        var userToReturn = _mapper.Map<UserDto>(userEntity);
+        return userToReturn;
     }
 
     public async Task DeleteUserAsync(Guid id)

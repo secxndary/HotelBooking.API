@@ -12,9 +12,9 @@ public interface IHotelPhotoService
     Task<HotelPhotoDto> CreateHotelPhotoAsync(Guid hotelId, HotelPhotoForCreationDto hotelPhoto);
     Task<(IEnumerable<HotelPhotoDto> hotelPhotos, string ids)> CreateHotelPhotoCollectionAsync
         (Guid hotelId, IEnumerable<HotelPhotoForCreationDto> hotelPhotosCollection);
-    Task UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhoto);
+    Task<HotelPhotoDto> UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhoto);
     Task<(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)> GetHotelPhotoForPatchAsync
         (Guid hotelId, Guid id);
-    Task SaveChangesForPatchAsync(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity);
+    Task<HotelPhotoDto> SaveChangesForPatchAsync(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity);
     Task DeleteHotelPhotoAsync(Guid hotelId, Guid id);
 }

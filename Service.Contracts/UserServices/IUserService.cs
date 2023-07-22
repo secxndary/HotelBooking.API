@@ -9,8 +9,8 @@ public interface IUserService
     Task<IEnumerable<UserDto>> GetAllUsersAsync();
     Task<UserDto> GetUserAsync(Guid id);
     Task<UserDto> CreateUserAsync(UserForCreationDto user);
-    Task UpdateUserAsync(Guid id, UserForUpdateDto user);
+    Task<UserDto> UpdateUserAsync(Guid id, UserForUpdateDto user);
     Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id);
-    Task SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity);
+    Task<UserDto> SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity);
     Task DeleteUserAsync(Guid id);
 }

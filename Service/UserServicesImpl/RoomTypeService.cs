@@ -51,7 +51,7 @@ public sealed class RoomTypeService : IRoomTypeService
         return roomTypeToReturn;
     }
 
-    public async Task UpdateRoomTypeAsync(Guid id, RoomTypeForUpdateDto roomTypeForUpdate)
+    public async Task<RoomTypeDto> UpdateRoomTypeAsync(Guid id, RoomTypeForUpdateDto roomTypeForUpdate)
     {
         var roomTypeEntity = await _repository.RoomType.GetRoomTypeAsync(id, trackChanges: true);
         if (roomTypeEntity is null)
@@ -59,6 +59,9 @@ public sealed class RoomTypeService : IRoomTypeService
 
         _mapper.Map(roomTypeForUpdate, roomTypeEntity);
         await _repository.SaveAsync();
+
+        var roomTypeToReturn = _mapper.Map<RoomTypeDto>(roomTypeEntity);
+        return roomTypeToReturn;
     }
 
     public async Task<(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)> GetRoomTypeForPatchAsync
@@ -72,10 +75,13 @@ public sealed class RoomTypeService : IRoomTypeService
         return (roomTypeToPatch, roomTypeEntity);
     }
 
-    public async Task SaveChangesForPatchAsync(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)
+    public async Task<RoomTypeDto> SaveChangesForPatchAsync(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)
     {
         _mapper.Map(roomTypeToPatch, roomTypeEntity);
         await _repository.SaveAsync();
+
+        var roomTypeToReturn = _mapper.Map<RoomTypeDto>(roomTypeEntity);
+        return roomTypeToReturn;
     }
 
     public async Task DeleteRoomTypeAsync(Guid id)

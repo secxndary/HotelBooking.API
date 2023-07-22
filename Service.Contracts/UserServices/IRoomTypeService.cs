@@ -9,8 +9,8 @@ public interface IRoomTypeService
     Task<IEnumerable<RoomTypeDto>> GetAllRoomTypesAsync();
     Task<RoomTypeDto> GetRoomTypeAsync(Guid id);
     Task<RoomTypeDto> CreateRoomTypeAsync(RoomTypeForCreationDto roomType);
-    Task UpdateRoomTypeAsync(Guid id, RoomTypeForUpdateDto roomType);
+    Task<RoomTypeDto> UpdateRoomTypeAsync(Guid id, RoomTypeForUpdateDto roomType);
     Task<(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity)> GetRoomTypeForPatchAsync(Guid id);
-    Task SaveChangesForPatchAsync(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity);
+    Task<RoomTypeDto> SaveChangesForPatchAsync(RoomTypeForUpdateDto roomTypeToPatch, RoomType roomTypeEntity);
     Task DeleteRoomTypeAsync(Guid id);
 }
