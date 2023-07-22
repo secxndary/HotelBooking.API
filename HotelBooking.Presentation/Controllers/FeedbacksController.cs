@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -46,27 +47,17 @@ public class FeedbacksController : ControllerBase
 
     [HttpPost]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateFeedback(Guid reservationId, [FromBody] FeedbackForCreationDto feedback)
     {
-        if (feedback is null)
-            return BadRequest("FeedbackForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdFeedback = await _service.FeedbackService.CreateFeedbackForReservationAsync(reservationId, feedback);
         return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
     }
 
     [HttpPut("api/feedbacks/{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
     {
-        if (feedback is null)
-            return BadRequest("FeedbackForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedFeedback = await _service.FeedbackService.UpdateFeedbackAsync(id, feedback);
         return Ok(updatedFeedback);
     }
@@ -89,8 +80,7 @@ public class FeedbacksController : ControllerBase
         return Ok(updatedFeedback);
     }
 
-    [HttpDelete]
-    [Route("api/feedbacks/{id:guid}")]
+    [HttpDelete("api/feedbacks/{id:guid}")]
     public async Task<IActionResult> DeleteFeedback(Guid id)
     {
         await _service.FeedbackService.DeleteFeedbackAsync(id);

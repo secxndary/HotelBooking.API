@@ -1,4 +1,5 @@
-﻿using HotelBooking.Presentation.ModelBinders;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using HotelBooking.Presentation.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -37,36 +38,25 @@ public class RoomPhotosController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoomPhoto(Guid roomId, [FromBody] RoomPhotoForCreationDto roomPhoto)
     {
-        if (roomPhoto is null)
-            return BadRequest("RoomPhotoForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdRoomPhoto = await _service.RoomPhotoService.CreateRoomPhotoAsync(roomId, roomPhoto);
         return CreatedAtRoute("GetRoomPhotoForRoom", new { roomId, id = createdRoomPhoto.Id }, createdRoomPhoto);
     }
 
     [HttpPost("collection")]
-    public async Task<IActionResult> CreateRoomPhotoCollection(Guid roomId,
+    public async Task<IActionResult> CreateRoomPhotoCollection(Guid roomId, 
         [FromBody] IEnumerable<RoomPhotoForCreationDto> roomPhotoCollection)
     {
-        var (roomPhotos, ids) = await _service.RoomPhotoService.CreateRoomPhotoCollectionAsync
-            (roomId, roomPhotoCollection);
+        var (roomPhotos, ids) = await _service.RoomPhotoService.CreateRoomPhotoCollectionAsync(roomId, roomPhotoCollection);
         return CreatedAtRoute("RoomPhotoCollection", new { roomId, ids }, roomPhotos);
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRoomPhoto(Guid roomId, Guid id, [FromBody] RoomPhotoForUpdateDto photo)
     {
-        if (photo is null)
-            return BadRequest("RoomPhotoForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedRoomPhoto = await _service.RoomPhotoService.UpdateRoomPhotoAsync(roomId, id, photo);
         return Ok(updatedRoomPhoto);
     }

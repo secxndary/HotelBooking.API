@@ -1,4 +1,5 @@
-﻿using HotelBooking.Presentation.ModelBinders;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using HotelBooking.Presentation.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -37,14 +38,9 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoom(Guid hotelId, [FromBody] RoomForCreationDto room)
     {
-        if (room is null)
-            return BadRequest("RoomForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdRoom = await _service.RoomService.CreateRoomForHotelAsync(hotelId, room);
         return CreatedAtRoute("GetRoomForHotel", new { hotelId, id = createdRoom.Id }, createdRoom);
     }
@@ -58,14 +54,9 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRoomForHotel(Guid hotelId, Guid id, [FromBody] RoomForUpdateDto room)
     {
-        if (room is null)
-            return BadRequest("RoomForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedRoom = await _service.RoomService.UpdateRoomForHotelAsync(hotelId, id, room);
         return Ok(updatedRoom);
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -28,27 +29,17 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user)
     {
-        if (user is null)
-            return BadRequest("UserForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdUser = await _service.UserService.CreateUserAsync(user);
         return CreatedAtRoute("UserById", new { id = createdUser.Id }, createdUser);
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto user)
     {
-        if (user is null)
-            return BadRequest("UserForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedUser = await _service.UserService.UpdateUserAsync(id, user);
         return Ok(updatedUser);
     }

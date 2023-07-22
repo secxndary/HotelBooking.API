@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -28,27 +29,17 @@ public class RolesController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRole([FromBody] RoleForCreationDto role)
     {
-        if (role is null)
-            return BadRequest("RoleForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdRole = await _service.RoleService.CreateRoleAsync(role);
         return CreatedAtRoute("RoleById", new { id = createdRole.Id }, createdRole);
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRole(Guid id, [FromBody] RoleForUpdateDto role)
     {
-        if (role is null)
-            return BadRequest("RoleForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedRole = await _service.RoleService.UpdateRoleAsync(id, role);
         return Ok(updatedRole);
     }

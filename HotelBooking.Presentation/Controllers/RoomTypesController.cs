@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -28,27 +29,17 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoomType([FromBody] RoomTypeForCreationDto roomType)
     {
-        if (roomType is null)
-            return BadRequest("RoomTypeForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var createdRoomType = await _service.RoomTypeService.CreateRoomTypeAsync(roomType);
         return CreatedAtRoute("RoomTypeById", new { id = createdRoomType.Id }, createdRoomType);
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRoomType(Guid id, [FromBody] RoomTypeForUpdateDto roomType)
     {
-        if (roomType is null)
-            return BadRequest("RoomTypeForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedRoomType = await _service.RoomTypeService.UpdateRoomTypeAsync(id, roomType);
         return Ok(updatedRoomType);
     }

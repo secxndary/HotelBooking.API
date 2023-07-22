@@ -1,5 +1,6 @@
 using Contracts;
 using HotelBooking.Extensions;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -28,6 +29,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+
+builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddControllers(config => 
 {
     config.RespectBrowserAcceptHeader = true;

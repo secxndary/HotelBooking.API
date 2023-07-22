@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
@@ -28,29 +29,18 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateReservation(Guid roomId, [FromBody] ReservationForCreationDto reservation)
     {
-        if (reservation is null)
-            return BadRequest("ReservationForCreationDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
-        var createdReservation = await _service.ReservationService
-            .CreateReservationForRoomAsync(roomId, reservation);
+        var createdReservation = await _service.ReservationService.CreateReservationForRoomAsync(roomId, reservation);
         return CreatedAtRoute("ReservationById", new { roomId, id = createdReservation.Id }, createdReservation);
     }
 
     [HttpPut("{id:guid}")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateReservation(Guid roomId, Guid id, 
         [FromBody] ReservationForUpdateDto reservation)
     {
-        if (reservation is null)
-            return BadRequest("ReservationForUpdateDto object is null");
-
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         var updatedReservation = await _service.ReservationService.UpdateReservationForRoomAsync(roomId, id, reservation);
         return Ok(updatedReservation);
     }
