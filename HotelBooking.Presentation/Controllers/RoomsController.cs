@@ -55,8 +55,8 @@ public class RoomsController : ControllerBase
         Guid hotelId, 
         [FromBody] IEnumerable<RoomForCreationDto> roomCollection)
     {
-        var result = await _service.RoomService.CreateRoomCollectionAsync(hotelId, roomCollection);
-        return CreatedAtRoute("RoomCollection", new { hotelId, result.ids }, result.rooms);
+        var (rooms, ids) = await _service.RoomService.CreateRoomCollectionAsync(hotelId, roomCollection);
+        return CreatedAtRoute("RoomCollection", new { hotelId, ids }, rooms);
     }
 
     [HttpPut("{id:guid}")]

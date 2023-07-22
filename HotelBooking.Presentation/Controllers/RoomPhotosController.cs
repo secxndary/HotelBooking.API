@@ -55,8 +55,9 @@ public class RoomPhotosController : ControllerBase
         Guid roomId,
         [FromBody] IEnumerable<RoomPhotoForCreationDto> roomPhotoCollection)
     {
-        var result = await _service.RoomPhotoService.CreateRoomPhotoCollectionAsync(roomId, roomPhotoCollection);
-        return CreatedAtRoute("RoomPhotoCollection", new { roomId, result.ids }, result.roomPhotos);
+        var (roomPhotos, ids) = await _service.RoomPhotoService.CreateRoomPhotoCollectionAsync
+            (roomId, roomPhotoCollection);
+        return CreatedAtRoute("RoomPhotoCollection", new { roomId, ids }, roomPhotos);
     }
 
     [HttpPut("{id:guid}")]
