@@ -24,27 +24,27 @@ public sealed class RoomService : IRoomService
     }
 
 
-    public async Task<IEnumerable<RoomDto>> GetRoomsAsync(Guid hotelId, bool trackChanges)
+    public async Task<IEnumerable<RoomDto>> GetRoomsAsync(Guid hotelId)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var rooms = await _repository.Room.GetRoomsAsync(hotelId, trackChanges);
+        var rooms = await _repository.Room.GetRoomsAsync(hotelId, trackChanges: false);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(rooms);
         return roomsDto;
     }
 
-    public async Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges)
+    public async Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids)
     {
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var rooms = await _repository.Room.GetByIdsForHotelAsync(hotelId, ids, trackChanges);
+        var rooms = await _repository.Room.GetByIdsForHotelAsync(hotelId, ids, trackChanges: false);
         if (rooms.Count() != ids.Count())
             throw new CollectionByIdsBadRequestException();
 
@@ -52,13 +52,13 @@ public sealed class RoomService : IRoomService
         return roomsDto;
     }
 
-    public async Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges)
+    public async Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
         
-        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges: false);
         if (room is null)
             throw new RoomNotFoundException(id);
         
@@ -66,9 +66,9 @@ public sealed class RoomService : IRoomService
         return roomDto;
     }
 
-    public async Task<RoomDto> GetRoomAsync(Guid id, bool trackChanges)
+    public async Task<RoomDto> GetRoomAsync(Guid id)
     {
-        var room = await _repository.Room.GetRoomAsync(id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(id, trackChanges: false);
         if (room is null)
             throw new RoomNotFoundException(id);
 
@@ -76,9 +76,9 @@ public sealed class RoomService : IRoomService
         return roomDto;
     }
 
-    public async Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room, bool trackChanges)
+    public async Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
@@ -106,18 +106,17 @@ public sealed class RoomService : IRoomService
         return (rooms: roomsCollectionToReturn, ids);
     }
 
-    public async Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate,
-        bool hotelTrackChanges, bool roomTrackChanges)
+    public async Task UpdateRoomForHotelAsync(Guid hotelId, Guid id, RoomForUpdateDto roomForUpdate)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, hotelTrackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var roomType = await _repository.RoomType.GetRoomTypeAsync(roomForUpdate.RoomTypeId, false);
+        var roomType = await _repository.RoomType.GetRoomTypeAsync(roomForUpdate.RoomTypeId, trackChanges: false);
         if (roomType is null)
             throw new RoomTypeNotFoundException(roomForUpdate.RoomTypeId);
 
-        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, roomTrackChanges);
+        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges: true);
         if (roomEntity is null)
             throw new RoomNotFoundException(id);
 
@@ -125,14 +124,13 @@ public sealed class RoomService : IRoomService
         await _repository.SaveAsync();
     }
 
-    public async Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync
-        (Guid hotelId, Guid id, bool hotelTrackChanges, bool roomTrackChanges)
+    public async Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, hotelTrackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, roomTrackChanges);
+        var roomEntity = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges: true);
         if (roomEntity is null)
             throw new RoomNotFoundException(id);
 
@@ -146,13 +144,13 @@ public sealed class RoomService : IRoomService
         await _repository.SaveAsync();
     }
 
-    public async Task DeleteRoomForHotelAsync(Guid hotelId, Guid id, bool trackChanges)
+    public async Task DeleteRoomForHotelAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(hotelId);
 
-        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges);
+        var room = await _repository.Room.GetRoomAsync(hotelId, id, trackChanges: false);
         if (room is null)
             throw new RoomNotFoundException(id);
         

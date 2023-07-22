@@ -6,15 +6,13 @@ namespace Service.Contracts.UserServices;
 
 public interface IFeedbackService
 {
-    Task<IEnumerable<FeedbackDto>> GetFeedbacksForHotelAsync(Guid hotelId, bool trackChanges);
-    Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges);
-    Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges);
-    Task<FeedbackDto> GetFeedbackAsync(Guid id, bool trackChanges);
-    Task<FeedbackDto> CreateFeedbackForReservationAsync(Guid reservationId, 
-        FeedbackForCreationDto feedback, bool trackChanges);
-    Task UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate, bool trackChanges);
-    Task<(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)> GetFeedbackForPatchAsync
-        (Guid id, bool trackChanges);
+    Task<IEnumerable<FeedbackDto>> GetFeedbacksForHotelAsync(Guid hotelId);
+    Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId);
+    Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId);
+    Task<FeedbackDto> GetFeedbackAsync(Guid id);
+    Task<FeedbackDto> CreateFeedbackForReservationAsync(Guid reservationId, FeedbackForCreationDto feedback);
+    Task UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate);
+    Task<(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity)> GetFeedbackForPatchAsync(Guid id);
     Task SaveChangesForPatchAsync(FeedbackForUpdateDto feedbackToPatch, Feedback feedbackEntity);
-    Task DeleteFeedbackAsync(Guid id, bool trackChanges);
+    Task DeleteFeedbackAsync(Guid id);
 }

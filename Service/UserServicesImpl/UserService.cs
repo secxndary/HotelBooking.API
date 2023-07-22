@@ -23,16 +23,16 @@ public sealed class UserService : IUserService
     }
 
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges)
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        var users = await _repository.User.GetAllUsersAsync(trackChanges);
+        var users = await _repository.User.GetAllUsersAsync(trackChanges: false);
         var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
         return usersDto;
     }
 
-    public async Task<UserDto> GetUserAsync(Guid id, bool trackChanges)
+    public async Task<UserDto> GetUserAsync(Guid id)
     {
-        var user = await _repository.User.GetUserAsync(id, trackChanges);
+        var user = await _repository.User.GetUserAsync(id, trackChanges: false);
         if (user is null)
             throw new UserNotFoundException(id);
 
@@ -47,7 +47,6 @@ public sealed class UserService : IUserService
             throw new RoleNotFoundException(user.RoleId);
 
         var userEntity = _mapper.Map<User>(user);
-
         _repository.User.CreateUser(userEntity);
         await _repository.SaveAsync();
 
@@ -55,13 +54,13 @@ public sealed class UserService : IUserService
         return userToReturn;
     }
 
-    public async Task UpdateUserAsync(Guid id, UserForUpdateDto userForUpdate, bool trackChanges)
+    public async Task UpdateUserAsync(Guid id, UserForUpdateDto userForUpdate)
     {
         var role = await _repository.Role.GetRoleAsync(userForUpdate.RoleId, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(userForUpdate.RoleId);
 
-        var userEntity = await _repository.User.GetUserAsync(id, trackChanges);
+        var userEntity = await _repository.User.GetUserAsync(id, trackChanges: true);
         if (userEntity is null)
             throw new UserNotFoundException(id);
 
@@ -69,9 +68,9 @@ public sealed class UserService : IUserService
         await _repository.SaveAsync();
     }
 
-    public async Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id, bool trackChanges)
+    public async Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id)
     {
-        var userEntity = await _repository.User.GetUserAsync(id, trackChanges);
+        var userEntity = await _repository.User.GetUserAsync(id, trackChanges: true);
         if (userEntity is null)
             throw new UserNotFoundException(id);
 
@@ -89,9 +88,9 @@ public sealed class UserService : IUserService
         await _repository.SaveAsync();
     }
 
-    public async Task DeleteUserAsync(Guid id, bool trackChanges)
+    public async Task DeleteUserAsync(Guid id)
     {
-        var user = await _repository.User.GetUserAsync(id, trackChanges);
+        var user = await _repository.User.GetUserAsync(id, trackChanges: false);
         if (user is null)
             throw new UserNotFoundException(id);
 

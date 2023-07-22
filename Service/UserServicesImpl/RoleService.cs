@@ -23,16 +23,16 @@ public sealed class RoleService : IRoleService
     }
 
 
-    public async Task<IEnumerable<RoleDto>> GetAllRolesAsync(bool trackChanges)
+    public async Task<IEnumerable<RoleDto>> GetAllRolesAsync()
     {
-        var roles = await _repository.Role.GetAllRolesAsync(trackChanges);
+        var roles = await _repository.Role.GetAllRolesAsync(trackChanges: false);
         var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
         return rolesDto;
     }
 
-    public async Task<RoleDto> GetRoleAsync(Guid id, bool trackChanges)
+    public async Task<RoleDto> GetRoleAsync(Guid id)
     {
-        var role = await _repository.Role.GetRoleAsync(id, trackChanges);
+        var role = await _repository.Role.GetRoleAsync(id, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(id);
 
@@ -51,9 +51,9 @@ public sealed class RoleService : IRoleService
         return roleToReturn;
     }
 
-    public async Task UpdateRoleAsync(Guid id, RoleForUpdateDto roleForUpdate, bool trackChanges)
+    public async Task UpdateRoleAsync(Guid id, RoleForUpdateDto roleForUpdate)
     {
-        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges);
+        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges: true);
         if (roleEntity is null)
             throw new RoleNotFoundException(id);
 
@@ -61,10 +61,9 @@ public sealed class RoleService : IRoleService
         await _repository.SaveAsync();
     }
 
-    public async Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync
-        (Guid id, bool trackChanges)
+    public async Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync(Guid id)
     {
-        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges);
+        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges: true);
         if (roleEntity is null)
             throw new RoleNotFoundException(id);
 
@@ -78,9 +77,9 @@ public sealed class RoleService : IRoleService
         await _repository.SaveAsync();
     }
 
-    public async Task DeleteRoleAsync(Guid id, bool trackChanges)
+    public async Task DeleteRoleAsync(Guid id)
     {
-        var role = await _repository.Role.GetRoleAsync(id, trackChanges);
+        var role = await _repository.Role.GetRoleAsync(id, trackChanges: false);
         if (role is null)
             throw new RoleNotFoundException(id);
 

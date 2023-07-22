@@ -16,14 +16,14 @@ public class UsersController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUsers()
     {
-        var users = await _service.UserService.GetAllUsersAsync(trackChanges: false);
+        var users = await _service.UserService.GetAllUsersAsync();
         return Ok(users);
     }
 
     [HttpGet("{id:guid}", Name = "UserById")]
     public async Task<IActionResult> GetUser(Guid id)
     {
-        var user = await _service.UserService.GetUserAsync(id, trackChanges: false);
+        var user = await _service.UserService.GetUserAsync(id);
         return Ok(user);
     }
 
@@ -49,19 +49,18 @@ public class UsersController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.UserService.UpdateUserAsync(id, user, trackChanges: true);
+        await _service.UserService.UpdateUserAsync(id, user);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> PartiallyUpdateUser(
-        Guid id, 
+    public async Task<IActionResult> PartiallyUpdateUser(Guid id, 
         [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (userToPatch, userEntity) = await _service.UserService.GetUserForPatchAsync(id, trackChanges: true);
+        var (userToPatch, userEntity) = await _service.UserService.GetUserForPatchAsync(id);
         patchDoc.ApplyTo(userToPatch);
 
         TryValidateModel(userToPatch);
@@ -75,7 +74,7 @@ public class UsersController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
-        await _service.UserService.DeleteUserAsync(id, trackChanges: false);
+        await _service.UserService.DeleteUserAsync(id);
         return NoContent();
     }
 }

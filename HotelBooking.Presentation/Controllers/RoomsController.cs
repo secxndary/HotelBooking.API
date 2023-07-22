@@ -17,23 +17,22 @@ public class RoomsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetRoomsForHotel(Guid hotelId)
     {
-        var rooms = await _service.RoomService.GetRoomsAsync(hotelId, trackChanges: false);
+        var rooms = await _service.RoomService.GetRoomsAsync(hotelId);
         return Ok(rooms);
     }
 
     [HttpGet("{id:guid}", Name = "GetRoomForHotel")]
     public async Task<IActionResult> GetRoomForHotel(Guid hotelId, Guid id)
     {
-        var room = await _service.RoomService.GetRoomAsync(hotelId, id, trackChanges: false);
+        var room = await _service.RoomService.GetRoomAsync(hotelId, id);
         return Ok(room);
     }
 
     [HttpGet("collection/({ids})", Name = "RoomCollection")]
-    public async Task<IActionResult> GetRoomCollection(
-        Guid hotelId,
+    public async Task<IActionResult> GetRoomCollection(Guid hotelId,
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var rooms = await _service.RoomService.GetByIdsForHotelAsync(hotelId, ids, trackChanges: false);
+        var rooms = await _service.RoomService.GetByIdsForHotelAsync(hotelId, ids);
         return Ok(rooms);
     }
 
@@ -46,13 +45,12 @@ public class RoomsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdRoom = await _service.RoomService.CreateRoomForHotelAsync(hotelId, room, trackChanges: false);
+        var createdRoom = await _service.RoomService.CreateRoomForHotelAsync(hotelId, room);
         return CreatedAtRoute("GetRoomForHotel", new { hotelId, id = createdRoom.Id }, createdRoom);
     }
 
     [HttpPost("collection")]
-    public async Task<IActionResult> CreateRoomCollection(
-        Guid hotelId, 
+    public async Task<IActionResult> CreateRoomCollection(Guid hotelId, 
         [FromBody] IEnumerable<RoomForCreationDto> roomCollection)
     {
         var (rooms, ids) = await _service.RoomService.CreateRoomCollectionAsync(hotelId, roomCollection);
@@ -68,8 +66,7 @@ public class RoomsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomService.UpdateRoomForHotelAsync(hotelId, id, room,
-            hotelTrackChanges: false, roomTrackChanges: true);
+        await _service.RoomService.UpdateRoomForHotelAsync(hotelId, id, room);
         return NoContent();
     }
 
@@ -80,8 +77,7 @@ public class RoomsController : ControllerBase
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roomToPatch, roomEntity) = await _service.RoomService.GetRoomForPatchAsync(hotelId, id,
-            hotelTrackChanges: false, roomTrackChanges: true);
+        var (roomToPatch, roomEntity) = await _service.RoomService.GetRoomForPatchAsync(hotelId, id);
         patchDoc.ApplyTo(roomToPatch, ModelState);
 
         TryValidateModel(roomToPatch);
@@ -95,7 +91,7 @@ public class RoomsController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteRoomForHotel(Guid hotelId, Guid id)
     {
-        await _service.RoomService.DeleteRoomForHotelAsync(hotelId, id, trackChanges: false);
+        await _service.RoomService.DeleteRoomForHotelAsync(hotelId, id);
         return NoContent();
     }
 }

@@ -6,16 +6,15 @@ namespace Service.Contracts.UserServices;
 
 public interface IHotelPhotoService
 {
-    Task<IEnumerable<HotelPhotoDto>> GetHotelPhotosAsync(Guid hotelId, bool trackChanges);
-    Task<IEnumerable<HotelPhotoDto>> GetByIdsAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
-    Task<HotelPhotoDto> GetHotelPhotoAsync(Guid hotelId, Guid id, bool trackChanges);
-    Task<HotelPhotoDto> CreateHotelPhotoAsync(Guid hotelId, HotelPhotoForCreationDto hotelPhoto, bool trackChanges);
+    Task<IEnumerable<HotelPhotoDto>> GetHotelPhotosAsync(Guid hotelId);
+    Task<IEnumerable<HotelPhotoDto>> GetByIdsAsync(Guid hotelId, IEnumerable<Guid> ids);
+    Task<HotelPhotoDto> GetHotelPhotoAsync(Guid hotelId, Guid id);
+    Task<HotelPhotoDto> CreateHotelPhotoAsync(Guid hotelId, HotelPhotoForCreationDto hotelPhoto);
     Task<(IEnumerable<HotelPhotoDto> hotelPhotos, string ids)> CreateHotelPhotoCollectionAsync
         (Guid hotelId, IEnumerable<HotelPhotoForCreationDto> hotelPhotosCollection);
-    Task UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhoto,
-        bool hotelTrackChanges, bool photoTrackChanges);
+    Task UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhoto);
     Task<(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)> GetHotelPhotoForPatchAsync
-       (Guid hotelId, Guid id, bool hotelTrackChanges, bool photoTrackChanges);
+        (Guid hotelId, Guid id);
     Task SaveChangesForPatchAsync(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity);
-    Task DeleteHotelPhotoAsync(Guid hotelId, Guid id, bool trackChanges);
+    Task DeleteHotelPhotoAsync(Guid hotelId, Guid id);
 }

@@ -16,14 +16,14 @@ public class RoomTypesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetRoomTypes()
     {
-        var roomTypes = await _service.RoomTypeService.GetAllRoomTypesAsync(trackChanges: false);
+        var roomTypes = await _service.RoomTypeService.GetAllRoomTypesAsync();
         return Ok(roomTypes);
     }
 
     [HttpGet("{id:guid}", Name = "RoomTypeById")]
     public async Task<IActionResult> GetRoomType(Guid id)
     {
-        var roomType = await _service.RoomTypeService.GetRoomTypeAsync(id, trackChanges: false);
+        var roomType = await _service.RoomTypeService.GetRoomTypeAsync(id);
         return Ok(roomType);
     }
 
@@ -49,19 +49,18 @@ public class RoomTypesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoomTypeService.UpdateRoomTypeAsync(id, roomType, trackChanges: true);
+        await _service.RoomTypeService.UpdateRoomTypeAsync(id, roomType);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> PartiallyUpdateRoomType(
-        Guid id,
+    public async Task<IActionResult> PartiallyUpdateRoomType(Guid id,
         [FromBody] JsonPatchDocument<RoomTypeForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roomTypeToPatch, roomTypeEntity) = await _service.RoomTypeService.GetRoomTypeForPatchAsync(id, trackChanges: true);
+        var (roomTypeToPatch, roomTypeEntity) = await _service.RoomTypeService.GetRoomTypeForPatchAsync(id);
         patchDoc.ApplyTo(roomTypeToPatch);
 
         TryValidateModel(roomTypeToPatch);
@@ -75,7 +74,7 @@ public class RoomTypesController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteRoomType(Guid id)
     {
-        await _service.RoomTypeService.DeleteRoomTypeAsync(id, trackChanges: false);
+        await _service.RoomTypeService.DeleteRoomTypeAsync(id);
         return NoContent();
     }
 }

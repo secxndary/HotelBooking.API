@@ -16,14 +16,14 @@ public class ReservationsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetReservations(Guid roomId)
     {
-        var reservations = await _service.ReservationService.GetReservationsAsync(roomId, trackChanges: false);
+        var reservations = await _service.ReservationService.GetReservationsAsync(roomId);
         return Ok(reservations);
     }
 
     [HttpGet("{id:guid}", Name = "ReservationById")]
     public async Task<IActionResult> GetReservation(Guid roomId, Guid id)
     {
-        var reservation = await _service.ReservationService.GetReservationAsync(roomId, id, trackChanges: false);
+        var reservation = await _service.ReservationService.GetReservationAsync(roomId, id);
         return Ok(reservation);
     }
 
@@ -37,12 +37,13 @@ public class ReservationsController : ControllerBase
             return UnprocessableEntity(ModelState);
 
         var createdReservation = await _service.ReservationService
-            .CreateReservationForRoomAsync(roomId, reservation, trackChanges: false);
+            .CreateReservationForRoomAsync(roomId, reservation);
         return CreatedAtRoute("ReservationById", new { roomId, id = createdReservation.Id }, createdReservation);
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateReservation(Guid roomId, Guid id, [FromBody] ReservationForUpdateDto reservation)
+    public async Task<IActionResult> UpdateReservation(Guid roomId, Guid id, 
+        [FromBody] ReservationForUpdateDto reservation)
     {
         if (reservation is null)
             return BadRequest("ReservationForUpdateDto object is null");
@@ -50,7 +51,7 @@ public class ReservationsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.ReservationService.UpdateReservationForRoomAsync(roomId, id, reservation, trackChanges: true);
+        await _service.ReservationService.UpdateReservationForRoomAsync(roomId, id, reservation);
         return NoContent();
     }
 
@@ -61,8 +62,7 @@ public class ReservationsController : ControllerBase
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (reservationToPatch, reservationEntity) = await _service.ReservationService.GetReservationForPatchAsync
-            (roomId, id, roomTrackChanges: false, reservationTrackChanges: true);
+        var (reservationToPatch, reservationEntity) = await _service.ReservationService.GetReservationForPatchAsync(roomId, id);
         patchDoc.ApplyTo(reservationToPatch);
 
         TryValidateModel(reservationToPatch);
@@ -76,7 +76,7 @@ public class ReservationsController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteReservationForRoom(Guid roomId, Guid id)
     {
-        await _service.ReservationService.DeleteReservationForRoomAsync(roomId, id, trackChanges: false);
+        await _service.ReservationService.DeleteReservationForRoomAsync(roomId, id);
         return NoContent();
     }
 }

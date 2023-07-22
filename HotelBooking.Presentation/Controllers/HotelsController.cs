@@ -17,23 +17,22 @@ public class HotelsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetHotels()
     {
-        var hotels = await _service.HotelService.GetAllHotelsAsync(trackChanges: false);
+        var hotels = await _service.HotelService.GetAllHotelsAsync();
         return Ok(hotels);
     }
 
     [HttpGet("collection/({ids})", Name = "HotelCollection")]
     public async Task<IActionResult> GetHotelCollection(
-        [ModelBinder(typeof(ArrayModelBinder))]
-        IEnumerable<Guid> ids)
+        [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var hotels = await _service.HotelService.GetByIdsAsync(ids, trackChanges: false);
+        var hotels = await _service.HotelService.GetByIdsAsync(ids);
         return Ok(hotels);
     }
 
     [HttpGet("{id:guid}", Name = "HotelById")]
     public async Task<IActionResult> GetHotel(Guid id)
     {
-        var hotel = await _service.HotelService.GetHotelAsync(id, trackChanges: false);
+        var hotel = await _service.HotelService.GetHotelAsync(id);
         return Ok(hotel);
     }
 
@@ -52,8 +51,7 @@ public class HotelsController : ControllerBase
 
     [HttpPost("collection")]
     public async Task<IActionResult> CreateHotelCollection(
-        [FromBody] 
-        IEnumerable<HotelForCreationDto> hotelCollection)
+        [FromBody] IEnumerable<HotelForCreationDto> hotelCollection)
     {
         var (hotels, ids) = await _service.HotelService.CreateHotelCollectionAsync(hotelCollection);
         return CreatedAtRoute("HotelCollection", new { ids }, hotels);
@@ -68,20 +66,18 @@ public class HotelsController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelService.UpdateHotelAsync(id, hotel, trackChanges: true);
+        await _service.HotelService.UpdateHotelAsync(id, hotel);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> PartiallyUpdateHotel(
-        Guid id,
+    public async Task<IActionResult> PartiallyUpdateHotel(Guid id,
         [FromBody] JsonPatchDocument<HotelForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (hotelToPatch, hotelEntity) = await _service.HotelService.GetHotelForPatchAsync
-            (id, trackChanges: true);
+        var (hotelToPatch, hotelEntity) = await _service.HotelService.GetHotelForPatchAsync(id);
         patchDoc.ApplyTo(hotelToPatch);
 
         TryValidateModel(hotelToPatch);
@@ -95,7 +91,7 @@ public class HotelsController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteHotel(Guid id)
     {
-        await _service.HotelService.DeleteHotelAsync(id, trackChanges: false);
+        await _service.HotelService.DeleteHotelAsync(id);
         return NoContent();
     }
 }

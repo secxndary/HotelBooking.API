@@ -16,14 +16,14 @@ public class RolesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetRoles()
     {
-        var roles = await _service.RoleService.GetAllRolesAsync(trackChanges: false);
+        var roles = await _service.RoleService.GetAllRolesAsync();
         return Ok(roles);
     }
 
     [HttpGet("{id:guid}", Name = "RoleById")]
     public async Task<IActionResult> GetRole(Guid id)
     {
-        var role = await _service.RoleService.GetRoleAsync(id, trackChanges: false);
+        var role = await _service.RoleService.GetRoleAsync(id);
         return Ok(role);
     }
 
@@ -49,19 +49,18 @@ public class RolesController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.RoleService.UpdateRoleAsync(id, role, trackChanges: true);
+        await _service.RoleService.UpdateRoleAsync(id, role);
         return NoContent();
     }
 
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> PartiallyUpdateRole(
-        Guid id,
+    public async Task<IActionResult> PartiallyUpdateRole(Guid id, 
         [FromBody] JsonPatchDocument<RoleForUpdateDto> patchDoc)
     {
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (roleToPatch, roleEntity) = await _service.RoleService.GetRoleForPatchAsync(id, trackChanges: true);
+        var (roleToPatch, roleEntity) = await _service.RoleService.GetRoleForPatchAsync(id);
         patchDoc.ApplyTo(roleToPatch);
 
         TryValidateModel(roleToPatch);
@@ -75,7 +74,7 @@ public class RolesController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteRole(Guid id)
     {
-        await _service.RoleService.DeleteRoleAsync(id, trackChanges: false);
+        await _service.RoleService.DeleteRoleAsync(id);
         return NoContent();
     }
 }

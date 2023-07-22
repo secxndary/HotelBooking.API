@@ -6,11 +6,11 @@ namespace Service.Contracts.UserServices;
 
 public interface IRoleService
 {
-    Task<IEnumerable<RoleDto>> GetAllRolesAsync(bool trackChanges);
-    Task<RoleDto> GetRoleAsync(Guid id, bool trackChanges);
+    Task<IEnumerable<RoleDto>> GetAllRolesAsync();
+    Task<RoleDto> GetRoleAsync(Guid id);
     Task<RoleDto> CreateRoleAsync(RoleForCreationDto role);
-    Task UpdateRoleAsync(Guid id, RoleForUpdateDto role, bool trackChanges);
-    Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync(Guid id, bool trackChanges);
+    Task UpdateRoleAsync(Guid id, RoleForUpdateDto role);
+    Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync(Guid id);
     Task SaveChangesForPatchAsync(RoleForUpdateDto roleToPatch, Role roleEntity);
-    Task DeleteRoleAsync(Guid id, bool trackChanges);
+    Task DeleteRoleAsync(Guid id);
 }

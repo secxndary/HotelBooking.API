@@ -24,19 +24,19 @@ public sealed class HotelService : IHotelService
     }
 
 
-    public async Task<IEnumerable<HotelDto>> GetAllHotelsAsync(bool trackChanges)
+    public async Task<IEnumerable<HotelDto>> GetAllHotelsAsync()
     {
-        var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges);
+        var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges: false);
         var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotels);
         return hotelsDto;
     }
 
-    public async Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges)
+    public async Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var hotels = await _repository.Hotel.GetByIdsAsync(ids, trackChanges);
+        var hotels = await _repository.Hotel.GetByIdsAsync(ids, trackChanges: false);
         if (hotels.Count() != ids.Count())
             throw new CollectionByIdsBadRequestException();
 
@@ -44,9 +44,9 @@ public sealed class HotelService : IHotelService
         return hotelsDto;
     }
 
-    public async Task<HotelDto> GetHotelAsync(Guid id, bool trackChanges)
+    public async Task<HotelDto> GetHotelAsync(Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(id);
 
@@ -81,9 +81,9 @@ public sealed class HotelService : IHotelService
         return (hotels: hotelCollectionToReturn, ids);
     }
 
-    public async Task UpdateHotelAsync(Guid id, HotelForUpdateDto hotelForUpdate, bool trackChanges)
+    public async Task UpdateHotelAsync(Guid id, HotelForUpdateDto hotelForUpdate)
     {
-        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges);
+        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges: true);
         if (hotelEntity is null)
             throw new HotelNotFoundException(id);
 
@@ -91,10 +91,9 @@ public sealed class HotelService : IHotelService
         await _repository.SaveAsync();
     }
 
-    public async Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync
-        (Guid id, bool trackChanges)
+    public async Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync(Guid id)
     {
-        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges);
+        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges: true);
         if (hotelEntity is null)
             throw new HotelNotFoundException(id);
 
@@ -108,9 +107,9 @@ public sealed class HotelService : IHotelService
         await _repository.SaveAsync();
     }
 
-    public async Task DeleteHotelAsync(Guid id, bool trackChanges)
+    public async Task DeleteHotelAsync(Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges);
+        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
         if (hotel is null)
             throw new HotelNotFoundException(id);
         

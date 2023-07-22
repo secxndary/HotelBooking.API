@@ -17,14 +17,14 @@ public class HotelPhotosController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetHotelPhotos(Guid hotelId)
     {
-        var hotelPhotos = await _service.HotelPhotoService.GetHotelPhotosAsync(hotelId, trackChanges: false);
+        var hotelPhotos = await _service.HotelPhotoService.GetHotelPhotosAsync(hotelId);
         return Ok(hotelPhotos);
     }
 
     [HttpGet("{id:guid}", Name = "GetHotelPhotoForHotel")]
     public async Task<IActionResult> GetHotelPhoto(Guid hotelId, Guid id)
     {
-        var hotelPhoto = await _service.HotelPhotoService.GetHotelPhotoAsync(hotelId, id, trackChanges: false);
+        var hotelPhoto = await _service.HotelPhotoService.GetHotelPhotoAsync(hotelId, id);
         return Ok(hotelPhoto);
     }
 
@@ -33,7 +33,7 @@ public class HotelPhotosController : ControllerBase
         Guid hotelId,
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
     {
-        var hotelPhotos = await _service.HotelPhotoService.GetByIdsAsync(hotelId, ids, trackChanges: false);
+        var hotelPhotos = await _service.HotelPhotoService.GetByIdsAsync(hotelId, ids);
         return Ok(hotelPhotos);
     }
 
@@ -46,13 +46,12 @@ public class HotelPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        var createdHotelPhoto = await _service.HotelPhotoService.CreateHotelPhotoAsync(hotelId, hotelPhoto, trackChanges: false);
+        var createdHotelPhoto = await _service.HotelPhotoService.CreateHotelPhotoAsync(hotelId, hotelPhoto);
         return CreatedAtRoute("GetHotelPhotoForHotel", new { hotelId, id = createdHotelPhoto.Id }, createdHotelPhoto);
     }
 
     [HttpPost("collection")]
-    public async Task<IActionResult> CreateHotelPhotoCollection(
-        Guid hotelId,
+    public async Task<IActionResult> CreateHotelPhotoCollection(Guid hotelId,
         [FromBody] IEnumerable<HotelPhotoForCreationDto> hotelPhotoCollection)
     {
         var (hotelPhotos, ids) = await _service.HotelPhotoService.CreateHotelPhotoCollectionAsync
@@ -69,8 +68,7 @@ public class HotelPhotosController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        await _service.HotelPhotoService.UpdateHotelPhotoAsync(hotelId, id, photo, 
-            hotelTrackChanges: false, photoTrackChanges: true);
+        await _service.HotelPhotoService.UpdateHotelPhotoAsync(hotelId, id, photo);
         return NoContent();
     }
 
@@ -81,8 +79,7 @@ public class HotelPhotosController : ControllerBase
         if (patchDoc is null)
             return BadRequest("patchDoc object is null");
 
-        var (hotelPhotoToPatch, hotelPhotoEntity) = await _service.HotelPhotoService.GetHotelPhotoForPatchAsync
-            (hotelId, id, hotelTrackChanges: false, photoTrackChanges: true);
+        var (hotelPhotoToPatch, hotelPhotoEntity) = await _service.HotelPhotoService.GetHotelPhotoForPatchAsync(hotelId, id);
         patchDoc.ApplyTo(hotelPhotoToPatch);
 
         TryValidateModel(hotelPhotoToPatch);
@@ -96,7 +93,7 @@ public class HotelPhotosController : ControllerBase
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteHotelPhoto(Guid hotelId, Guid id)
     {
-        await _service.HotelPhotoService.DeleteHotelPhotoAsync(hotelId, id, trackChanges: false);
+        await _service.HotelPhotoService.DeleteHotelPhotoAsync(hotelId, id);
         return NoContent();
     }
 }
