@@ -46,10 +46,7 @@ public sealed class HotelService : IHotelService
 
     public async Task<HotelDto> GetHotelAsync(Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(id);
-
+        var hotel = await GetHotelAndCheckIfItExists(id, trackChanges: false);
         var hotelDto = _mapper.Map<HotelDto>(hotel);
         return hotelDto;
     }
@@ -83,10 +80,8 @@ public sealed class HotelService : IHotelService
 
     public async Task<HotelDto> UpdateHotelAsync(Guid id, HotelForUpdateDto hotelForUpdate)
     {
-        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges: true);
-        if (hotelEntity is null)
-            throw new HotelNotFoundException(id);
-
+        var hotelEntity = await GetHotelAndCheckIfItExists(id, trackChanges: true);
+       
         _mapper.Map(hotelForUpdate, hotelEntity);
         await _repository.SaveAsync();
         
@@ -96,10 +91,7 @@ public sealed class HotelService : IHotelService
 
     public async Task<(HotelForUpdateDto hotelToPatch, Hotel hotelEntity)> GetHotelForPatchAsync(Guid id)
     {
-        var hotelEntity = await _repository.Hotel.GetHotelAsync(id, trackChanges: true);
-        if (hotelEntity is null)
-            throw new HotelNotFoundException(id);
-
+        var hotelEntity = await GetHotelAndCheckIfItExists(id, trackChanges: true);
         var hotelToPatch = _mapper.Map<HotelForUpdateDto>(hotelEntity);
         return (hotelToPatch, hotelEntity);
     }
@@ -115,11 +107,17 @@ public sealed class HotelService : IHotelService
 
     public async Task DeleteHotelAsync(Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(id);
-        
+        var hotel = await GetHotelAndCheckIfItExists(id, trackChanges: false);
         _repository.Hotel.DeleteHotel(hotel);
         await _repository.SaveAsync();
+    }
+
+
+    private async Task<Hotel> GetHotelAndCheckIfItExists(Guid id, bool trackChanges)
+    {
+        var hotel = await _repository.Hotel.GetHotelAsync(id, trackChanges);
+        if (hotel is null)
+            throw new HotelNotFoundException(id);
+        return hotel;
     }
 }

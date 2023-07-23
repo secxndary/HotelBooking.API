@@ -26,12 +26,11 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
     public async Task<IEnumerable<HotelPhotoDto>> GetHotelPhotosAsync(Guid hotelId)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
         var hotelPhotos = await _repository.HotelPhoto.GetHotelPhotosAsync(hotelId, trackChanges: false);
         var hotelPhotosDto = _mapper.Map<IEnumerable<HotelPhotoDto>>(hotelPhotos);
+        
         return hotelPhotosDto;
     }
 
@@ -40,9 +39,7 @@ public sealed class HotelPhotoService : IHotelPhotoService
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
         var hotelPhotos = await _repository.HotelPhoto.GetByIdsAsync(hotelId, ids, trackChanges: false);
         if (hotelPhotos.Count() != ids.Count())
@@ -54,23 +51,17 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
     public async Task<HotelPhotoDto> GetHotelPhotoAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
-        var hotelPhoto = await _repository.HotelPhoto.GetHotelPhotoAsync(hotelId, id, trackChanges: false);
-        if (hotelPhoto is null)
-            throw new HotelPhotoNotFoundException(id);
-
+        var hotelPhoto = await GetHotelPhotoAndCheckIfItExists(hotelId, id, trackChanges: false);
         var hotelPhotoDto = _mapper.Map<HotelPhotoDto>(hotelPhoto);
+
         return hotelPhotoDto;
     }
 
     public async Task<HotelPhotoDto> CreateHotelPhotoAsync(Guid hotelId, HotelPhotoForCreationDto hotelPhoto)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
         var hotelPhotoEntity = _mapper.Map<HotelPhoto>(hotelPhoto);
         _repository.HotelPhoto.CreateHotelPhoto(hotelId, hotelPhotoEntity);
@@ -98,14 +89,9 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
     public async Task<HotelPhotoDto> UpdateHotelPhotoAsync(Guid hotelId, Guid id, HotelPhotoForUpdateDto hotelPhotoForUpdate)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
-        var hotelPhotoEntity = await _repository.HotelPhoto.GetHotelPhotoAsync(hotelId, id, trackChanges: true);
-        if (hotelPhotoEntity is null)
-            throw new HotelPhotoNotFoundException(id);
-
+        var hotelPhotoEntity = await GetHotelPhotoAndCheckIfItExists(hotelId, id, trackChanges: true);
         _mapper.Map(hotelPhotoForUpdate, hotelPhotoEntity);
         await _repository.SaveAsync();
         
@@ -113,18 +99,14 @@ public sealed class HotelPhotoService : IHotelPhotoService
         return hotelPhotoToReturn;
     }
 
-    public async Task<(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)> GetHotelPhotoForPatchAsync
-        (Guid hotelId, Guid id)
+    public async Task<(HotelPhotoForUpdateDto hotelPhotoToPatch, HotelPhoto hotelPhotoEntity)> 
+        GetHotelPhotoForPatchAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
-        var hotelPhotoEntity = await _repository.HotelPhoto.GetHotelPhotoAsync(hotelId, id, trackChanges: true);
-        if (hotelPhotoEntity is null)
-            throw new HotelPhotoNotFoundException(id);
-
+        var hotelPhotoEntity = await GetHotelPhotoAndCheckIfItExists(hotelId, id, trackChanges: true);
         var photoToPatch = _mapper.Map<HotelPhotoForUpdateDto>(hotelPhotoEntity);
+
         return (photoToPatch, hotelPhotoEntity);
     }
 
@@ -139,15 +121,27 @@ public sealed class HotelPhotoService : IHotelPhotoService
 
     public async Task DeleteHotelPhotoAsync(Guid hotelId, Guid id)
     {
-        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
-        if (hotel is null)
-            throw new HotelNotFoundException(hotelId);
+        await CheckIfHotelExists(hotelId);
 
-        var hotelPhoto = await _repository.HotelPhoto.GetHotelPhotoAsync(hotelId, id, trackChanges: false);
-        if (hotelPhoto is null)
-            throw new HotelPhotoNotFoundException(id);
+        var hotelPhoto = await GetHotelPhotoAndCheckIfItExists(hotelId, id, trackChanges: false);
 
         _repository.HotelPhoto.DeleteHotelPhoto(hotelPhoto);
         await _repository.SaveAsync();
+    }
+
+
+    private async Task CheckIfHotelExists(Guid hotelId)
+    {
+        var hotel = await _repository.Hotel.GetHotelAsync(hotelId, trackChanges: false);
+        if (hotel is null)
+            throw new HotelNotFoundException(hotelId);
+    }
+
+    private async Task<HotelPhoto> GetHotelPhotoAndCheckIfItExists(Guid hotelId, Guid id, bool trackChanges)
+    {
+        var hotelPhoto = await _repository.HotelPhoto.GetHotelPhotoAsync(hotelId, id, trackChanges);
+        if (hotelPhoto is null)
+            throw new HotelPhotoNotFoundException(id);
+        return hotelPhoto;
     }
 }

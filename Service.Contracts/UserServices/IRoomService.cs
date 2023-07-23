@@ -9,7 +9,6 @@ public interface IRoomService
     Task<IEnumerable<RoomDto>> GetRoomsAsync(Guid hotelId);
     Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids);
     Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id);
-    Task<RoomDto> GetRoomAsync(Guid id);
     Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room);
     Task<(IEnumerable<RoomDto> rooms, string ids)> CreateRoomCollectionAsync
         (Guid hotelId, IEnumerable<RoomForCreationDto> roomsCollection);

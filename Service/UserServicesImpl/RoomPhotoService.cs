@@ -26,12 +26,11 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
     public async Task<IEnumerable<RoomPhotoDto>> GetRoomPhotosAsync(Guid roomId)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
         var roomPhotos = await _repository.RoomPhoto.GetRoomPhotosAsync(roomId, trackChanges: false);
         var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotos);
+        
         return roomPhotosDto;
     }
 
@@ -40,9 +39,7 @@ public sealed class RoomPhotoService : IRoomPhotoService
         if (ids is null)
             throw new IdParametersBadRequestException();
 
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
         var roomPhotos = await _repository.RoomPhoto.GetByIdsAsync(roomId, ids, trackChanges: false);
         if (roomPhotos.Count() != ids.Count())
@@ -54,23 +51,17 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
     public async Task<RoomPhotoDto> GetRoomPhotoAsync(Guid roomId, Guid id)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var roomPhoto = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges: false);
-        if (roomPhoto is null)
-            throw new RoomPhotoNotFoundException(id);
-
+        var roomPhoto = await GetRoomPhotoAndCheckIfItExists(roomId, id, trackChanges: false);
         var roomPhotoDto = _mapper.Map<RoomPhotoDto>(roomPhoto);
+        
         return roomPhotoDto;
     }
 
     public async Task<RoomPhotoDto> CreateRoomPhotoAsync(Guid roomId, RoomPhotoForCreationDto roomPhoto)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
         var roomPhotoEntity = _mapper.Map<RoomPhoto>(roomPhoto);
         _repository.RoomPhoto.CreateRoomPhoto(roomId, roomPhotoEntity);
@@ -98,14 +89,9 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
     public async Task<RoomPhotoDto> UpdateRoomPhotoAsync(Guid roomId, Guid id, RoomPhotoForUpdateDto roomPhotoForUpdate)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var roomPhotoEntity = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges: true);
-        if (roomPhotoEntity is null)
-            throw new RoomPhotoNotFoundException(id);
-
+        var roomPhotoEntity = await GetRoomPhotoAndCheckIfItExists(roomId, id, trackChanges: true);
         _mapper.Map(roomPhotoForUpdate, roomPhotoEntity);
         await _repository.SaveAsync();
 
@@ -113,18 +99,14 @@ public sealed class RoomPhotoService : IRoomPhotoService
         return roomPhotoToReturn;
     }
 
-    public async Task<(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)> GetRoomPhotoForPatchAsync
-        (Guid roomId, Guid id)
+    public async Task<(RoomPhotoForUpdateDto roomPhotoToPatch, RoomPhoto roomPhotoEntity)> 
+        GetRoomPhotoForPatchAsync(Guid roomId, Guid id)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var roomPhotoEntity = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges: true);
-        if (roomPhotoEntity is null)
-            throw new RoomPhotoNotFoundException(id);
-
+        var roomPhotoEntity = await GetRoomPhotoAndCheckIfItExists(roomId, id, trackChanges: true);
         var photoToPatch = _mapper.Map<RoomPhotoForUpdateDto>(roomPhotoEntity);
+        
         return (photoToPatch, roomPhotoEntity);
     }
 
@@ -139,15 +121,27 @@ public sealed class RoomPhotoService : IRoomPhotoService
 
     public async Task DeleteRoomPhotoAsync(Guid roomId, Guid id)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var roomPhoto = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges: false);
-        if (roomPhoto is null)
-            throw new RoomPhotoNotFoundException(id);
+        var roomPhoto = await GetRoomPhotoAndCheckIfItExists(roomId, id, trackChanges: false);
 
         _repository.RoomPhoto.DeleteRoomPhoto(roomPhoto);
         await _repository.SaveAsync();
+    }
+
+
+    private async Task CheckIfRoomExists(Guid roomId)
+    {
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+    }
+
+    private async Task<RoomPhoto> GetRoomPhotoAndCheckIfItExists(Guid roomId, Guid id, bool trackChanges)
+    {
+        var roomPhoto = await _repository.RoomPhoto.GetRoomPhotoAsync(roomId, id, trackChanges);
+        if (roomPhoto is null)
+            throw new RoomPhotoNotFoundException(id);
+        return roomPhoto;
     }
 }

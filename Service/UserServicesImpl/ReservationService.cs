@@ -25,38 +25,28 @@ public sealed class ReservationService : IReservationService
 
     public async Task<IEnumerable<ReservationDto>> GetReservationsAsync(Guid roomId)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
         var reservations = await _repository.Reservation.GetReservationsAsync(roomId, trackChanges: false);
         var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservations);
+        
         return reservationsDto;
     }
 
     public async Task<ReservationDto> GetReservationAsync(Guid roomId, Guid id)
-    { 
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+    {
+        await CheckIfRoomExists(roomId);
 
-        var reservation = await _repository.Reservation.GetReservationAsync(roomId, id, trackChanges: false);
-        if (reservation is null)
-            throw new ReservationNotFoundException(id);
-
+        var reservation = await GetReservationAndCheckIfItExists(id, trackChanges: false);
         var reservationDto = _mapper.Map<ReservationDto>(reservation);
+        
         return reservationDto;
     }
 
     public async Task<ReservationDto> CreateReservationForRoomAsync(Guid roomId, ReservationForCreationDto reservation)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
-
-        var user = await _repository.User.GetUserAsync(reservation.UserId, trackChanges: false);
-        if (user is null)
-            throw new UserNotFoundException(reservation.UserId);
+        await CheckIfRoomExists(roomId);
+        await CheckIfUserExists(reservation.UserId);
 
         var reservationEntity = _mapper.Map<Reservation>(reservation);
         _repository.Reservation.CreateReservationForRoom(roomId, reservationEntity);
@@ -68,18 +58,10 @@ public sealed class ReservationService : IReservationService
 
     public async Task<ReservationDto> UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
+        await CheckIfUserExists(reservation.UserId);
 
-        var user = await _repository.User.GetUserAsync(reservation.UserId, trackChanges: false);
-        if (user is null)
-            throw new UserNotFoundException(reservation.UserId);
-
-        var reservationEntity = await _repository.Reservation.GetReservationAsync(id, trackChanges: true);
-        if (reservationEntity is null)
-            throw new ReservationNotFoundException(id);
-
+        var reservationEntity = await GetReservationAndCheckIfItExists(id, trackChanges: true);
         _mapper.Map(reservation, reservationEntity);
         await _repository.SaveAsync();
 
@@ -90,16 +72,12 @@ public sealed class ReservationService : IReservationService
     public async Task<(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)> 
         GetReservationForPatchAsync(Guid roomId, Guid id)
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var reservationEntity = await _repository.Reservation.GetReservationAsync(roomId, id, trackChanges: true);
-        if (reservationEntity is null)
-            throw new ReservationNotFoundException(id);
-
-        var photoToPatch = _mapper.Map<ReservationForUpdateDto>(reservationEntity);
-        return (photoToPatch, reservationEntity);
+        var reservationEntity = await GetReservationAndCheckIfItExists(id, trackChanges: true);
+        var reservationToPatch = _mapper.Map<ReservationForUpdateDto>(reservationEntity);
+        
+        return (reservationToPatch, reservationEntity);
     }
 
     public async Task<ReservationDto> SaveChangesForPatchAsync(ReservationForUpdateDto reservationToPatch, Reservation reservationEntity)
@@ -113,15 +91,34 @@ public sealed class ReservationService : IReservationService
 
     public async Task DeleteReservationForRoomAsync(Guid roomId, Guid id) 
     {
-        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
-        if (room is null)
-            throw new RoomNotFoundException(roomId);
+        await CheckIfRoomExists(roomId);
 
-        var reservation = await _repository.Reservation.GetReservationAsync(roomId, id, trackChanges: false);
-        if (reservation is null)
-            throw new ReservationNotFoundException(id);
+        var reservation = await GetReservationAndCheckIfItExists(id, trackChanges: true);
 
         _repository.Reservation.DeleteReservation(reservation);
         await _repository.SaveAsync();
+    }
+
+
+    private async Task CheckIfRoomExists(Guid roomId)
+    {
+        var room = await _repository.Room.GetRoomAsync(roomId, trackChanges: false);
+        if (room is null)
+            throw new RoomNotFoundException(roomId);
+    }
+
+    private async Task CheckIfUserExists(Guid userId)
+    {
+        var user = await _repository.User.GetUserAsync(userId, trackChanges: false);
+        if (user is null)
+            throw new UserNotFoundException(userId);
+    }
+
+    private async Task<Reservation> GetReservationAndCheckIfItExists(Guid id, bool trackChanges)
+    {
+        var reservation = await _repository.Reservation.GetReservationAsync(id, trackChanges);
+        if (reservation is null)
+            throw new ReservationNotFoundException(id);
+        return reservation;
     }
 }

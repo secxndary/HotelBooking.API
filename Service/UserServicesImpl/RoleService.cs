@@ -32,10 +32,7 @@ public sealed class RoleService : IRoleService
 
     public async Task<RoleDto> GetRoleAsync(Guid id)
     {
-        var role = await _repository.Role.GetRoleAsync(id, trackChanges: false);
-        if (role is null)
-            throw new RoleNotFoundException(id);
-
+        var role = await GetRoleAndCheckIfItExists(id, trackChanges: false);
         var roleDto = _mapper.Map<RoleDto>(role);
         return roleDto;
     }
@@ -53,9 +50,7 @@ public sealed class RoleService : IRoleService
 
     public async Task<RoleDto> UpdateRoleAsync(Guid id, RoleForUpdateDto roleForUpdate)
     {
-        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges: true);
-        if (roleEntity is null)
-            throw new RoleNotFoundException(id);
+        var roleEntity = await GetRoleAndCheckIfItExists(id, trackChanges: true);
 
         _mapper.Map(roleForUpdate, roleEntity);
         await _repository.SaveAsync();
@@ -66,10 +61,7 @@ public sealed class RoleService : IRoleService
 
     public async Task<(RoleForUpdateDto roleToPatch, Role roleEntity)> GetRoleForPatchAsync(Guid id)
     {
-        var roleEntity = await _repository.Role.GetRoleAsync(id, trackChanges: true);
-        if (roleEntity is null)
-            throw new RoleNotFoundException(id);
-
+        var roleEntity = await GetRoleAndCheckIfItExists(id, trackChanges: true);
         var roleToPatch = _mapper.Map<RoleForUpdateDto>(roleEntity);
         return (roleToPatch, roleEntity);
     }
@@ -85,11 +77,17 @@ public sealed class RoleService : IRoleService
 
     public async Task DeleteRoleAsync(Guid id)
     {
-        var role = await _repository.Role.GetRoleAsync(id, trackChanges: false);
-        if (role is null)
-            throw new RoleNotFoundException(id);
-
+        var role = await GetRoleAndCheckIfItExists(id, trackChanges: false);
         _repository.Role.DeleteRole(role);
         await _repository.SaveAsync();
+    }
+
+
+    private async Task<Role> GetRoleAndCheckIfItExists(Guid id, bool trackChanges)
+    {
+        var role = await _repository.Role.GetRoleAsync(id, trackChanges);
+        if (role is null)
+            throw new RoleNotFoundException(id);
+        return role;
     }
 }
