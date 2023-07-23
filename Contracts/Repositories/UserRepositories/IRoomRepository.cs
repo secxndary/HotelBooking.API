@@ -1,9 +1,10 @@
 ﻿using Entities.Models;
+using Shared.RequestFeatures;
 namespace Contracts.Repositories.UserRepositories;
 
 public interface IRoomRepository
 {
-    Task<IEnumerable<Room>> GetRoomsAsync(Guid hotelId, bool trackChanges);
+    Task<PagedList<Room>> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges);
     Task<IEnumerable<Room>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
     Task<Room?> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges);
     Task<Room?> GetRoomAsync(Guid id, bool trackChanges);
