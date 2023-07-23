@@ -27,6 +27,8 @@ public sealed class RoomService : IRoomService
 
     public async Task<(IEnumerable<RoomDto> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
     {
+        if (!roomParameters.ValidSleepingPlacesRange)
+            throw new MaxSleepingPlacesRangeBadRequestException();
         await CheckIfHotelExists(hotelId);
 
         var roomsWithMetaData = await _repository.Room.GetRoomsAsync(hotelId, roomParameters, trackChanges: false);
