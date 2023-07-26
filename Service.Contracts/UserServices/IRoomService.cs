@@ -3,6 +3,7 @@ using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.Contracts.UserServices;
 
 public interface IRoomService

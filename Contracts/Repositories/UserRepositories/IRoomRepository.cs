@@ -1,5 +1,6 @@
 ﻿using Entities.Models;
 using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Contracts.Repositories.UserRepositories;
 
 public interface IRoomRepository

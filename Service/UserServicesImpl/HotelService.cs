@@ -8,6 +8,8 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
+using Shared.RequestFeatures;
 namespace Service.UserServicesImpl;
 
 public sealed class HotelService : IHotelService
@@ -24,11 +26,11 @@ public sealed class HotelService : IHotelService
     }
 
 
-    public async Task<IEnumerable<HotelDto>> GetAllHotelsAsync()
+    public async Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetAllHotelsAsync(HotelParameters hotelParameters)
     {
-        var hotels = await _repository.Hotel.GetAllHotelsAsync(trackChanges: false);
-        var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotels);
-        return hotelsDto;
+        var hotelsWithMetaData = await _repository.Hotel.GetAllHotelsAsync(hotelParameters, trackChanges: false);
+        var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotelsWithMetaData);
+        return (hotels: hotelsDto, metaData: hotelsWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids)
