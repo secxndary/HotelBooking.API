@@ -1,6 +1,8 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
 
 public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
@@ -10,10 +12,13 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
     { }
 
 
-    public async Task<IEnumerable<Feedback>> GetFeedbacksForHotelAsync(Guid hotelId, bool trackChanges) =>
-        await FindByCondition(f => 
-            f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
-        .ToListAsync();
+    public async Task<PagedList<Feedback>> GetFeedbacksForHotelAsync(Guid hotelId, FeedbackParameters feedbackParameters, bool trackChanges)
+    {
+        var feedbacks = await FindByCondition(f => f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
+            .ToListAsync();
+
+        return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
+    }
 
     public async Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges) =>
         await FindByCondition(f =>

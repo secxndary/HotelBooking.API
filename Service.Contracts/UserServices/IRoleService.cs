@@ -2,11 +2,13 @@
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.Contracts.UserServices;
 
 public interface IRoleService
 {
-    Task<IEnumerable<RoleDto>> GetAllRolesAsync();
+    Task<(IEnumerable<RoleDto> roles, MetaData metaData)> GetAllRolesAsync(RoleParameters roleParameters);
     Task<RoleDto> GetRoleAsync(Guid id);
     Task<RoleDto> CreateRoleAsync(RoleForCreationDto role);
     Task<RoleDto> UpdateRoleAsync(Guid id, RoleForUpdateDto role);

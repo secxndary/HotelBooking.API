@@ -1,9 +1,11 @@
-﻿using HotelBooking.Presentation.Filters.ActionFilters;
+﻿using System.Text.Json;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/users")]
@@ -15,9 +17,10 @@ public class UsersController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetUsers()
+    public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
     {
-        var users = await _service.UserService.GetAllUsersAsync();
+        var (users, metaData) = await _service.UserService.GetAllUsersAsync(userParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(users);
     }
 

@@ -1,6 +1,8 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
 
 public class ReservationRepository : RepositoryBase<Reservation>, IReservationRepository
@@ -10,9 +12,13 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
     { }
 
 
-    public async Task<IEnumerable<Reservation>> GetReservationsAsync(Guid roomId, bool trackChanges) =>
-        await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
-        .ToListAsync();
+    public async Task<PagedList<Reservation>> GetReservationsAsync(Guid roomId, ReservationlParameters reservationlParameters, bool trackChanges)
+    {
+        var reservations = await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
+            .ToListAsync();
+
+        return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);
+    }
 
     public async Task<Reservation?> GetReservationAsync(Guid roomId, Guid id, bool trackChanges) =>
         await FindByCondition(r =>

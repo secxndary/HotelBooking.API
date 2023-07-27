@@ -1,9 +1,11 @@
-﻿using HotelBooking.Presentation.Filters.ActionFilters;
+﻿using System.Text.Json;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
@@ -15,9 +17,10 @@ public class FeedbacksController : ControllerBase
 
     [HttpGet]
     [Route("api/hotels/{hotelId:guid}/feedbacks")]
-    public async Task<IActionResult> GetFeedbacksForHotel(Guid hotelId)
+    public async Task<IActionResult> GetFeedbacksForHotel(Guid hotelId, [FromQuery] FeedbackParameters feedbackParameters)
     {
-        var feedbacks = await _service.FeedbackService.GetFeedbacksForHotelAsync(hotelId);
+        var (feedbacks, metaData) = await _service.FeedbackService.GetFeedbacksForHotelAsync(hotelId, feedbackParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(feedbacks);
     }
 

@@ -7,6 +7,8 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.UserServicesImpl;
 
 public sealed class FeedbackService : IFeedbackService
@@ -23,14 +25,15 @@ public sealed class FeedbackService : IFeedbackService
     }
 
 
-    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForHotelAsync(Guid hotelId)
+    public async Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForHotelAsync
+        (Guid hotelId, FeedbackParameters feedbackParameters)
     {
         await CheckIfHotelExists(hotelId);
 
-        var feedbacks = await _repository.Feedback.GetFeedbacksForHotelAsync(hotelId, trackChanges: false);
-        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
+        var feedbacksWithMetaData = await _repository.Feedback.GetFeedbacksForHotelAsync(hotelId, feedbackParameters, trackChanges: false);
+        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacksWithMetaData);
         
-        return feedbacksDto;
+        return (feedbacks: feedbacksDto, metaData: feedbacksWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId)

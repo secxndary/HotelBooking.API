@@ -1,9 +1,11 @@
-﻿using HotelBooking.Presentation.Filters.ActionFilters;
+﻿using System.Text.Json;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/rooms/{roomId:guid}/reservations")]
@@ -15,9 +17,10 @@ public class ReservationsController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetReservations(Guid roomId)
+    public async Task<IActionResult> GetReservations(Guid roomId, [FromQuery] ReservationlParameters reservationlParameters)
     {
-        var reservations = await _service.ReservationService.GetReservationsAsync(roomId);
+        var (reservations, metaData) = await _service.ReservationService.GetReservationsAsync(roomId, reservationlParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(reservations);
     }
 

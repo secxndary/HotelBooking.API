@@ -8,6 +8,8 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.UserServicesImpl;
 
 public sealed class RoomPhotoService : IRoomPhotoService
@@ -24,14 +26,15 @@ public sealed class RoomPhotoService : IRoomPhotoService
     }
 
 
-    public async Task<IEnumerable<RoomPhotoDto>> GetRoomPhotosAsync(Guid roomId)
+    public async Task<(IEnumerable<RoomPhotoDto> roomPhotos, MetaData metaData)> GetRoomPhotosAsync
+        (Guid roomId, RoomPhotoParameters roomPhotoParameters)
     {
         await CheckIfRoomExists(roomId);
 
-        var roomPhotos = await _repository.RoomPhoto.GetRoomPhotosAsync(roomId, trackChanges: false);
-        var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotos);
+        var roomPhotosWithMetaData = await _repository.RoomPhoto.GetRoomPhotosAsync(roomId, roomPhotoParameters, trackChanges: false);
+        var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotosWithMetaData);
         
-        return roomPhotosDto;
+        return (rooms: roomPhotosDto, metaData: roomPhotosWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<RoomPhotoDto>> GetByIdsAsync(Guid roomId, IEnumerable<Guid> ids)

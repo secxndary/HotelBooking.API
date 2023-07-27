@@ -7,6 +7,8 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.UserServicesImpl;
 
 public sealed class RoomTypeService : IRoomTypeService
@@ -23,11 +25,11 @@ public sealed class RoomTypeService : IRoomTypeService
     }
 
 
-    public async Task<IEnumerable<RoomTypeDto>> GetAllRoomTypesAsync()
+    public async Task<(IEnumerable<RoomTypeDto> roomTypes, MetaData metaData)> GetAllRoomTypesAsync(RoomTypeParameters roomTypeParameters)
     {
-        var roomTypes = await _repository.RoomType.GetAllRoomTypesAsync(trackChanges: false);
-        var roomTypesDto = _mapper.Map<IEnumerable<RoomTypeDto>>(roomTypes);
-        return roomTypesDto;
+        var roomTypesWithMetaData = await _repository.RoomType.GetAllRoomTypesAsync(roomTypeParameters, trackChanges: false);
+        var roomTypesDto = _mapper.Map<IEnumerable<RoomTypeDto>>(roomTypesWithMetaData);
+        return (roomTypes: roomTypesDto, metaData: roomTypesWithMetaData.MetaData);
     }
 
     public async Task<RoomTypeDto> GetRoomTypeAsync(Guid id)

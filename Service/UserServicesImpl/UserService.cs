@@ -7,6 +7,9 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
+
 namespace Service.UserServicesImpl;
 
 public sealed class UserService : IUserService
@@ -23,11 +26,11 @@ public sealed class UserService : IUserService
     }
 
 
-    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    public async Task<(IEnumerable<UserDto> users, MetaData metaData)> GetAllUsersAsync(UserParameters userParameters)
     {
-        var users = await _repository.User.GetAllUsersAsync(trackChanges: false);
-        var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
-        return usersDto;
+        var usersWithMetaData = await _repository.User.GetAllUsersAsync(userParameters, trackChanges: false);
+        var usersDto = _mapper.Map<IEnumerable<UserDto>>(usersWithMetaData);
+        return (users: usersDto, metaData: usersWithMetaData.MetaData);
     }
 
     public async Task<UserDto> GetUserAsync(Guid id)

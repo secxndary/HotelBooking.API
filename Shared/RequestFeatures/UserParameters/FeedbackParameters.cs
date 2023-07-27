@@ -1,6 +1,6 @@
 ﻿namespace Shared.RequestFeatures.UserParameters;
 
-public class Parameters : RequestParameters
+public class FeedbackParameters : RequestParameters
 {
 
 }

@@ -1,9 +1,11 @@
-﻿using HotelBooking.Presentation.Filters.ActionFilters;
+﻿using System.Text.Json;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/roles")]
@@ -15,9 +17,10 @@ public class RolesController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetRoles()
+    public async Task<IActionResult> GetRoles([FromQuery] RoleParameters roleParameters)
     {
-        var roles = await _service.RoleService.GetAllRolesAsync();
+        var (roles, metaData) = await _service.RoleService.GetAllRolesAsync(roleParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(roles);
     }
 

@@ -2,11 +2,14 @@
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.Contracts.UserServices;
 
 public interface IHotelPhotoService
 {
-    Task<IEnumerable<HotelPhotoDto>> GetHotelPhotosAsync(Guid hotelId);
+    Task<(IEnumerable<HotelPhotoDto> hotelPhotos, MetaData metaData)> GetHotelPhotosAsync
+        (Guid hotelId, HotelPhotoParameters hotelPhotoParameters);
     Task<IEnumerable<HotelPhotoDto>> GetByIdsAsync(Guid hotelId, IEnumerable<Guid> ids);
     Task<HotelPhotoDto> GetHotelPhotoAsync(Guid hotelId, Guid id);
     Task<HotelPhotoDto> CreateHotelPhotoAsync(Guid hotelId, HotelPhotoForCreationDto hotelPhoto);

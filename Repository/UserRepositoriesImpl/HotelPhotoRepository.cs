@@ -1,6 +1,8 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
 
 public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepository
@@ -10,10 +12,14 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
     { }
 
 
-    public async Task<IEnumerable<HotelPhoto>> GetHotelPhotosAsync(Guid hotelId, bool trackChanges) =>
-        await FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
-        .OrderBy(p => p.Path)
-        .ToListAsync();
+    public async Task<PagedList<HotelPhoto>> GetHotelPhotosAsync(Guid hotelId, HotelPhotoParameters hotelPhotoParameters, bool trackChanges)
+    {
+        var hotelPhotos = await FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
+            .OrderBy(p => p.Path)
+            .ToListAsync();
+
+        return PagedList<HotelPhoto>.ToPagedList(hotelPhotos, hotelPhotoParameters.PageNumber, hotelPhotoParameters.PageSize);
+    }
 
     public async Task<IEnumerable<HotelPhoto>> GetByIdsAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges) =>
         await FindByCondition(p =>

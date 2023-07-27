@@ -1,6 +1,8 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
 
 public class UserRepository : RepositoryBase<User>, IUserRepository
@@ -10,9 +12,13 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     { }
 
 
-    public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges) =>
-        await FindAll(trackChanges)
-        .ToListAsync();
+    public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
+    {
+        var users = await FindAll(trackChanges)
+           .ToListAsync();
+
+        return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);
+    }
 
     public async Task<User?> GetUserAsync(Guid id, bool trackChanges) =>
         await FindByCondition(u => u.Id.Equals(id), trackChanges)

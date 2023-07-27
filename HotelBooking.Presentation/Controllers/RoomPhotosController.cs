@@ -1,10 +1,12 @@
-﻿using HotelBooking.Presentation.Filters.ActionFilters;
+﻿using System.Text.Json;
+using HotelBooking.Presentation.Filters.ActionFilters;
 using HotelBooking.Presentation.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/rooms/{roomId:guid}/photos")]
@@ -16,9 +18,10 @@ public class RoomPhotosController : ControllerBase
 
 
     [HttpGet]
-    public async Task<IActionResult> GetRoomPhotos(Guid roomId)
+    public async Task<IActionResult> GetRoomPhotos(Guid roomId, [FromQuery] RoomPhotoParameters roomPhotoParameters)
     {
-        var roomPhotos = await _service.RoomPhotoService.GetRoomPhotosAsync(roomId);
+        var (roomPhotos, metaData) = await _service.RoomPhotoService.GetRoomPhotosAsync(roomId, roomPhotoParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(roomPhotos);
     }
 

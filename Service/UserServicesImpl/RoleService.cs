@@ -7,6 +7,8 @@ using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
+using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
 namespace Service.UserServicesImpl;
 
 public sealed class RoleService : IRoleService
@@ -23,11 +25,11 @@ public sealed class RoleService : IRoleService
     }
 
 
-    public async Task<IEnumerable<RoleDto>> GetAllRolesAsync()
+    public async Task<(IEnumerable<RoleDto> roles, MetaData metaData)> GetAllRolesAsync(RoleParameters roleParameters)
     {
-        var roles = await _repository.Role.GetAllRolesAsync(trackChanges: false);
-        var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(roles);
-        return rolesDto;
+        var rolesWithMetaData = await _repository.Role.GetAllRolesAsync(roleParameters, trackChanges: false);
+        var rolesDto = _mapper.Map<IEnumerable<RoleDto>>(rolesWithMetaData);
+        return (roles: rolesDto, metaData: rolesWithMetaData.MetaData);
     }
 
     public async Task<RoleDto> GetRoleAsync(Guid id)
