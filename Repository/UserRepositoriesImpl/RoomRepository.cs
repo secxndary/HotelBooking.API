@@ -18,7 +18,7 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         var rooms = await FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
             .FilterRoomsBySleepingPlaces(roomParameters.MinSleepingPlaces, roomParameters.MaxSleepingPlaces)
             .FilterRoomsByPrice(roomParameters.MinPrice, roomParameters.MaxPrice)
-            .OrderBy(r => r.Price)
+            .Sort(roomParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<Room>.ToPagedList(rooms, roomParameters.PageNumber, roomParameters.PageSize);
