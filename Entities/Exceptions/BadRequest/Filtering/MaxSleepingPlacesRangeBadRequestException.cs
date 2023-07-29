@@ -1,4 +1,4 @@
-﻿namespace Entities.Exceptions.BadRequest;
+﻿namespace Entities.Exceptions.BadRequest.Filtering;
 
 public class MaxSleepingPlacesRangeBadRequestException : BadRequestException
 {

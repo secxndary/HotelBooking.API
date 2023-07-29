@@ -1,4 +1,4 @@
-﻿namespace Entities.Exceptions.BadRequest;
+﻿namespace Entities.Exceptions.BadRequest.Collections;
 
 public class HotelCollectionBadRequest : BadRequestException
 {
