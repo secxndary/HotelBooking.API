@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,6 +16,8 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
     public async Task<PagedList<Reservation>> GetReservationsAsync(Guid roomId, ReservationlParameters reservationlParameters, bool trackChanges)
     {
         var reservations = await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
+            .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
+            .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
             .ToListAsync();
 
         return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);

@@ -8,6 +8,9 @@ public static class RoomRepositoryExtensions
     public static IQueryable<Room> FilterRoomsBySleepingPlaces(this IQueryable<Room> rooms, uint minSleepingPlaces, uint maxSleepingPlaces) =>
         rooms.Where(r => r.SleepingPlaces >= minSleepingPlaces && r.SleepingPlaces <= maxSleepingPlaces);
 
+    public static IQueryable<Room> FilterRoomsByPrice(this IQueryable<Room> rooms, uint minPrice, uint maxPrice) =>
+        rooms.Where(r => r.Price >= minPrice && r.Price <= maxPrice);
+
     //public static IQueryable<Room> Sort(this IQueryable<Room> rooms, string orderByQueryString)
     //{
     //    if (string.IsNullOrWhiteSpace(orderByQueryString))

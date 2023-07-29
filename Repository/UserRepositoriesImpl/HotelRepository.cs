@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,6 +16,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
     public async Task<PagedList<Hotel>> GetAllHotelsAsync(HotelParameters hotelParameters, bool trackChanges)
     {
         var hotels = await FindAll(trackChanges)
+            .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
             .OrderByDescending(h => h.Stars)
             .ToListAsync();
 

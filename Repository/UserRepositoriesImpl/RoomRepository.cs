@@ -12,10 +12,12 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
         : base(repositoryContext)
     { }
 
+
     public async Task<PagedList<Room>> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges)
     {
         var rooms = await FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
             .FilterRoomsBySleepingPlaces(roomParameters.MinSleepingPlaces, roomParameters.MaxSleepingPlaces)
+            .FilterRoomsByPrice(roomParameters.MinPrice, roomParameters.MaxPrice)
             .OrderBy(r => r.Price)
             .ToListAsync();
 

@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
-using Entities.Exceptions.NotFound;
 using Entities.Exceptions.BadRequest.Collections;
+using Entities.Exceptions.BadRequest.Filtering;
+using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
@@ -28,6 +29,9 @@ public sealed class HotelService : IHotelService
 
     public async Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetAllHotelsAsync(HotelParameters hotelParameters)
     {
+        if (hotelParameters.ValidStarsRange)
+            throw new MaxStarsRangeBadRequestException();
+
         var hotelsWithMetaData = await _repository.Hotel.GetAllHotelsAsync(hotelParameters, trackChanges: false);
         var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotelsWithMetaData);
         return (hotels: hotelsDto, metaData: hotelsWithMetaData.MetaData);

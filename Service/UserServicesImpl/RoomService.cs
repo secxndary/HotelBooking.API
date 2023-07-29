@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
-using Entities.Exceptions.NotFound;
-using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.BadRequest.Collections;
+using Entities.Exceptions.BadRequest.Filtering;
+using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
@@ -31,6 +31,9 @@ public sealed class RoomService : IRoomService
     {
         if (!roomParameters.ValidSleepingPlacesRange)
             throw new MaxSleepingPlacesRangeBadRequestException();
+        if (!roomParameters.ValidPriceRange)
+            throw new MaxPriceRangeBadRequestException();
+
         await CheckIfHotelExists(hotelId);
 
         var roomsWithMetaData = await _repository.Room.GetRoomsAsync(hotelId, roomParameters, trackChanges: false);

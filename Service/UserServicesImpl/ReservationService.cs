@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
 using Entities.Models;
 using Service.Contracts.UserServices;
@@ -28,6 +29,11 @@ public sealed class ReservationService : IReservationService
     public async Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsAsync
         (Guid roomId, ReservationlParameters reservationlParameters)
     {
+        if (!reservationlParameters.ValidDateEntry)
+            throw new MaxDateEntryRangeBadRequestException();
+        if (!reservationlParameters.ValidDateExit)
+            throw new MaxDateExitRangeBadRequestException();
+
         await CheckIfRoomExists(roomId);
 
         var reservationsWithMetaData = await _repository.Reservation.GetReservationsAsync(roomId, reservationlParameters, trackChanges: false);
