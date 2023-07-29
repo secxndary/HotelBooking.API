@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using System.Dynamic;
+using Entities.Models;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -8,7 +9,7 @@ namespace Service.Contracts.UserServices;
 
 public interface IRoomService
 {
-    Task<(IEnumerable<RoomDto> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters);
+    Task<(IEnumerable<ExpandoObject> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters);
     Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids);
     Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id);
     Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room);

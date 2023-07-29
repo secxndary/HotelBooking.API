@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Dynamic;
+using AutoMapper;
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.BadRequest.Collections;
@@ -18,16 +19,18 @@ public sealed class RoomService : IRoomService
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
+    private readonly IDataShaper<RoomDto> _dataShaper;
 
-    public RoomService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+    public RoomService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<RoomDto> dataShaper)
     {
         _repository = repository;
         _logger = logger;
         _mapper = mapper;
+        _dataShaper = dataShaper;
     }
 
 
-    public async Task<(IEnumerable<RoomDto> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
+    public async Task<(IEnumerable<ExpandoObject> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
     {
         if (!roomParameters.ValidSleepingPlacesRange)
             throw new MaxSleepingPlacesRangeBadRequestException();
@@ -39,7 +42,8 @@ public sealed class RoomService : IRoomService
         var roomsWithMetaData = await _repository.Room.GetRoomsAsync(hotelId, roomParameters, trackChanges: false);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(roomsWithMetaData);
 
-        return (rooms: roomsDto, metaData: roomsWithMetaData.MetaData);
+        var shapedData = _dataShaper.ShapeData(roomsDto, roomParameters.Fields);
+        return (rooms: shapedData, metaData: roomsWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids)

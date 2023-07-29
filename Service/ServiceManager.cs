@@ -4,6 +4,7 @@ using Contracts.Repository;
 using Service.Contracts;
 using Service.Contracts.UserServices;
 using Service.UserServicesImpl;
+using Shared.DataTransferObjects.OutputDtos;
 namespace Service;
 
 public class ServiceManager : IServiceManager
@@ -18,12 +19,12 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IRoomPhotoService> _roomPhotoService;
     private readonly Lazy<IHotelPhotoService> _hotelPhotoService;
 
-    public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+    public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<RoomDto> dataShaper)
     {
         _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger, mapper));
         _userService = new Lazy<IUserService>(() => new UserService(repository, logger, mapper));
         _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger, mapper));
-        _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger, mapper));
+        _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger, mapper, dataShaper));
         _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger, mapper));
         _reservationService = new Lazy<IReservationService>(() =>  new ReservationService(repository, logger, mapper));
         _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repository, logger, mapper));

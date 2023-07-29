@@ -34,7 +34,7 @@ public sealed class RoomPhotoService : IRoomPhotoService
         var roomPhotosWithMetaData = await _repository.RoomPhoto.GetRoomPhotosAsync(roomId, roomPhotoParameters, trackChanges: false);
         var roomPhotosDto = _mapper.Map<IEnumerable<RoomPhotoDto>>(roomPhotosWithMetaData);
         
-        return (rooms: roomPhotosDto, metaData: roomPhotosWithMetaData.MetaData);
+        return (roomPhotos: roomPhotosDto, metaData: roomPhotosWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<RoomPhotoDto>> GetByIdsAsync(Guid roomId, IEnumerable<Guid> ids)
