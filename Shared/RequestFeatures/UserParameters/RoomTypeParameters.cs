@@ -2,5 +2,5 @@
 
 public class RoomTypeParameters : RequestParameters
 {
-
+    public string? SearchTerm { get; set; }
 }

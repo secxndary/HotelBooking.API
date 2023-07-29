@@ -29,7 +29,7 @@ public sealed class HotelService : IHotelService
 
     public async Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetAllHotelsAsync(HotelParameters hotelParameters)
     {
-        if (hotelParameters.ValidStarsRange)
+        if (!hotelParameters.ValidStarsRange)
             throw new MaxStarsRangeBadRequestException();
 
         var hotelsWithMetaData = await _repository.Hotel.GetAllHotelsAsync(hotelParameters, trackChanges: false);

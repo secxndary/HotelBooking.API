@@ -6,4 +6,6 @@ public class HotelParameters : RequestParameters
     public uint MaxStars { get; set; } = 5;
 
     public bool ValidStarsRange => MaxStars > MinStars;
+
+    public string? SearchTerm { get; set; }
 }

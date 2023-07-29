@@ -2,5 +2,5 @@
 
 public class HotelPhotoParameters : RequestParameters
 {
-
+    public string? SearchTerm { get; set; }
 }

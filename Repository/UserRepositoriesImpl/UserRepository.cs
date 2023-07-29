@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,7 +16,8 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     public async Task<PagedList<User>> GetAllUsersAsync(UserParameters userParameters, bool trackChanges)
     {
         var users = await FindAll(trackChanges)
-           .ToListAsync();
+            .Search(userParameters.SearchTerm)
+            .ToListAsync();
 
         return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);
     }

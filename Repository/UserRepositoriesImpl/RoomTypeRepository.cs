@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,6 +16,7 @@ public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
     public async Task<PagedList<RoomType>> GetAllRoomTypesAsync(RoomTypeParameters roomTypeParameters, bool trackChanges)
     {
         var roomTypes = await FindAll(trackChanges)
+            .Search(roomTypeParameters.SearchTerm)
             .OrderBy(r => r.Name)
             .ToListAsync();
 

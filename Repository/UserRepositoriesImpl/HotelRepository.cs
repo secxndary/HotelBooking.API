@@ -17,6 +17,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
     {
         var hotels = await FindAll(trackChanges)
             .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
+            .Search(hotelParameters.SearchTerm)
             .OrderByDescending(h => h.Stars)
             .ToListAsync();
 

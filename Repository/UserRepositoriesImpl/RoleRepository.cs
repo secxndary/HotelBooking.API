@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,8 +16,9 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
     public async Task<PagedList<Role>> GetAllRolesAsync(RoleParameters roleParameters, bool trackChanges)
     {
         var roles = await FindAll(trackChanges)
-           .OrderBy(r => r.Name)
-           .ToListAsync();
+            .Search(roleParameters.SearchTerm)
+            .OrderBy(r => r.Name)
+            .ToListAsync();
 
         return PagedList<Role>.ToPagedList(roles, roleParameters.PageNumber, roleParameters.PageSize);
     }

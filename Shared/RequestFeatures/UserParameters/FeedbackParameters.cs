@@ -2,5 +2,5 @@
 
 public class FeedbackParameters : RequestParameters
 {
-
+    public string? SearchTerm { get; set; }
 }

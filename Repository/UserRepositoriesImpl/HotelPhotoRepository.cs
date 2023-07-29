@@ -1,6 +1,7 @@
 ﻿using Contracts.Repositories.UserRepositories;
 using Entities.Models;
 using Microsoft.EntityFrameworkCore;
+using Repository.Extentsions;
 using Shared.RequestFeatures;
 using Shared.RequestFeatures.UserParameters;
 namespace Repository.UserRepositoriesImpl;
@@ -15,6 +16,7 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
     public async Task<PagedList<HotelPhoto>> GetHotelPhotosAsync(Guid hotelId, HotelPhotoParameters hotelPhotoParameters, bool trackChanges)
     {
         var hotelPhotos = await FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
+            .Search(hotelPhotoParameters.SearchTerm)
             .OrderBy(p => p.Path)
             .ToListAsync();
 
