@@ -1,10 +1,12 @@
 ﻿using System.Data;
 using Entities.Models;
+using Repository.Extentsions.Utility;
+using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;
 
 public static class RoomTypeRepositoryExtensions
 {
-    public static IQueryable<RoomType> Search(this IQueryable<RoomType> roomTypes, string searchTerm)
+    public static IQueryable<RoomType> Search(this IQueryable<RoomType> roomTypes, string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return roomTypes;
@@ -27,5 +29,18 @@ public static class RoomTypeRepositoryExtensions
             .Select(r => r.RoomType);
 
         return result;
+    }
+
+    public static IQueryable<RoomType> Sort(this IQueryable<RoomType> roomTypes, string? orderByQueryString)
+    {
+        if (string.IsNullOrWhiteSpace(orderByQueryString))
+            return roomTypes.OrderBy(r => r.Name);
+
+        var orderQuery = OrderQueryBuilder.CreateOrderQuery<RoomType>(orderByQueryString);
+
+        if (string.IsNullOrWhiteSpace(orderQuery))
+            return roomTypes.OrderBy(r => r.Name);
+
+        return roomTypes.OrderBy(orderQuery);
     }
 }

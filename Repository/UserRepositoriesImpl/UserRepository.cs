@@ -17,6 +17,7 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         var users = await FindAll(trackChanges)
             .Search(userParameters.SearchTerm)
+            .Sort(userParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<User>.ToPagedList(users, userParameters.PageNumber, userParameters.PageSize);

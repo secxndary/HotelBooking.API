@@ -17,7 +17,7 @@ public class RoleRepository : RepositoryBase<Role>, IRoleRepository
     {
         var roles = await FindAll(trackChanges)
             .Search(roleParameters.SearchTerm)
-            .OrderBy(r => r.Name)
+            .Sort(roleParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<Role>.ToPagedList(roles, roleParameters.PageNumber, roleParameters.PageSize);

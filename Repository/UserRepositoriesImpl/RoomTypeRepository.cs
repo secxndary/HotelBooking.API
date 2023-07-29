@@ -17,7 +17,7 @@ public class RoomTypeRepository : RepositoryBase<RoomType>, IRoomTypeRepository
     {
         var roomTypes = await FindAll(trackChanges)
             .Search(roomTypeParameters.SearchTerm)
-            .OrderBy(r => r.Name)
+            .Sort(roomTypeParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<RoomType>.ToPagedList(roomTypes, roomTypeParameters.PageNumber, roomTypeParameters.PageSize);

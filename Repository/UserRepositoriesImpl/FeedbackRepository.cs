@@ -17,6 +17,7 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
     {
         var feedbacks = await FindByCondition(f => f.Reservation.Room.HotelId.Equals(hotelId), trackChanges)
             .Search(feedbackParameters.SearchTerm)
+            .Sort(feedbackParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);

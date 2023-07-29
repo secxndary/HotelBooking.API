@@ -18,6 +18,7 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         var reservations = await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
             .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
             .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .Sort(reservationlParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);

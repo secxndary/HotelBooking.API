@@ -17,7 +17,7 @@ public class HotelPhotoRepository : RepositoryBase<HotelPhoto>, IHotelPhotoRepos
     {
         var hotelPhotos = await FindByCondition(p => p.HotelId.Equals(hotelId), trackChanges)
             .Search(hotelPhotoParameters.SearchTerm)
-            .OrderBy(p => p.Path)
+            .Sort(hotelPhotoParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<HotelPhoto>.ToPagedList(hotelPhotos, hotelPhotoParameters.PageNumber, hotelPhotoParameters.PageSize);

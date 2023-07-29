@@ -1,9 +1,11 @@
 ﻿using Entities.Models;
+using Repository.Extentsions.Utility;
+using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;
 
 public static class FeedbackRepositoryExtensions
 {
-    public static IQueryable<Feedback> Search(this IQueryable<Feedback> feedbacks, string searchTerm)
+    public static IQueryable<Feedback> Search(this IQueryable<Feedback> feedbacks, string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return feedbacks;
@@ -22,5 +24,18 @@ public static class FeedbackRepositoryExtensions
             .Union(feedbacksWithSearchTermInTextNegative);
 
         return result;
+    }
+
+    public static IQueryable<Feedback> Sort(this IQueryable<Feedback> feedbacks, string? orderByQueryString)
+    {
+        if (string.IsNullOrWhiteSpace(orderByQueryString))
+            return feedbacks;
+
+        var orderQuery = OrderQueryBuilder.CreateOrderQuery<Feedback>(orderByQueryString);
+
+        if (string.IsNullOrWhiteSpace(orderQuery))
+            return feedbacks;
+
+        return feedbacks.OrderBy(orderQuery);
     }
 }

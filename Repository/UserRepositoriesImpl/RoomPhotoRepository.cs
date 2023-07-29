@@ -17,7 +17,7 @@ public class RoomPhotoRepository : RepositoryBase<RoomPhoto>, IRoomPhotoReposito
     {
         var roomPhotos = await FindByCondition(p => p.RoomId.Equals(roomId), trackChanges)
             .Search(roomPhotoParameters.SearchTerm)
-            .OrderBy(p => p.Path)
+            .Sort(roomPhotoParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<RoomPhoto>.ToPagedList(roomPhotos, roomPhotoParameters.PageNumber, roomPhotoParameters.PageSize);

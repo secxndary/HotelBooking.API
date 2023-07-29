@@ -18,7 +18,7 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         var hotels = await FindAll(trackChanges)
             .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
             .Search(hotelParameters.SearchTerm)
-            .OrderByDescending(h => h.Stars)
+            .Sort(hotelParameters.OrderBy)
             .ToListAsync();
 
         return PagedList<Hotel>.ToPagedList(hotels, hotelParameters.PageNumber, hotelParameters.PageSize);

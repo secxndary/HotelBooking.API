@@ -1,9 +1,11 @@
 ﻿using Entities.Models;
+using Repository.Extentsions.Utility;
+using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;
 
 public static class RoleRepositoryExtensions
 {
-    public static IQueryable<Role> Search(this IQueryable<Role> roles, string searchTerm)
+    public static IQueryable<Role> Search(this IQueryable<Role> roles, string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return roles;
@@ -26,5 +28,18 @@ public static class RoleRepositoryExtensions
             .Select(r => r.Role);
 
         return result;
+    }
+
+    public static IQueryable<Role> Sort(this IQueryable<Role> roles, string? orderByQueryString)
+    {
+        if (string.IsNullOrWhiteSpace(orderByQueryString))
+            return roles.OrderBy(r => r.Name);
+
+        var orderQuery = OrderQueryBuilder.CreateOrderQuery<Role>(orderByQueryString);
+
+        if (string.IsNullOrWhiteSpace(orderQuery))
+            return roles.OrderBy(r => r.Name);
+
+        return roles.OrderBy(orderQuery);
     }
 }

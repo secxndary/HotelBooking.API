@@ -1,9 +1,11 @@
 ﻿using Entities.Models;
+using Repository.Extentsions.Utility;
+using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;
 
 public static class UserRepositoryExtensions
 {
-    public static IQueryable<User> Search(this IQueryable<User> users, string searchTerm)
+    public static IQueryable<User> Search(this IQueryable<User> users, string? searchTerm)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return users;
@@ -34,5 +36,18 @@ public static class UserRepositoryExtensions
             .Select(u => u.User);
 
         return result;
+    }
+
+    public static IQueryable<User> Sort(this IQueryable<User> users, string? orderByQueryString)
+    {
+        if (string.IsNullOrWhiteSpace(orderByQueryString))
+            return users;
+
+        var orderQuery = OrderQueryBuilder.CreateOrderQuery<User>(orderByQueryString);
+
+        if (string.IsNullOrWhiteSpace(orderQuery))
+            return users;
+
+        return users.OrderBy(orderQuery);
     }
 }
