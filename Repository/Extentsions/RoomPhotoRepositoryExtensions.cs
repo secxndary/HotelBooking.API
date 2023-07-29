@@ -12,7 +12,7 @@ public static class RoomPhotoRepositoryExtensions
 
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
-        return roomPhotos.Where(p => p.Path.ToLower().Contains(lowerCaseTerm));
+        return roomPhotos.Where(p => p.Path!.ToLower().Contains(lowerCaseTerm));
     }
 
 

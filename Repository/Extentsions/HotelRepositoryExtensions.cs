@@ -16,13 +16,13 @@ public static class HotelRepositoryExtensions
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
         var hotelsWithSearchTermInName = hotels
-            .Where(h => h.Name.ToLower().Contains(lowerCaseTerm))
+            .Where(h => h.Name!.ToLower().Contains(lowerCaseTerm))
             .Select(h => new { Hotel = h, Priority = 1 });
 
         var hotelsWithSearchTermInDescription = hotels
             .Where(h => 
-                !h.Name.ToLower().Contains(lowerCaseTerm) && 
-                h.Description.ToLower().Contains(lowerCaseTerm))
+                !h.Name!.ToLower().Contains(lowerCaseTerm) && 
+                h.Description!.ToLower().Contains(lowerCaseTerm))
             .Select(h => new { Hotel = h, Priority = 2 });
 
         var result = hotelsWithSearchTermInName

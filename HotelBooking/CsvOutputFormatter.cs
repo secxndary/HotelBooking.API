@@ -34,7 +34,7 @@ public class CsvOutputFormatter : TextOutputFormatter
             foreach (var hotel in (IEnumerable<HotelDto>)context.Object)
                 FormatCsv(buffer, hotel);
         else
-            FormatCsv(buffer, (HotelDto)context.Object);
+            FormatCsv(buffer, (HotelDto)context!.Object!);
         await response.WriteAsync(buffer.ToString());
     }
 

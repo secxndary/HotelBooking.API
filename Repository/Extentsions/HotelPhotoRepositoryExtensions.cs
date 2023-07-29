@@ -12,7 +12,7 @@ public static class HotelPhotoRepositoryExtensions
 
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
-        return hotelPhotos.Where(p => p.Path.ToLower().Contains(lowerCaseTerm));
+        return hotelPhotos.Where(p => p.Path!.ToLower().Contains(lowerCaseTerm));
     }
 
     public static IQueryable<HotelPhoto> Sort(this IQueryable<HotelPhoto> hotelPhotos, string? orderByQueryString)

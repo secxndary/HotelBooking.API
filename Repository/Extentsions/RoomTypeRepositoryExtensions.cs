@@ -14,13 +14,13 @@ public static class RoomTypeRepositoryExtensions
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
         var roomTypesWithSearchTermInName = roomTypes
-            .Where(r => r.Name.ToLower().Contains(lowerCaseTerm))
+            .Where(r => r.Name!.ToLower().Contains(lowerCaseTerm))
             .Select(r => new { RoomType = r, Priority = 1 });
 
         var roomTypesWithSearchTermInDescription = roomTypes
             .Where(r =>
-                !r.Name.ToLower().Contains(lowerCaseTerm) &&
-                r.Description.ToLower().Contains(lowerCaseTerm))
+                !r.Name!.ToLower().Contains(lowerCaseTerm) &&
+                r.Description!.ToLower().Contains(lowerCaseTerm))
             .Select(r => new { RoomType = r, Priority = 2 });
 
         var result = roomTypesWithSearchTermInName

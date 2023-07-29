@@ -13,12 +13,12 @@ public static class FeedbackRepositoryExtensions
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
         var feedbacksWithSearchTermInTextPositive = feedbacks
-            .Where(f => f.TextPositive.ToLower().Contains(lowerCaseTerm));
+            .Where(f => f.TextPositive!.ToLower().Contains(lowerCaseTerm));
 
         var feedbacksWithSearchTermInTextNegative = feedbacks
             .Where(f => 
-                !f.TextPositive.ToLower().Contains(lowerCaseTerm) &&
-                f.TextNegative.ToLower().Contains(lowerCaseTerm));
+                !f.TextPositive!.ToLower().Contains(lowerCaseTerm) &&
+                f.TextNegative!.ToLower().Contains(lowerCaseTerm));
 
         var result = feedbacksWithSearchTermInTextPositive
             .Union(feedbacksWithSearchTermInTextNegative);

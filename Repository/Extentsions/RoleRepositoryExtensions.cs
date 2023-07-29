@@ -13,13 +13,13 @@ public static class RoleRepositoryExtensions
         var lowerCaseTerm = searchTerm.Trim().ToLower();
 
         var rolesWithSearchTermInName = roles
-            .Where(r => r.Name.ToLower().Contains(lowerCaseTerm))
+            .Where(r => r.Name!.ToLower().Contains(lowerCaseTerm))
             .Select(r => new { Role = r, Priority = 1 });
 
         var rolesWithSearchTermInDescription = roles
             .Where(r =>
-                !r.Name.ToLower().Contains(lowerCaseTerm) &&
-                r.Description.ToLower().Contains(lowerCaseTerm))
+                !r.Name!.ToLower().Contains(lowerCaseTerm) &&
+                r.Description!.ToLower().Contains(lowerCaseTerm))
             .Select(r => new { Role = r, Priority = 2 });
 
         var result = rolesWithSearchTermInName
