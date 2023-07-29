@@ -1,6 +1,5 @@
-﻿using System.Reflection;
-using System.Text;
-using Entities.Models;
+﻿using Entities.Models;
+using Repository.Extentsions.Utility;
 using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;
 
@@ -17,27 +16,7 @@ public static class RoomRepositoryExtensions
         if (string.IsNullOrWhiteSpace(orderByQueryString))
             return rooms.OrderBy(r => r.Price);
 
-        var orderParams = orderByQueryString.Trim().Split(',');
-        var propertyInfos = typeof(Room).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        var orderQueryBuilder = new StringBuilder();
-
-        foreach (var param in orderParams)
-        {
-            if (string.IsNullOrWhiteSpace(param))
-                continue;
-
-            var propertyFromQueryName = param.Split(" ")[0];
-            var objectProperty = propertyInfos.FirstOrDefault(pi =>
-                pi.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
-
-            if (objectProperty == null)
-                continue;
-
-            var direction = param.EndsWith(" desc") ? "descending" : "ascending";
-            orderQueryBuilder.Append($"{objectProperty.Name.ToString()} {direction}, ");
-        }
-
-        var orderQuery = orderQueryBuilder.ToString().TrimEnd(',', ' ');
+        var orderQuery = OrderQueryBuilder.CreateOrderQuery<Room>(orderByQueryString);
 
         if (string.IsNullOrWhiteSpace(orderQuery))
             return rooms.OrderBy(r => r.Price);
