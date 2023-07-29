@@ -41,7 +41,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
-    [Route("api/feedbacks/{id:guid}")]
+    [Route("api/feedbacks/{id:guid}", Name = "FeedbackById")]
     public async Task<IActionResult> GetFeedback(Guid id)
     {
         var feedback = await _service.FeedbackService.GetFeedbackAsync(id);
@@ -49,12 +49,12 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/reservations/{reservationId:guid}/feedbacks")]
+    [Route("api/feedbacks")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> CreateFeedback(Guid reservationId, [FromBody] FeedbackForCreationDto feedback)
+    public async Task<IActionResult> CreateFeedback([FromBody] FeedbackForCreationDto feedback)
     {
-        var createdFeedback = await _service.FeedbackService.CreateFeedbackForReservationAsync(reservationId, feedback);
-        return CreatedAtRoute("GetFeedbackForReservation", new { reservationId, id = createdFeedback.Id }, createdFeedback);
+        var createdFeedback = await _service.FeedbackService.CreateFeedbackAsync(feedback);
+        return CreatedAtRoute("FeedbackById", new { id = createdFeedback.Id }, createdFeedback);
     }
 
     [HttpPut("api/feedbacks/{id:guid}")]

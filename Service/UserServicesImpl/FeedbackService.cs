@@ -63,12 +63,10 @@ public sealed class FeedbackService : IFeedbackService
         return feedbackDto;
     }
 
-    public async Task<FeedbackDto> CreateFeedbackForReservationAsync(Guid reservationId, FeedbackForCreationDto feedback)
+    public async Task<FeedbackDto> CreateFeedbackAsync(FeedbackForCreationDto feedback)
     {
-        await CheckIfReservationExists(reservationId);
-
         var feedbackEntity = _mapper.Map<Feedback>(feedback);
-        _repository.Feedback.CreateFeedbackForReservation(reservationId, feedbackEntity);
+        _repository.Feedback.CreateFeedback(feedbackEntity);
         await _repository.SaveAsync();
 
         var feedbackToReturn = _mapper.Map<FeedbackDto>(feedbackEntity);

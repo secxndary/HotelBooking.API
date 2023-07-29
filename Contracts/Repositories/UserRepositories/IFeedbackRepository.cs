@@ -9,6 +9,6 @@ public interface IFeedbackRepository
     Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges);
     Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges);
     Task<Feedback?> GetFeedbackAsync(Guid id, bool trackChanges);
-    void CreateFeedbackForReservation(Guid reservationId, Feedback feedback);
+    void CreateFeedback(Feedback feedback);
     void DeleteFeedback(Feedback feedback);
 }
