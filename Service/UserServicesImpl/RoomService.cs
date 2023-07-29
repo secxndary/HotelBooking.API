@@ -30,7 +30,7 @@ public sealed class RoomService : IRoomService
     }
 
 
-    public async Task<(IEnumerable<ExpandoObject> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
+    public async Task<(IEnumerable<Entity> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
     {
         if (!roomParameters.ValidSleepingPlacesRange)
             throw new MaxSleepingPlacesRangeBadRequestException();

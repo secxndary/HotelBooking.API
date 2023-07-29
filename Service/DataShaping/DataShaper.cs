@@ -1,6 +1,8 @@
 ﻿using System.Dynamic;
 using System.Reflection;
 using Contracts;
+using Entities.Models;
+
 namespace Service.DataShaping;
 
 public class DataShaper<T> : IDataShaper<T> where T : class
@@ -13,13 +15,13 @@ public class DataShaper<T> : IDataShaper<T> where T : class
     }
 
 
-    public IEnumerable<ExpandoObject> ShapeData(IEnumerable<T> entities, string? fieldsString)
+    public IEnumerable<Entity> ShapeData(IEnumerable<T> entities, string? fieldsString)
     {
         var requiredProperties = GetRequiredProperties(fieldsString);
         return FetchData(entities, requiredProperties);
     }
 
-    public ExpandoObject ShapeData(T entity, string? fieldsString)
+    public Entity ShapeData(T entity, string? fieldsString)
     {
         var requiredProperties = GetRequiredProperties(fieldsString);
         return FetchDataForEntity(entity, requiredProperties);
@@ -52,9 +54,9 @@ public class DataShaper<T> : IDataShaper<T> where T : class
         return requiredProperties;
     }
 
-    private IEnumerable<ExpandoObject> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
+    private IEnumerable<Entity> FetchData(IEnumerable<T> entities, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapedData = new List<ExpandoObject>();
+        var shapedData = new List<Entity>();
         
         foreach (var entity in entities)
         {
@@ -65,14 +67,14 @@ public class DataShaper<T> : IDataShaper<T> where T : class
         return shapedData;
     }
 
-    private ExpandoObject FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
+    private Entity FetchDataForEntity(T entity, IEnumerable<PropertyInfo> requiredProperties)
     {
-        var shapedObject = new ExpandoObject();
+        var shapedObject = new Entity();
         
         foreach (var property in requiredProperties)
         {
             var objectPropertyValue = property.GetValue(entity);
-            shapedObject.TryAdd(property.Name, objectPropertyValue);
+            shapedObject!.TryAdd(property.Name, objectPropertyValue);
         }
         
         return shapedObject;
