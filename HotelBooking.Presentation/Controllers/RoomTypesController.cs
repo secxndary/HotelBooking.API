@@ -17,6 +17,7 @@ public class RoomTypesController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetRoomTypes([FromQuery] RoomTypeParameters roomTypeParameters)
     {
         var (roomTypes, metaData) = await _service.RoomTypeService.GetAllRoomTypesAsync(roomTypeParameters);

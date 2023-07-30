@@ -16,6 +16,7 @@ public class FeedbacksController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     [Route("api/hotels/{hotelId:guid}/feedbacks")]
     public async Task<IActionResult> GetFeedbacksForHotel(Guid hotelId, [FromQuery] FeedbackParameters feedbackParameters)
     {
@@ -25,6 +26,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
+    [HttpHead]
     [Route("api/rooms/{roomId:guid}/feedbacks")]
     public async Task<IActionResult> GetFeedbacksForRoom(Guid roomId)
     {
@@ -33,6 +35,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpGet]
+    [HttpHead]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
     public async Task<IActionResult> GetFeedbacksForReservation(Guid reservationId)
     {
@@ -90,10 +93,10 @@ public class FeedbacksController : ControllerBase
         return NoContent();
     }
 
-    [HttpOptions]
+    [HttpOptions("api/feedbacks")]
     public IActionResult GetFeedbacksOptions()
     {
-        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        Response.Headers.Add("Allow", "OPTIONS, POST");
         return Ok();
     }
 }

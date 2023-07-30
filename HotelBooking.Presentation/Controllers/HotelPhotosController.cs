@@ -18,6 +18,7 @@ public class HotelPhotosController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetHotelPhotos(Guid hotelId, [FromQuery] HotelPhotoParameters hotelPhotoParameters)
     {
         var (hotelPhotos, metaData) = await _service.HotelPhotoService.GetHotelPhotosAsync(hotelId, hotelPhotoParameters);

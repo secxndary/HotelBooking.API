@@ -18,6 +18,7 @@ public class HotelsController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetHotels([FromQuery] HotelParameters hotelParameters)
     {
         var (hotels, metadata)= await _service.HotelService.GetAllHotelsAsync(hotelParameters);

@@ -17,6 +17,7 @@ public class RolesController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetRoles([FromQuery] RoleParameters roleParameters)
     {
         var (roles, metaData) = await _service.RoleService.GetAllRolesAsync(roleParameters);

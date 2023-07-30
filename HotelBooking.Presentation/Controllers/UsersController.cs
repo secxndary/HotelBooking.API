@@ -17,6 +17,7 @@ public class UsersController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
     {
         var (users, metaData) = await _service.UserService.GetAllUsersAsync(userParameters);

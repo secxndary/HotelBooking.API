@@ -19,6 +19,7 @@ public class RoomsController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public async Task<IActionResult> GetRoomsForHotel(Guid hotelId, [FromQuery] RoomParameters roomParameters)
     {

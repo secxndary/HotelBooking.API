@@ -17,6 +17,7 @@ public class ReservationsController : ControllerBase
 
 
     [HttpGet]
+    [HttpHead]
     public async Task<IActionResult> GetReservations(Guid roomId, [FromQuery] ReservationlParameters reservationlParameters)
     {
         var (reservations, metaData) = await _service.ReservationService.GetReservationsAsync(roomId, reservationlParameters);
