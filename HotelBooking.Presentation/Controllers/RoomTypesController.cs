@@ -71,4 +71,11 @@ public class RoomTypesController : ControllerBase
         await _service.RoomTypeService.DeleteRoomTypeAsync(id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetRoomTypesOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

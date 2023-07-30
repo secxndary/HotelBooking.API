@@ -89,4 +89,11 @@ public class FeedbacksController : ControllerBase
         await _service.FeedbackService.DeleteFeedbackAsync(id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetFeedbacksOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

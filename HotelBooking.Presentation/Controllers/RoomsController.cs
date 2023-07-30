@@ -91,4 +91,11 @@ public class RoomsController : ControllerBase
         await _service.RoomService.DeleteRoomForHotelAsync(hotelId, id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetRoomsOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

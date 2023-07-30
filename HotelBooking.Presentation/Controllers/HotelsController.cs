@@ -88,4 +88,11 @@ public class HotelsController : ControllerBase
         await _service.HotelService.DeleteHotelAsync(id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetHotelsOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

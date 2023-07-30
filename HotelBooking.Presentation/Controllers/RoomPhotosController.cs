@@ -88,4 +88,11 @@ public class RoomPhotosController : ControllerBase
         await _service.RoomPhotoService.DeleteRoomPhotoAsync(roomId, id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetRoomPhotosOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

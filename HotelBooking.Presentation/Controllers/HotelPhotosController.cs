@@ -90,4 +90,11 @@ public class HotelPhotosController : ControllerBase
         await _service.HotelPhotoService.DeleteHotelPhotoAsync(hotelId, id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetHotelPhotosOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

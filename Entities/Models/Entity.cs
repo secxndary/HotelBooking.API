@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 using System.Xml;
 using System.Collections;
 using Entities.LinkModels;
-
 namespace Entities.Models;
 
 public class Entity : DynamicObject, IXmlSerializable, IDictionary<string, object>

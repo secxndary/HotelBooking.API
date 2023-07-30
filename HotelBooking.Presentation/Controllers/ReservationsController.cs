@@ -72,4 +72,11 @@ public class ReservationsController : ControllerBase
         await _service.ReservationService.DeleteReservationForRoomAsync(roomId, id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetReservationsOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

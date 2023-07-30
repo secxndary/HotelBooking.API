@@ -71,4 +71,11 @@ public class UsersController : ControllerBase
         await _service.UserService.DeleteUserAsync(id);
         return NoContent();
     }
+
+    [HttpOptions]
+    public IActionResult GetUsersOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }

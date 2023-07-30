@@ -71,4 +71,12 @@ public class RolesController : ControllerBase
         await _service.RoleService.DeleteRoleAsync(id);
         return NoContent();
     }
+
+
+    [HttpOptions]
+    public IActionResult GetRolesOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS, POST");
+        return Ok();
+    }
 }
