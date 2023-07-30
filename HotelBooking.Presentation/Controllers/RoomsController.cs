@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Entities.LinkModels;
 using HotelBooking.Presentation.Filters.ActionFilters;
 using HotelBooking.Presentation.ModelBinders;
 using Microsoft.AspNetCore.JsonPatch;
@@ -18,11 +19,13 @@ public class RoomsController : ControllerBase
 
 
     [HttpGet]
+    [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     public async Task<IActionResult> GetRoomsForHotel(Guid hotelId, [FromQuery] RoomParameters roomParameters)
     {
-        var (rooms, metaData) = await _service.RoomService.GetRoomsAsync(hotelId, roomParameters);
+        var linkParameters = new LinkParameters(roomParameters, HttpContext);
+        var (linkResponse, metaData) = await _service.RoomService.GetRoomsAsync(hotelId, linkParameters);
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
-        return Ok(rooms);
+        return linkResponse.HasLinks ? Ok(linkResponse.LinkedEntities) : Ok(linkResponse.ShapedEntities);
     }
 
     [HttpGet("{id:guid}", Name = "GetRoomForHotel")]

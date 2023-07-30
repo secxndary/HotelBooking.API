@@ -1,15 +1,14 @@
-﻿using System.Dynamic;
+﻿using Entities.LinkModels;
 using Entities.Models;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures;
-using Shared.RequestFeatures.UserParameters;
 namespace Service.Contracts.UserServices;
 
 public interface IRoomService
 {
-    Task<(IEnumerable<ExpandoObject> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters);
+    Task<(LinkResponse linkResponse, MetaData metaData)> GetRoomsAsync(Guid hotelId, LinkParameters linkParameters);
     Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids);
     Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id);
     Task<RoomDto> CreateRoomForHotelAsync(Guid hotelId, RoomForCreationDto room);

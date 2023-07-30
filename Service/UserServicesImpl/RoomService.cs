@@ -1,17 +1,16 @@
-﻿using System.Dynamic;
-using AutoMapper;
+﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.BadRequest.Collections;
 using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
+using Entities.LinkModels;
 using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures;
-using Shared.RequestFeatures.UserParameters;
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService
@@ -19,31 +18,31 @@ public sealed class RoomService : IRoomService
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
-    private readonly IDataShaper<RoomDto> _dataShaper;
+    private readonly IRoomLinks _roomLinks;
 
-    public RoomService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IDataShaper<RoomDto> dataShaper)
+    public RoomService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IRoomLinks roomLinks)
     {
         _repository = repository;
         _logger = logger;
         _mapper = mapper;
-        _dataShaper = dataShaper;
+        _roomLinks = roomLinks;
     }
 
 
-    public async Task<(IEnumerable<Entity> rooms, MetaData metaData)> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters)
+    public async Task<(LinkResponse linkResponse, MetaData metaData)> GetRoomsAsync(Guid hotelId, LinkParameters linkParameters)
     {
-        if (!roomParameters.ValidSleepingPlacesRange)
+        if (!linkParameters.RoomParameters.ValidSleepingPlacesRange)
             throw new MaxSleepingPlacesRangeBadRequestException();
-        if (!roomParameters.ValidPriceRange)
+        if (!linkParameters.RoomParameters.ValidPriceRange)
             throw new MaxPriceRangeBadRequestException();
 
         await CheckIfHotelExists(hotelId);
 
-        var roomsWithMetaData = await _repository.Room.GetRoomsAsync(hotelId, roomParameters, trackChanges: false);
+        var roomsWithMetaData = await _repository.Room.GetRoomsAsync(hotelId, linkParameters.RoomParameters, trackChanges: false);
         var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(roomsWithMetaData);
 
-        var shapedData = _dataShaper.ShapeData(roomsDto, roomParameters.Fields);
-        return (rooms: shapedData, metaData: roomsWithMetaData.MetaData);
+        var links = _roomLinks.TryGenerateLinks(roomsDto, linkParameters.RoomParameters.Fields!, hotelId, linkParameters.Context);
+        return (linkResponse: links, metaData: roomsWithMetaData.MetaData);
     }
 
     public async Task<IEnumerable<RoomDto>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids)
@@ -65,7 +64,7 @@ public sealed class RoomService : IRoomService
     {
         await CheckIfHotelExists(hotelId);
 
-        var room = GetRoomForHotelAndCheckIfItExists(hotelId, id, trackChanges: false);
+        var room = await GetRoomForHotelAndCheckIfItExists(hotelId, id, trackChanges: false);
         var roomDto = _mapper.Map<RoomDto>(room);
         
         return roomDto;

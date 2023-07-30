@@ -1,6 +1,7 @@
 using Contracts;
 using HotelBooking.Extensions;
 using HotelBooking.Presentation.Filters.ActionFilters;
+using HotelBooking.Utility;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -34,6 +35,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddScoped<IDataShaper<RoomDto>, DataShaper<RoomDto>>();
+builder.Services.AddScoped<ValidateMediaTypeAttribute>();
+builder.Services.AddScoped<IRoomLinks, RoomLinks>();
 
 builder.Services.AddControllers(config => 
 {
@@ -44,6 +47,7 @@ builder.Services.AddControllers(config =>
   .AddCustomCSVFormatter()
   .AddApplicationPart(typeof(HotelBooking.Presentation.AssemblyReference).Assembly);
 
+builder.Services.AddCustomMediaTypes();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
