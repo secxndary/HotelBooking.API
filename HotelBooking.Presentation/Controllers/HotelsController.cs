@@ -17,7 +17,7 @@ public class HotelsController : ControllerBase
     public HotelsController(IServiceManager service) => _service = service;
 
 
-    [HttpGet]
+    [HttpGet(Name = "GetHotels")]
     [HttpHead]
     public async Task<IActionResult> GetHotels([FromQuery] HotelParameters hotelParameters)
     {
@@ -41,7 +41,7 @@ public class HotelsController : ControllerBase
         return Ok(hotel);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateHotel")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateHotel([FromBody] HotelForCreationDto hotel)
     {

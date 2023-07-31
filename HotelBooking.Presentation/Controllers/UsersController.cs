@@ -16,7 +16,7 @@ public class UsersController : ControllerBase
     public UsersController(IServiceManager service) => _service = service;
 
 
-    [HttpGet]
+    [HttpGet(Name = "GetUsers")]
     [HttpHead]
     public async Task<IActionResult> GetUsers([FromQuery] UserParameters userParameters)
     {
@@ -32,7 +32,7 @@ public class UsersController : ControllerBase
         return Ok(user);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateUser")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user)
     {

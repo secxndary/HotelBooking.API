@@ -52,7 +52,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/feedbacks")]
+    [Route("api/feedbacks", Name = "CreateFeedback")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateFeedback([FromBody] FeedbackForCreationDto feedback)
     {
@@ -97,6 +97,27 @@ public class FeedbacksController : ControllerBase
     public IActionResult GetFeedbacksOptions()
     {
         Response.Headers.Add("Allow", "OPTIONS, POST");
+        return Ok();
+    }
+
+    [HttpOptions("api/hotels/{hotelId:guid}/feedbacks")]
+    public IActionResult GetFeedbacksByHotelOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS");
+        return Ok();
+    }
+
+    [HttpOptions("api/rooms/{roomId:guid}/feedbacks")]
+    public IActionResult GetFeedbacksByRoomOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS");
+        return Ok();
+    }
+
+    [HttpOptions("api/reservations/{reservationId:guid}/feedbacks")]
+    public IActionResult GetFeedbacksByReservationOptions()
+    {
+        Response.Headers.Add("Allow", "GET, OPTIONS");
         return Ok();
     }
 }

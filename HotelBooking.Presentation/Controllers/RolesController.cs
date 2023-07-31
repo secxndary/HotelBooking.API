@@ -16,7 +16,7 @@ public class RolesController : ControllerBase
     public RolesController(IServiceManager service) => _service = service;
 
 
-    [HttpGet]
+    [HttpGet(Name = "GetRoles")]
     [HttpHead]
     public async Task<IActionResult> GetRoles([FromQuery] RoleParameters roleParameters)
     {
@@ -32,7 +32,7 @@ public class RolesController : ControllerBase
         return Ok(role);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateRole")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRole([FromBody] RoleForCreationDto role)
     {

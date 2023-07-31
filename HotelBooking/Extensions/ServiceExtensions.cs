@@ -46,15 +46,23 @@ public static class ServiceExtensions
     {
         services.Configure<MvcOptions>(config =>
         {
-            var systemTextJsonOutputFormatter = config.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+            var systemTextJsonOutputFormatter = config.OutputFormatters
+                .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
 
             if (systemTextJsonOutputFormatter != null)
+            {
                 systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.hotelbooking.hateoas+json");
+                systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.hotelbooking.apiroot+json");
+            }
 
-            var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+            var xmlOutputFormatter = config.OutputFormatters
+                .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
 
             if (xmlOutputFormatter != null)
+            {
                 xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.hotelbooking.hateoas+xml");
+                xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.hotelbooking.apiroot+xml");
+            }
         }); 
     }
 }

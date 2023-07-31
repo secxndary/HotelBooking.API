@@ -16,7 +16,7 @@ public class RoomTypesController : ControllerBase
     public RoomTypesController(IServiceManager service) => _service = service;
 
 
-    [HttpGet]
+    [HttpGet(Name = "GetRoomTypes")]
     [HttpHead]
     public async Task<IActionResult> GetRoomTypes([FromQuery] RoomTypeParameters roomTypeParameters)
     {
@@ -32,7 +32,7 @@ public class RoomTypesController : ControllerBase
         return Ok(roomType);
     }
 
-    [HttpPost]
+    [HttpPost(Name = "CreateRoomType")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoomType([FromBody] RoomTypeForCreationDto roomType)
     {
