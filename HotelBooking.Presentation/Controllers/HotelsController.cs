@@ -9,9 +9,9 @@ using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
-//[ApiVersion("1.0")]
 [Route("api/hotels")]
 [ApiController]
+[ResponseCache(CacheProfileName = "120SecondsDuration")]
 public class HotelsController : ControllerBase
 {
     private readonly IServiceManager _service;

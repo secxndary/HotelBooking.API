@@ -1,6 +1,5 @@
 ﻿using Contracts;
 using Contracts.Repository;
-using HotelBooking.Presentation.Controllers;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
@@ -76,8 +75,9 @@ public static class ServiceExtensions
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = new ApiVersion(1, 0);
             options.ApiVersionReader = new HeaderApiVersionReader("api-version");
-            options.Conventions.Controller<HotelsController>().HasApiVersion(new ApiVersion(1, 0));
-            options.Conventions.Controller<Hotelsv2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
         });
     }
+
+    public static void ConfigureResponseCaching(this IServiceCollection services) =>
+        services.AddResponseCaching();
 }

@@ -28,6 +28,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureVersioning();
+builder.Services.ConfigureResponseCaching();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -44,6 +45,7 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
     config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
+    config.CacheProfiles.Add("120SecondsDuration", new CacheProfile { Duration = 120 });
 }).AddXmlDataContractSerializerFormatters()
   .AddCustomCSVFormatter()
   .AddApplicationPart(typeof(HotelBooking.Presentation.AssemblyReference).Assembly);
@@ -75,6 +77,7 @@ app.UseForwardedHeaders(
 );
 
 app.UseCors("CorsPolicy");
+app.UseResponseCaching();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
