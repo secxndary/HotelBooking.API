@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Service.Authentication;
 using Service.Contracts;
+using Service.Contracts.Authentication;
 using Service.Contracts.UserServices;
 using Service.UserServicesImpl;
 namespace Service;
@@ -17,8 +22,10 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IFeedbackService> _feedbackService;
     private readonly Lazy<IRoomPhotoService> _roomPhotoService;
     private readonly Lazy<IHotelPhotoService> _hotelPhotoService;
+    private readonly Lazy<IAuthenticationService> _authenticationService;
 
-    public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IRoomLinks roomLinks)
+    public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IRoomLinks roomLinks, 
+        UserManager<UserIdentity> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
     {
         _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger, mapper));
         _userService = new Lazy<IUserService>(() => new UserService(repository, logger, mapper));
@@ -29,6 +36,8 @@ public class ServiceManager : IServiceManager
         _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repository, logger, mapper));
         _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger, mapper));
         _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger, mapper));
+        _authenticationService = new Lazy<IAuthenticationService>(() => 
+            new AuthenticationService(logger, mapper, userManager, roleManager, configuration));
     }
 
     public IRoleService RoleService => _roleService.Value;
@@ -40,4 +49,5 @@ public class ServiceManager : IServiceManager
     public IFeedbackService FeedbackService => _feedbackService.Value;
     public IRoomPhotoService RoomPhotoService => _roomPhotoService.Value;
     public IHotelPhotoService HotelPhotoService => _hotelPhotoService.Value;
+    public IAuthenticationService AuthenticationService => _authenticationService.Value;
 }

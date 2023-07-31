@@ -107,7 +107,7 @@ public static class ServiceExtensions
             {
                 Endpoint = "*",
                 Limit = 30,
-                Period = "1m"
+                Period = "5m"
             }
         };
 

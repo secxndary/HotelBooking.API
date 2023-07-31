@@ -1,4 +1,5 @@
-﻿using Service.Contracts.UserServices;
+﻿using Service.Contracts.Authentication;
+using Service.Contracts.UserServices;
 namespace Service.Contracts;
 
 public interface IServiceManager
@@ -12,4 +13,5 @@ public interface IServiceManager
     IFeedbackService FeedbackService { get; }
     IRoomPhotoService RoomPhotoService { get; }
     IHotelPhotoService HotelPhotoService { get; }
+    IAuthenticationService AuthenticationService { get; }
 }

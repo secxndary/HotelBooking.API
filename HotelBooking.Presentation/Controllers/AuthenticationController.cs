@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects.AuthenticationDtos;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/authentication")]
@@ -10,5 +12,19 @@ public class AuthenticationController : ControllerBase
     public AuthenticationController(IServiceManager service) => _service = service;
 
 
+    [HttpPost]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+    {
+        var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
+        
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+                ModelState.TryAddModelError(error.Code, error.Description);
+            return BadRequest(ModelState);
+        }
 
+        return StatusCode(201);
+    }
 }
