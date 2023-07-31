@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Entities.Models;
 using Entities.Models.UserModels;
+using Shared.DataTransferObjects.AuthenticationDtos;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
@@ -38,5 +40,7 @@ public class MappingProfile : Profile
         CreateMap<FeedbackForUpdateDto, Feedback>().ReverseMap();
         CreateMap<RoomPhotoForUpdateDto, RoomPhoto>().ReverseMap();
         CreateMap<HotelPhotoForUpdateDto, HotelPhoto>().ReverseMap();
+
+        CreateMap<UserForRegistrationDto, UserIdentity>();
     }
 }

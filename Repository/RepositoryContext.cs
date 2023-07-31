@@ -1,9 +1,12 @@
-﻿using Entities.Models.UserModels;
+﻿using Entities.Models;
+using Entities.Models.UserModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repository.Configuration;
+using Repository.Configuration.Identity;
 namespace Repository;
 
-public class RepositoryContext : DbContext
+public class RepositoryContext : IdentityDbContext<UserIdentity>
 {
     public RepositoryContext(DbContextOptions options) 
         : base (options)
@@ -11,6 +14,8 @@ public class RepositoryContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder
             .ApplyConfiguration(new RoleConfiguration())
             .ApplyConfiguration(new UserConfiguration())
@@ -20,7 +25,8 @@ public class RepositoryContext : DbContext
             .ApplyConfiguration(new ReservationConfiguration())
             .ApplyConfiguration(new FeedbackConfiguration())
             .ApplyConfiguration(new RoomPhotoConfiguration())
-            .ApplyConfiguration(new HotelPhotoConfiguration());
+            .ApplyConfiguration(new HotelPhotoConfiguration())
+            .ApplyConfiguration(new RoleIdentityConfiguration());
     }
 
     public DbSet<Role>? Roles { get; set; }
