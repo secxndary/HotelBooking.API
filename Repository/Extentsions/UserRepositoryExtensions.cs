@@ -1,4 +1,4 @@
-﻿using Entities.Models;
+﻿using Entities.Models.UserModels;
 using Repository.Extentsions.Utility;
 using System.Linq.Dynamic.Core;
 namespace Repository.Extentsions;

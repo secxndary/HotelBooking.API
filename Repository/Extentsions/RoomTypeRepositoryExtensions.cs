@@ -1,7 +1,8 @@
 ﻿using System.Data;
-using Entities.Models;
 using Repository.Extentsions.Utility;
 using System.Linq.Dynamic.Core;
+using Entities.Models.UserModels;
+
 namespace Repository.Extentsions;
 
 public static class RoomTypeRepositoryExtensions

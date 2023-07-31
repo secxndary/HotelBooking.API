@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Entities.Models;
+
+namespace Entities.Models.UserModels;
 
 public class Reservation
 {
@@ -8,7 +9,7 @@ public class Reservation
 
     [Required(ErrorMessage = "DateEntry is a required field.")]
     public DateTime DateEntry { get; set; }
-    
+
     [Required(ErrorMessage = "DateExit is a required field.")]
     public DateTime DateExit { get; set; }
 

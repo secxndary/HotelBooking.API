@@ -4,13 +4,14 @@ using Contracts.Repository;
 using Entities.Exceptions.BadRequest.Collections;
 using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
-using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 using Shared.RequestFeatures;
+using Entities.Models.UserModels;
+
 namespace Service.UserServicesImpl;
 
 public sealed class HotelService : IHotelService

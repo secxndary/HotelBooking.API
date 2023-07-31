@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace Entities.Models;
+
+namespace Entities.Models.UserModels;
 
 public class HotelPhoto
 {

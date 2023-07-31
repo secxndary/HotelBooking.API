@@ -3,7 +3,7 @@ using Contracts;
 using Contracts.Repository;
 using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
-using Entities.Models;
+using Entities.Models.UserModels;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;

@@ -5,7 +5,7 @@ using Entities.Exceptions.BadRequest.Collections;
 using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
 using Entities.LinkModels;
-using Entities.Models;
+using Entities.Models.UserModels;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;

@@ -1,5 +1,5 @@
 ﻿using Contracts.Repositories.UserRepositories;
-using Entities.Models;
+using Entities.Models.UserModels;
 using Microsoft.EntityFrameworkCore;
 using Repository.Extentsions;
 using Shared.RequestFeatures;

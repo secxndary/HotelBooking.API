@@ -1,5 +1,5 @@
 ﻿using Entities.LinkModels;
-using Entities.Models;
+using Entities.Models.UserModels;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;

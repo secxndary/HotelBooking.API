@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Entities.Models;
 
-public class Role
+namespace Entities.Models.UserModels;
+
+public class RoomType
 {
     public Guid Id { get; set; }
 
@@ -13,5 +14,5 @@ public class Role
     [MaxLength(300, ErrorMessage = "Maximum length for the Description is 300 characters.")]
     public string? Description { get; set; }
 
-    public ICollection<User>? Users { get; set; }
+    public ICollection<Room>? Rooms { get; set; }
 }
