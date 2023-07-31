@@ -29,6 +29,7 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
+builder.Services.ConfigureHttpCacheHeaders();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -78,6 +79,8 @@ app.UseForwardedHeaders(
 
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
+app.UseHttpCacheHeaders();
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

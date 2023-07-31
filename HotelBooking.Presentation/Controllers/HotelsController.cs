@@ -11,7 +11,6 @@ namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/hotels")]
 [ApiController]
-[ResponseCache(CacheProfileName = "120SecondsDuration")]
 public class HotelsController : ControllerBase
 {
     private readonly IServiceManager _service;
