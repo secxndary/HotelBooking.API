@@ -1,8 +1,10 @@
 ﻿using Contracts;
 using Contracts.Repository;
+using HotelBooking.Presentation.Controllers;
 using LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Service;
@@ -64,5 +66,18 @@ public static class ServiceExtensions
                 xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.hotelbooking.apiroot+xml");
             }
         }); 
+    }
+
+    public static void ConfigureVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
+        {
+            options.ReportApiVersions = true;
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.ApiVersionReader = new HeaderApiVersionReader("api-version");
+            options.Conventions.Controller<HotelsController>().HasApiVersion(new ApiVersion(1, 0));
+            options.Conventions.Controller<Hotelsv2Controller>().HasDeprecatedApiVersion(new ApiVersion(2, 0));
+        });
     }
 }

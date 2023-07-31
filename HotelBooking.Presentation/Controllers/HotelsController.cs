@@ -9,6 +9,7 @@ using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
+//[ApiVersion("1.0")]
 [Route("api/hotels")]
 [ApiController]
 public class HotelsController : ControllerBase
