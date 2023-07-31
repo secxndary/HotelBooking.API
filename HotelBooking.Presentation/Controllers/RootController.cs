@@ -1,10 +1,12 @@
 ﻿using Entities.LinkModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 namespace HotelBooking.Presentation.Controllers;
 
 [Route("api")]
 [ApiController]
+[Authorize]
 public class RootController : ControllerBase
 {
     private readonly LinkGenerator _linkGenerator;

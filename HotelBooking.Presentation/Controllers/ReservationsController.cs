@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -10,6 +11,7 @@ namespace HotelBooking.Presentation.Controllers;
 
 [Route("api/rooms/{roomId:guid}/reservations")]
 [ApiController]
+[Authorize]
 public class ReservationsController : ControllerBase
 {
     private readonly IServiceManager _service;

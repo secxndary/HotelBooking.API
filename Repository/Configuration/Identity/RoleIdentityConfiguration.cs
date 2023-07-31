@@ -12,14 +12,14 @@ public class RoleIdentityConfiguration : IEntityTypeConfiguration<IdentityRole>
             new IdentityRole
             {
                 Id = "f51135f0-adf7-4506-960e-f10ae287f792",
-                Name = "Administrator",
+                Name = "Admin",
                 NormalizedName = "ADMIN"
             },
             new IdentityRole
             {
                 Id = "744a95cd-b364-44bd-842d-6ca02f9fe5fa",
-                Name = "Hotel Owner",
-                NormalizedName = "HOTEL_OWNER"
+                Name = "HotelOwner",
+                NormalizedName = "HOTELOWNER"
             },
             new IdentityRole
             {

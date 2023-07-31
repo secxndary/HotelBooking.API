@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
@@ -9,6 +10,7 @@ using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
+[Authorize]
 public class FeedbacksController : ControllerBase
 {
     private readonly IServiceManager _service;

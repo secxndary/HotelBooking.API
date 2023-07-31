@@ -14,9 +14,9 @@ public class AuthenticationController : ControllerBase
 
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
-    public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
+    public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto user)
     {
-        var result = await _service.AuthenticationService.RegisterUser(userForRegistration);
+        var result = await _service.AuthenticationService.RegisterUser(user);
         
         if (!result.Succeeded)
         {
@@ -26,5 +26,17 @@ public class AuthenticationController : ControllerBase
         }
 
         return StatusCode(201);
+    }
+
+    [HttpPost("login")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
+    {
+        if (!await _service.AuthenticationService.ValidateUser(user))
+            return Unauthorized();
+
+        return Ok( new { 
+            Token = await _service.AuthenticationService.CreateToken() 
+        });
     }
 }

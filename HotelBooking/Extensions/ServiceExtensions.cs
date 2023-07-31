@@ -1,14 +1,17 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Text;
+using AspNetCoreRateLimit;
 using Contracts;
 using Contracts.Repository;
 using Entities.Models;
 using LoggerService;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Service;
 using Service.Contracts;
@@ -38,10 +41,9 @@ public static class ServiceExtensions
     public static void ConfigureServiceManager(this IServiceCollection services) =>
         services.AddScoped<IServiceManager, ServiceManager>();
 
-    public static void ConfigureSqlContext(this IServiceCollection services,
-        IConfiguration configuration) =>
-            services.AddDbContext<RepositoryContext>(opts =>
-                opts.UseSqlServer(configuration.GetConnectionString("mssqlConnection")));
+    public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddDbContext<RepositoryContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("mssqlConnection")));
 
     public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
         builder.AddMvcOptions(config => 
@@ -88,14 +90,14 @@ public static class ServiceExtensions
     public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
         services.AddHttpCacheHeaders
         (
-            expirationOpt =>
+            expirationOptions =>
             {
-                expirationOpt.MaxAge = 65;
-                expirationOpt.CacheLocation = CacheLocation.Private;
+                expirationOptions.MaxAge = 65;
+                expirationOptions.CacheLocation = CacheLocation.Private;
             },
-            validationOpt =>
+            validationOptions =>
             {
-                validationOpt.MustRevalidate = true;
+                validationOptions.MustRevalidate = true;
             }
         );
 
@@ -111,7 +113,7 @@ public static class ServiceExtensions
             }
         };
 
-        services.Configure<IpRateLimitOptions>(opt => { opt.GeneralRules = rateLimitRules; });
+        services.Configure<IpRateLimitOptions>(options => { options.GeneralRules = rateLimitRules; });
         services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
         services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
         services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
@@ -131,5 +133,31 @@ public static class ServiceExtensions
         })
             .AddEntityFrameworkStores<RepositoryContext>()
             .AddDefaultTokenProviders();
+    }
+
+    public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtSettings = configuration.GetSection("JwtSettings");
+        var secretKey = Environment.GetEnvironmentVariable("SECRET");
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = jwtSettings["validIssuer"],
+                ValidAudience = jwtSettings["validAudience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+            };
+        });
     }
 }

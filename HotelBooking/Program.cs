@@ -38,6 +38,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJwt(builder.Configuration);
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
