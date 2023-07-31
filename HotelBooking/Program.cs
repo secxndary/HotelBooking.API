@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using Contracts;
 using HotelBooking.Extensions;
 using HotelBooking.Presentation.Filters.ActionFilters;
@@ -30,6 +31,9 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureHttpCacheHeaders();
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimitingOptions();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -59,7 +63,7 @@ var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
-    
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -77,6 +81,7 @@ app.UseForwardedHeaders(
     }
 );
 
+app.UseIpRateLimiting();
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
