@@ -2,6 +2,7 @@
 using AspNetCoreRateLimit;
 using Contracts;
 using Contracts.Repository;
+using Entities.ConfigurationModels;
 using Entities.Models;
 using LoggerService;
 using Marvin.Cache.Headers;
@@ -137,7 +138,9 @@ public static class ServiceExtensions
 
     public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtSettings = configuration.GetSection("JwtSettings");
+        var jwtConfiguration = new JwtConfiguration();
+        configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
+
         var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
         services.AddAuthentication(options =>
@@ -151,11 +154,11 @@ public static class ServiceExtensions
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = bool.Parse(jwtSettings["validateLifetime"]!),
                 ValidateIssuerSigningKey = true,
+                ValidateLifetime = jwtConfiguration.ValidateLifetime,
 
-                ValidIssuer = jwtSettings["validIssuer"],
-                ValidAudience = jwtSettings["validAudience"],
+                ValidIssuer = jwtConfiguration.ValidIssuer,
+                ValidAudience = jwtConfiguration.ValidAudience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
             };
         });

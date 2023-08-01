@@ -37,7 +37,7 @@ public class ServiceManager : IServiceManager
         _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger, mapper));
         _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger, mapper));
         _authenticationService = new Lazy<IAuthenticationService>(() => 
-            new AuthenticationService(logger, mapper, userManager, roleManager, configuration));
+            new AuthenticationService(logger, mapper, configuration, userManager, roleManager));
     }
 
     public IRoleService RoleService => _roleService.Value;
