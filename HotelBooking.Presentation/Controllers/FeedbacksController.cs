@@ -54,6 +54,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "User")]
     [Route("api/feedbacks", Name = "CreateFeedback")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateFeedback([FromBody] FeedbackForCreationDto feedback)
@@ -63,6 +64,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpPut("api/feedbacks/{id:guid}")]
+    [Authorize(Roles = "User")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
     {
@@ -71,6 +73,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpPatch("api/feedbacks/{id:guid}")]
+    [Authorize(Roles = "User")]
     public async Task<IActionResult> PartiallyUpdateFeedback(Guid id, 
         [FromBody] JsonPatchDocument<FeedbackForUpdateDto> patchDoc)
     {
@@ -89,6 +92,7 @@ public class FeedbacksController : ControllerBase
     }
 
     [HttpDelete("api/feedbacks/{id:guid}")]
+    [Authorize(Roles = "User, Admin")]
     public async Task<IActionResult> DeleteFeedback(Guid id)
     {
         await _service.FeedbackService.DeleteFeedbackAsync(id);

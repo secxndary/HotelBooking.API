@@ -650,3 +650,5 @@ Error Number:207,State:1,Class:16
    at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
    at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
    at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|8_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task) 
+2023-08-01 23:56:56.0004 WARN ValidateUser: Authentication failed. Incorrect username or password. 
+2023-08-01 23:57:04.7431 WARN ValidateUser: Authentication failed. Incorrect username or password. 

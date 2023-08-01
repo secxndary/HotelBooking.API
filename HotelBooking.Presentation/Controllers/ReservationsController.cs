@@ -35,6 +35,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "User")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateReservation(Guid roomId, [FromBody] ReservationForCreationDto reservation)
     {
@@ -43,6 +44,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "User, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateReservation(Guid roomId, Guid id, 
         [FromBody] ReservationForUpdateDto reservation)
@@ -52,6 +54,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "User, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateReservation(Guid roomId, Guid id,
         [FromBody] JsonPatchDocument<ReservationForUpdateDto> patchDoc)
     {
@@ -70,6 +73,7 @@ public class ReservationsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "User, HotelOwner")]
     public async Task<IActionResult> DeleteReservationForRoom(Guid roomId, Guid id)
     {
         await _service.ReservationService.DeleteReservationForRoomAsync(roomId, id);

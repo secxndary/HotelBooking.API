@@ -62,6 +62,7 @@ public class HotelPhotosController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateHotelPhoto(Guid hotelId, Guid id, [FromBody] HotelPhotoForUpdateDto photo)
     {
@@ -70,6 +71,7 @@ public class HotelPhotosController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateHotelPhoto(Guid hotelId, Guid id,
         [FromBody] JsonPatchDocument<HotelPhotoForUpdateDto> patchDoc)
     {

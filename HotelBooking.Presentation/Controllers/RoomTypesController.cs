@@ -35,6 +35,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPost(Name = "CreateRoomType")]
+    [Authorize(Roles = "Admin")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoomType([FromBody] RoomTypeForCreationDto roomType)
     {
@@ -43,6 +44,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRoomType(Guid id, [FromBody] RoomTypeForUpdateDto roomType)
     {
@@ -51,6 +53,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> PartiallyUpdateRoomType(Guid id,
         [FromBody] JsonPatchDocument<RoomTypeForUpdateDto> patchDoc)
     {
@@ -69,6 +72,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteRoomType(Guid id)
     {
         await _service.RoomTypeService.DeleteRoomTypeAsync(id);
@@ -76,6 +80,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpOptions]
+    [Authorize(Roles = "Admin")]
     public IActionResult GetRoomTypesOptions()
     {
         Response.Headers.Add("Allow", "GET, OPTIONS, POST");

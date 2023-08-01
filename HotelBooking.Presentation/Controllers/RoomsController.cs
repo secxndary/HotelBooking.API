@@ -47,6 +47,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateRoom(Guid hotelId, [FromBody] RoomForCreationDto room)
     {
@@ -55,6 +56,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPost("collection")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> CreateRoomCollection(Guid hotelId, 
         [FromBody] IEnumerable<RoomForCreationDto> roomCollection)
     {
@@ -63,6 +65,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateRoomForHotel(Guid hotelId, Guid id, [FromBody] RoomForUpdateDto room)
     {
@@ -71,6 +74,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateRoomForHotel(Guid hotelId, Guid id,
         [FromBody] JsonPatchDocument<RoomForUpdateDto> patchDoc)
     {
@@ -89,6 +93,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "HotelOwner")]
     public async Task<IActionResult> DeleteRoomForHotel(Guid hotelId, Guid id)
     {
         await _service.RoomService.DeleteRoomForHotelAsync(hotelId, id);

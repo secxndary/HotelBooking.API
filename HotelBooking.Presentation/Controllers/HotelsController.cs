@@ -44,6 +44,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpPost(Name = "CreateHotel")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> CreateHotel([FromBody] HotelForCreationDto hotel)
     {
@@ -52,6 +53,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpPost("collection")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> CreateHotelCollection(
         [FromBody] IEnumerable<HotelForCreationDto> hotelCollection)
     {
@@ -60,6 +62,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public async Task<IActionResult> UpdateHotel(Guid id, [FromBody] HotelForUpdateDto hotel)
     {
@@ -68,6 +71,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpPatch("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateHotel(Guid id,
         [FromBody] JsonPatchDocument<HotelForUpdateDto> patchDoc)
     {
@@ -86,6 +90,7 @@ public class HotelsController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> DeleteHotel(Guid id)
     {
         await _service.HotelService.DeleteHotelAsync(id);
