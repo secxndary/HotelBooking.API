@@ -10,6 +10,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Entities.Exceptions.BadRequest.Authentication;
 namespace Service.Authentication;
 
 public class AuthenticationService : IAuthenticationService
@@ -82,6 +83,19 @@ public class AuthenticationService : IAuthenticationService
 
         return new TokenDto(accessToken, refreshToken);
     }
+
+    public async Task<TokenDto> RefreshToken(TokenDto tokenDto)
+    {
+        var principal = GetPrincipalForExpiredToken(tokenDto.AccessToken);
+
+        var user = await _userManager.FindByNameAsync(principal.Identity!.Name!);
+        if (user == null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            throw new RefreshTokenBadRequest();
+
+        _user = user;
+        return await CreateToken(populateExpiration: false);
+    }
+
 
     private SigningCredentials GetSigningCredentials()
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.AuthenticationDtos;
-namespace HotelBooking.Presentation.Controllers;
+namespace HotelBooking.Presentation.Controllers.Authentication;
 
 [Route("api/authentication")]
 [ApiController]
