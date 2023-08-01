@@ -151,7 +151,7 @@ public static class ServiceExtensions
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = false,
+                ValidateLifetime = bool.Parse(jwtSettings["validateLifetime"]!),
                 ValidateIssuerSigningKey = true,
 
                 ValidIssuer = jwtSettings["validIssuer"],

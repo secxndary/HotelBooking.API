@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto user)
     {
         var result = await _service.AuthenticationService.RegisterUser(user);
-        
+
         if (!result.Succeeded)
         {
             foreach (var error in result.Errors)
@@ -35,8 +35,7 @@ public class AuthenticationController : ControllerBase
         if (!await _service.AuthenticationService.ValidateUser(user))
             return Unauthorized();
 
-        return Ok( new { 
-            Token = await _service.AuthenticationService.CreateToken() 
-        });
+        var tokenDto = await _service.AuthenticationService.CreateToken(populateExpiration: true);
+        return Ok(tokenDto);
     }
 }
