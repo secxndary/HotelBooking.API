@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contracts;
 using Service.Contracts.Authentication;
-using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Entities.Models;
 using Shared.DataTransferObjects.AuthenticationDtos;
@@ -12,31 +11,32 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using Entities.Exceptions.BadRequest.Authentication;
 using Entities.ConfigurationModels;
+using Microsoft.Extensions.Options;
 namespace Service.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
-    private readonly IConfiguration _configuration;
 
     private readonly UserManager<UserIdentity> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
+    private readonly IOptionsSnapshot<JwtConfiguration> _configuration;
     private readonly JwtConfiguration _jwtConfiguration;
+    
     private UserIdentity? _user;
 
-    public AuthenticationService(ILoggerManager logger, IMapper mapper, IConfiguration configuration, 
-        UserManager<UserIdentity> userManager, RoleManager<IdentityRole> roleManager)
+    public AuthenticationService(ILoggerManager logger, IMapper mapper, UserManager<UserIdentity> userManager, 
+        RoleManager<IdentityRole> roleManager, IOptionsSnapshot<JwtConfiguration> configuration)
     {
         _logger = logger;
         _mapper = mapper;
         _configuration = configuration;
         _userManager = userManager;
         _roleManager = roleManager;
-
-        _jwtConfiguration = new JwtConfiguration();
-        _configuration.Bind(_jwtConfiguration.Section, _jwtConfiguration);
+        _configuration = configuration;
+        _jwtConfiguration = _configuration.Value;
     }
 
 
@@ -107,7 +107,7 @@ public class AuthenticationService : IAuthenticationService
     {
         var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")!);
         var secret = new SymmetricSecurityKey(key);
-        return new SigningCredentials(secret, SecurityAlgorithms.Aes128CbcHmacSha256);
+        return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
 
     private async Task<List<Claim>> GetClaims()
@@ -166,7 +166,7 @@ public class AuthenticationService : IAuthenticationService
 
         var jwtSecurityToken = securityToken as JwtSecurityToken;
         if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals
-            (SecurityAlgorithms.Aes128CbcHmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            (SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
         {
             throw new SecurityTokenException("Invalid token");
         }

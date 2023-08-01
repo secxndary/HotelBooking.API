@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Contracts;
 using Contracts.Repository;
+using Entities.ConfigurationModels;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Service.Authentication;
 using Service.Contracts;
 using Service.Contracts.Authentication;
@@ -25,7 +26,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IAuthenticationService> _authenticationService;
 
     public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IRoomLinks roomLinks, 
-        UserManager<UserIdentity> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        UserManager<UserIdentity> userManager, RoleManager<IdentityRole> roleManager, IOptionsSnapshot<JwtConfiguration> config)
     {
         _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger, mapper));
         _userService = new Lazy<IUserService>(() => new UserService(repository, logger, mapper));
@@ -37,7 +38,7 @@ public class ServiceManager : IServiceManager
         _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger, mapper));
         _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger, mapper));
         _authenticationService = new Lazy<IAuthenticationService>(() => 
-            new AuthenticationService(logger, mapper, configuration, userManager, roleManager));
+            new AuthenticationService(logger, mapper, userManager, roleManager, config));
     }
 
     public IRoleService RoleService => _roleService.Value;
