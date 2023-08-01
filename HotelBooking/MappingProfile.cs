@@ -11,8 +11,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile() 
     {
-        CreateMap<Role, RoleDto>();
-        CreateMap<User, UserDto>();
         CreateMap<RoomType, RoomTypeDto>();
         CreateMap<Room, RoomDto>();
         CreateMap<Hotel, HotelDto>();
@@ -21,8 +19,6 @@ public class MappingProfile : Profile
         CreateMap<RoomPhoto, RoomPhotoDto>();
         CreateMap<HotelPhoto,  HotelPhotoDto>();
 
-        CreateMap<RoleForCreationDto, Role>();
-        CreateMap<UserForCreationDto, User>();
         CreateMap<RoomTypeForCreationDto, RoomType>();
         CreateMap<RoomForCreationDto, Room>();
         CreateMap<HotelForCreationDto, Hotel>();
@@ -31,8 +27,6 @@ public class MappingProfile : Profile
         CreateMap<RoomPhotoForCreationDto, RoomPhoto>();
         CreateMap<HotelPhotoForCreationDto, HotelPhoto>();
 
-        CreateMap<RoleForUpdateDto, Role>().ReverseMap();
-        CreateMap<UserForUpdateDto, User>().ReverseMap();
         CreateMap<RoomTypeForUpdateDto, RoomType>().ReverseMap();
         CreateMap<RoomForUpdateDto, Room>().ReverseMap();
         CreateMap<HotelForUpdateDto, Hotel>().ReverseMap();

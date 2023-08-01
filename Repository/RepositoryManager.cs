@@ -7,8 +7,6 @@ public sealed class RepositoryManager : IRepositoryManager
 {
     private readonly RepositoryContext _repositoryContext;
 
-    private readonly Lazy<IRoleRepository> _roleRepository;
-    private readonly Lazy<IUserRepository> _userRepository;
     private readonly Lazy<IRoomTypeRepository> _roomTypeRepository;
     private readonly Lazy<IRoomRepository> _roomRepository;
     private readonly Lazy<IHotelRepository> _hotelRepository;
@@ -20,8 +18,6 @@ public sealed class RepositoryManager : IRepositoryManager
     public RepositoryManager(RepositoryContext repositoryContext)
     {
         _repositoryContext = repositoryContext;
-        _roleRepository = new Lazy<IRoleRepository>(() => new RoleRepository(repositoryContext));
-        _userRepository = new Lazy<IUserRepository>(() => new UserRepository(repositoryContext));
         _roomTypeRepository = new Lazy<IRoomTypeRepository>(() => new RoomTypeRepository(repositoryContext));
         _roomRepository = new Lazy<IRoomRepository>(() => new RoomRepository(repositoryContext));
         _hotelRepository = new Lazy<IHotelRepository>(() => new HotelRepository(repositoryContext));
@@ -31,8 +27,6 @@ public sealed class RepositoryManager : IRepositoryManager
         _hotelPhotoRepository = new Lazy<IHotelPhotoRepository>(() => new HotelPhotoRepository(repositoryContext));
     }
 
-    public IRoleRepository Role => _roleRepository.Value;
-    public IUserRepository User => _userRepository.Value;
     public IRoomTypeRepository RoomType => _roomTypeRepository.Value;
     public IRoomRepository Room => _roomRepository.Value;
     public IHotelRepository Hotel => _hotelRepository.Value;

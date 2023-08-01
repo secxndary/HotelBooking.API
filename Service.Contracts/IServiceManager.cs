@@ -4,8 +4,6 @@ namespace Service.Contracts;
 
 public interface IServiceManager
 {
-    IRoleService RoleService { get; }
-    IUserService UserService { get; }
     IRoomTypeService RoomTypeService { get; }
     IRoomService RoomService { get; }
     IHotelService HotelService { get; }

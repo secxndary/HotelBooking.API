@@ -118,9 +118,9 @@ public sealed class ReservationService : IReservationService
 
     private async Task CheckIfUserExists(Guid userId)
     {
-        var user = await _repository.User.GetUserAsync(userId, trackChanges: false);
-        if (user is null)
-            throw new UserNotFoundException(userId);
+        //var user = await _repository.User.GetUserAsync(userId, trackChanges: false);
+        //if (user is null)
+        //    throw new UserNotFoundException(userId);
     }
 
     private async Task<Reservation> GetReservationAndCheckIfItExists(Guid id, bool trackChanges)

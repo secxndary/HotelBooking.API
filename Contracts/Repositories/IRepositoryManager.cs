@@ -3,8 +3,6 @@ namespace Contracts.Repository;
 
 public interface IRepositoryManager
 {
-    IRoleRepository Role { get; }
-    IUserRepository User { get; }
     IRoomTypeRepository RoomType { get; }
     IRoomRepository Room { get; }
     IHotelRepository Hotel { get; }

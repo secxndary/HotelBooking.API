@@ -14,8 +14,6 @@ namespace Service;
 
 public class ServiceManager : IServiceManager
 {
-    private readonly Lazy<IRoleService> _roleService;
-    private readonly Lazy<IUserService> _userService;
     private readonly Lazy<IRoomTypeService> _roomTypeService;
     private readonly Lazy<IRoomService> _roomService;
     private readonly Lazy<IHotelService> _hotelService;
@@ -28,8 +26,6 @@ public class ServiceManager : IServiceManager
     public ServiceManager(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IRoomLinks roomLinks, 
         UserManager<UserIdentity> userManager, RoleManager<IdentityRole> roleManager, IOptionsSnapshot<JwtConfiguration> config)
     {
-        _roleService = new Lazy<IRoleService>(() => new RoleService(repository, logger, mapper));
-        _userService = new Lazy<IUserService>(() => new UserService(repository, logger, mapper));
         _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger, mapper));
         _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger, mapper, roomLinks));
         _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger, mapper));
@@ -41,8 +37,6 @@ public class ServiceManager : IServiceManager
             new AuthenticationService(logger, mapper, userManager, roleManager, config));
     }
 
-    public IRoleService RoleService => _roleService.Value;
-    public IUserService UserService => _userService.Value;
     public IRoomTypeService RoomTypeService => _roomTypeService.Value;
     public IRoomService RoomService => _roomService.Value;
     public IHotelService HotelService => _hotelService.Value;

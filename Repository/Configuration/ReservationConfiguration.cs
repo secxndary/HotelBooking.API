@@ -15,7 +15,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 6, 10),
                 DateExit = new DateTime(2023, 6, 11),
                 RoomId = new Guid("f8fb0b5c-d693-4e8c-934f-2ad79dba1bdc"),
-                UserId = new Guid("3a08ecca-7fbe-4886-ad58-61998c01c9e0")
+                UserId = "3a08ecca-7fbe-4886-ad58-61998c01c9e0"
             },
             new Reservation
             {
@@ -23,7 +23,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 6, 13),
                 DateExit = new DateTime(2023, 6, 14),
                 RoomId = new Guid("4c1447d2-50f6-4397-9abb-b9b21e8661f2"),
-                UserId = new Guid("3a08ecca-7fbe-4886-ad58-61998c01c9e0")
+                UserId = "3a08ecca-7fbe-4886-ad58-61998c01c9e0"
             },
             new Reservation
             {
@@ -31,7 +31,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 6, 9),
                 DateExit = new DateTime(2023, 6, 14),
                 RoomId = new Guid("f1960e67-d4c1-4b40-a454-f39fb3a655f2"),
-                UserId = new Guid("3a08ecca-7fbe-4886-ad58-61998c01c9e0")
+                UserId = "3a08ecca-7fbe-4886-ad58-61998c01c9e0"
             },
             new Reservation
             {
@@ -39,7 +39,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 6, 20),
                 DateExit = new DateTime(2023, 6, 22),
                 RoomId = new Guid("1e7bbd59-e683-4700-b8f0-d279ba1304bb"),
-                UserId = new Guid("a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9")
+                UserId = "a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9"
             },
             new Reservation
             {
@@ -47,7 +47,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 7, 5),
                 DateExit = new DateTime(2023, 7, 12),
                 RoomId = new Guid("1e7bbd59-e683-4700-b8f0-d279ba1304bb"),
-                UserId = new Guid("a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9")
+                UserId = "a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9"
             },
             new Reservation
             {
@@ -55,7 +55,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 7, 7),
                 DateExit = new DateTime(2023, 7, 10),
                 RoomId = new Guid("7bd76d93-3167-49fe-98fc-7e4de14ac8b7"),
-                UserId = new Guid("a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9")
+                UserId = "a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9"
             },
             new Reservation
             {
@@ -63,7 +63,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 7, 10),
                 DateExit = new DateTime(2023, 7, 12),
                 RoomId = new Guid("684ff150-741e-4706-9306-07d4064efdb1"),
-                UserId = new Guid("f94a3937-8935-48a4-81f3-4d6e33603c65")
+                UserId = "f94a3937-8935-48a4-81f3-4d6e33603c65"
             },
             new Reservation
             {
@@ -71,7 +71,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
                 DateEntry = new DateTime(2023, 7, 9),
                 DateExit = new DateTime(2023, 7, 13),
                 RoomId = new Guid("96efe1d7-d219-4beb-a977-c5689fdfa062"),
-                UserId = new Guid("f94a3937-8935-48a4-81f3-4d6e33603c65")
+                UserId = "f94a3937-8935-48a4-81f3-4d6e33603c65"
             }
         );
     }
