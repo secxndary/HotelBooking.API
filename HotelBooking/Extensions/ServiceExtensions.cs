@@ -151,7 +151,7 @@ public static class ServiceExtensions
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
-                ValidateLifetime = true,
+                ValidateLifetime = false,
                 ValidateIssuerSigningKey = true,
 
                 ValidIssuer = jwtSettings["validIssuer"],
