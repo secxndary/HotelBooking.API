@@ -16,7 +16,7 @@ public class Reservation
     public Guid RoomId { get; set; }
     public Room? Room { get; set; }
 
-    [ForeignKey(nameof(User))]
+    [ForeignKey(nameof(UserIdentity))]
     public string? UserId { get; set; }
     public UserIdentity? User { get; set; }
 
