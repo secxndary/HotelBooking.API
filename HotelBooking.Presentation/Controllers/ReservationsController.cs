@@ -20,9 +20,9 @@ public class ReservationsController : ControllerBase
 
     [HttpGet]
     [HttpHead]
-    public async Task<IActionResult> GetReservations(Guid roomId, [FromQuery] ReservationlParameters reservationlParameters)
+    public async Task<IActionResult> GetReservations(Guid roomId, [FromQuery] ReservationlParameters reservationParameters)
     {
-        var (reservations, metaData) = await _service.ReservationService.GetReservationsAsync(roomId, reservationlParameters);
+        var (reservations, metaData) = await _service.ReservationService.GetReservationsAsync(roomId, reservationParameters);
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(reservations);
     }

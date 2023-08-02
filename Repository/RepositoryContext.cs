@@ -24,7 +24,9 @@ public class RepositoryContext : IdentityDbContext<UserIdentity>
             .ApplyConfiguration(new FeedbackConfiguration())
             .ApplyConfiguration(new RoomPhotoConfiguration())
             .ApplyConfiguration(new HotelPhotoConfiguration())
-            .ApplyConfiguration(new RoleIdentityConfiguration());
+            .ApplyConfiguration(new RoleIdentityConfiguration())
+            .ApplyConfiguration(new UserIdentityConfiguration())
+            .ApplyConfiguration(new UserIRolesConfiguration());
     }
 
     public DbSet<RoomType>? RoomTypes { get; set; }

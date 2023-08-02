@@ -10,5 +10,5 @@ public abstract record ReservationForManipulationDto
     public DateTime DateExit { get; init; }
 
     [Required(ErrorMessage = "UserId is a required field.")]
-    public Guid UserId { get; init; }
+    public string? UserId { get; init; }
 }

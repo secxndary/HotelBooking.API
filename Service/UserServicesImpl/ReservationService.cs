@@ -55,7 +55,7 @@ public sealed class ReservationService : IReservationService
     public async Task<ReservationDto> CreateReservationForRoomAsync(Guid roomId, ReservationForCreationDto reservation)
     {
         await CheckIfRoomExists(roomId);
-        await CheckIfUserExists(reservation.UserId);
+        await CheckIfUserExists(reservation.UserId!);
 
         var reservationEntity = _mapper.Map<Reservation>(reservation);
         _repository.Reservation.CreateReservationForRoom(roomId, reservationEntity);
@@ -68,7 +68,7 @@ public sealed class ReservationService : IReservationService
     public async Task<ReservationDto> UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation)
     {
         await CheckIfRoomExists(roomId);
-        await CheckIfUserExists(reservation.UserId);
+        await CheckIfUserExists(reservation.UserId!);
 
         var reservationEntity = await GetReservationAndCheckIfItExists(id, trackChanges: true);
         _mapper.Map(reservation, reservationEntity);
@@ -116,7 +116,7 @@ public sealed class ReservationService : IReservationService
             throw new RoomNotFoundException(roomId);
     }
 
-    private async Task CheckIfUserExists(Guid userId)
+    private async Task CheckIfUserExists(string userId)
     {
         //var user = await _repository.User.GetUserAsync(userId, trackChanges: false);
         //if (user is null)
