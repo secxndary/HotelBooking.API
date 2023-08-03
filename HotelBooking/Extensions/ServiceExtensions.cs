@@ -172,7 +172,27 @@ public static class ServiceExtensions
     {
         services.AddSwaggerGen(s =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelBooking API", Version = "v1" });
+            s.SwaggerDoc("v1", new OpenApiInfo { 
+                Title = "HotelBooking API", 
+                Version = "v1",
+                Description = "API для бронирования номеров в отеле",
+                TermsOfService = new Uri("https://example.com/terms"),
+                Contact = new OpenApiContact
+                {
+                    Name = "Alexander Valdaitsev",
+                    Email = "valdaitsevv@mail.ru",
+                    Url = new Uri("https://t.me/valdaitsevv")
+                },
+                License = new OpenApiLicense
+                {
+                    Name = "HotelBooking API LICX",
+                    Url = new Uri("https://example.com/license")
+                }
+            });
+
+            var xmlFile = $"{typeof(Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            s.IncludeXmlComments(xmlPath);
 
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

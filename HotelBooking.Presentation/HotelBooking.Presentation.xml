@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HotelBooking.Presentation</name>
+    </assembly>
+    <members>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotels(Shared.RequestFeatures.UserParameters.HotelParameters)">
+            <summary>
+            Gets the list of all hotels
+            </summary>
+            <returns>Hotels list</returns>
+            <response code="200">Returns list of items</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotelCollection(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Gets the collection of hotels by ids
+            </summary>
+            <param name="ids"></param>
+            <returns>Hotels list</returns>
+            <response code="200">Returns list of items</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotel(System.Guid)">
+            <summary>
+            Gets hotel by id
+            </summary>
+            <param name="id"></param>
+            <returns>Hotel</returns>
+            <response code="200">Returns item</response>
+            <response code="404">If this item does not exist</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.CreateHotel(Shared.DataTransferObjects.InputDtos.HotelForCreationDto)">
+            <summary>
+            Creates a newly created hotel
+            </summary>
+            <param name="hotel"></param>
+            <returns>A newly created hotel</returns>
+            <response code="201">Returns a newly created item</response>
+            <response code="400">If the item is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.CreateHotelCollection(System.Collections.Generic.IEnumerable{Shared.DataTransferObjects.InputDtos.HotelForCreationDto})">
+            <summary>
+            Creates collection of hotels
+            </summary>
+            <param name="hotelCollection"></param>
+            <returns>Created collection of hotels</returns>
+            <response code="200">Returns a newly created list of items</response>
+            <response code="400">If the collection is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.UpdateHotel(System.Guid,Shared.DataTransferObjects.UpdateDtos.HotelForUpdateDto)">
+            <summary>
+            Updates hotel by id
+            </summary>
+            <param name="id"></param>
+            <param name="hotel"></param>
+            <returns>Updated hotel</returns>
+            <response code="200">Returns updated item</response>
+            <response code="400">If the item is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.PartiallyUpdateHotel(System.Guid,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{Shared.DataTransferObjects.UpdateDtos.HotelForUpdateDto})">
+            <summary>
+            Partially updates hotel by id
+            </summary>
+            <param name="id"></param>
+            <param name="patchDoc"></param>
+            <returns>Updated hotel</returns>
+            <response code="200">Returns updated item</response>
+            <response code="400">If the item is null</response>
+            <response code="422">If the model is invalid</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.DeleteHotel(System.Guid)">
+            <summary>
+            Deletes hotel by id
+            </summary>
+            <param name="id"></param>
+            <returns>No content</returns>
+            <response code="204">Returnes No content</response>
+            <response code="404">If the item does not exist</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotelsOptions">
+            <summary>
+            Shows possible request methods
+            </summary>
+            <returns>No content</returns>
+            <response code="204">Returnes No content</response>
+        </member>
+    </members>
+</doc>

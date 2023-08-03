@@ -19,6 +19,12 @@ public class HotelsController : ControllerBase
     public HotelsController(IServiceManager service) => _service = service;
 
 
+    /// <summary>
+    /// Gets the list of all hotels
+    /// </summary>
+    /// <returns>Hotels list</returns>
+    /// <response code="200">Returns list of items</response>
+    [ProducesResponseType(200)]
     [HttpGet(Name = "GetHotels")]
     [HttpHead]
     public async Task<IActionResult> GetHotels([FromQuery] HotelParameters hotelParameters)
@@ -28,6 +34,13 @@ public class HotelsController : ControllerBase
         return Ok(hotels);
     }
 
+    /// <summary>
+    /// Gets the collection of hotels by ids
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns>Hotels list</returns>
+    /// <response code="200">Returns list of items</response>
+    [ProducesResponseType(200)]
     [HttpGet("collection/({ids})", Name = "HotelCollection")]
     public async Task<IActionResult> GetHotelCollection(
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
@@ -36,6 +49,15 @@ public class HotelsController : ControllerBase
         return Ok(hotels);
     }
 
+    /// <summary>
+    /// Gets hotel by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Hotel</returns>
+    /// <response code="200">Returns item</response>
+    /// <response code="404">If this item does not exist</response>
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
     [HttpGet("{id:guid}", Name = "HotelById")]
     public async Task<IActionResult> GetHotel(Guid id)
     {
@@ -43,6 +65,17 @@ public class HotelsController : ControllerBase
         return Ok(hotel);
     }
 
+    /// <summary>
+    /// Creates a newly created hotel
+    /// </summary>
+    /// <param name="hotel"></param>
+    /// <returns>A newly created hotel</returns>
+    /// <response code="201">Returns a newly created item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="422">If the model is invalid</response>
+    [ProducesResponseType(201)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(422)]
     [HttpPost(Name = "CreateHotel")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -52,6 +85,17 @@ public class HotelsController : ControllerBase
         return CreatedAtRoute("HotelById", new { id = createdHotel.Id }, createdHotel);
     }
 
+    /// <summary>
+    /// Creates collection of hotels
+    /// </summary>
+    /// <param name="hotelCollection"></param>
+    /// <returns>Created collection of hotels</returns>
+    /// <response code="200">Returns a newly created list of items</response>
+    /// <response code="400">If the collection is null</response>
+    /// <response code="422">If the model is invalid</response>
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(422)]
     [HttpPost("collection")]
     [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> CreateHotelCollection(
@@ -61,6 +105,18 @@ public class HotelsController : ControllerBase
         return CreatedAtRoute("HotelCollection", new { ids }, hotels);
     }
 
+    /// <summary>
+    /// Updates hotel by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="hotel"></param>
+    /// <returns>Updated hotel</returns>
+    /// <response code="200">Returns updated item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="422">If the model is invalid</response>
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(422)]
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -70,6 +126,18 @@ public class HotelsController : ControllerBase
         return Ok(updatedHotel);
     }
 
+    /// <summary>
+    /// Partially updates hotel by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="patchDoc"></param>
+    /// <returns>Updated hotel</returns>
+    /// <response code="200">Returns updated item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="422">If the model is invalid</response>
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(422)]
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateHotel(Guid id,
@@ -89,6 +157,15 @@ public class HotelsController : ControllerBase
         return Ok(updatedHotel);
     }
 
+    /// <summary>
+    /// Deletes hotel by id
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>No content</returns>
+    /// <response code="204">Returnes No content</response>
+    /// <response code="404">If the item does not exist</response>
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> DeleteHotel(Guid id)
@@ -97,6 +174,12 @@ public class HotelsController : ControllerBase
         return NoContent();
     }
 
+    /// <summary>
+    /// Shows possible request methods
+    /// </summary>
+    /// <returns>No content</returns>
+    /// <response code="204">Returnes No content</response>
+    [ProducesResponseType(204)]
     [HttpOptions]
     public IActionResult GetHotelsOptions()
     {
