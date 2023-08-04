@@ -30,4 +30,8 @@
    ```
    setx SECRET "your_jwt_secret" /M
    ```
-3. Провести миграцию (Add-Migration, Update-Database) из основного проекта `HotelBooking`
+2. (Опционально) Обновить строку подключения в `appsettings.json`. По умолчанию MS SQL Server:
+   ```
+   "server=.; database=HotelBooking; Integrated Security=true; TrustServerCertificate=true"
+   ```
+3. Провести миграцию (Add-Migration, Update-Database) из основного проекта `HotelBooking`.
