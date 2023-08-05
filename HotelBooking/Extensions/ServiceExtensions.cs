@@ -18,6 +18,8 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
+using Swashbuckle.AspNetCore.Filters;
+
 namespace HotelBooking.Extensions;
 
 public static class ServiceExtensions
@@ -137,12 +139,12 @@ public static class ServiceExtensions
             .AddEntityFrameworkStores<RepositoryContext>()
             .AddDefaultTokenProviders();
     }
-
+    
     public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtConfiguration = new JwtConfiguration();
         configuration.Bind(jwtConfiguration.Section, jwtConfiguration);
-
+        
         var secretKey = Environment.GetEnvironmentVariable("SECRET");
 
         services.AddAuthentication(options =>
@@ -176,7 +178,7 @@ public static class ServiceExtensions
             s.SwaggerDoc("v1", new OpenApiInfo { 
                 Title = "HotelBooking API", 
                 Version = "v1",
-                Description = "API для бронирования номеров в отеле",
+                Description = "ASP.NET Core Web API for booking hotel rooms.",
                 TermsOfService = new Uri("https://example.com/terms"),
                 Contact = new OpenApiContact
                 {
@@ -200,7 +202,7 @@ public static class ServiceExtensions
             s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
-                Description = "Place to add JWT with Bearer",
+                Description = "Enter JWT access token (e.g. Bearer eyJhbGciOiJ...)",
                 Name = "Authorization",
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer"

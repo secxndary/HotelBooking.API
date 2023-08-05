@@ -11,7 +11,6 @@ using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 using Shared.RequestFeatures;
 using Entities.Models.UserModels;
-
 namespace Service.UserServicesImpl;
 
 public sealed class HotelService : IHotelService
