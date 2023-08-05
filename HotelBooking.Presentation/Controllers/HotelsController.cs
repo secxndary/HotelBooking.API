@@ -122,7 +122,7 @@ public class HotelsController : ControllerBase
     /// <i>You need to have an Admin or HotelOwner role to perform this action.</i>
     /// </remarks>
     /// <response code="200">Returns the newly created list of items</response>
-    /// <response code="400">If the collection is null</response>
+    /// <response code="400">If the collection or ids are null</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPost("collection")]
     [Authorize(Roles = "Admin, HotelOwner")]
