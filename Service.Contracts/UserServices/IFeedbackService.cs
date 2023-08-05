@@ -10,8 +10,10 @@ public interface IFeedbackService
 {
     Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForHotelAsync
         (Guid hotelId, FeedbackParameters feedbackParameters);
-    Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId);
-    Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId);
+    Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForRoomAsync
+        (Guid roomId, FeedbackParameters feedbackParameters);
+    Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForReservationAsync
+        (Guid reservationId, FeedbackParameters feedbackParameters);
     Task<FeedbackDto> GetFeedbackAsync(Guid id);
     Task<FeedbackDto> CreateFeedbackAsync(FeedbackForCreationDto feedback);
     Task<FeedbackDto> UpdateFeedbackAsync(Guid id, FeedbackForUpdateDto feedbackForUpdate);

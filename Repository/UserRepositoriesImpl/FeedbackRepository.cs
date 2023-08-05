@@ -23,15 +23,25 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
         return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
     }
 
-    public async Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, bool trackChanges) =>
-        await FindByCondition(f =>
-            f.Reservation!.RoomId.Equals(roomId), trackChanges)
-        .ToListAsync();
+    public async Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, FeedbackParameters feedbackParameters, bool trackChanges)
+    {
+        var feedbacks = await FindByCondition(f => f.Reservation!.RoomId.Equals(roomId), trackChanges)
+            .Search(feedbackParameters.SearchTerm)
+            .Sort(feedbackParameters.OrderBy)
+            .ToListAsync();
 
-    public async Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, bool trackChanges) =>
-        await FindByCondition(f =>
-            f.ReservationId.Equals(reservationId), trackChanges)
-        .ToListAsync();
+        return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
+    }
+
+    public async Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, FeedbackParameters feedbackParameters, bool trackChanges)
+    {
+        var feedbacks = await FindByCondition(f => f.ReservationId.Equals(reservationId), trackChanges)
+            .Search(feedbackParameters.SearchTerm)
+            .Sort(feedbackParameters.OrderBy)
+            .ToListAsync();
+
+        return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
+    }
 
     public async Task<Feedback?> GetFeedbackAsync(Guid id, bool trackChanges) =>
         await FindByCondition(f => f.Id.Equals(id), trackChanges)

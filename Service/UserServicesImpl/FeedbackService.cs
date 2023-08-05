@@ -36,24 +36,26 @@ public sealed class FeedbackService : IFeedbackService
         return (feedbacks: feedbacksDto, metaData: feedbacksWithMetaData.MetaData);
     }
 
-    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForRoomAsync(Guid roomId)
+    public async Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForRoomAsync
+        (Guid roomId, FeedbackParameters feedbackParameters)
     {
         await CheckIfRoomExists(roomId);
 
-        var feedbacks = await _repository.Feedback.GetFeedbacksForRoomAsync(roomId, trackChanges: false);
-        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
+        var feedbacksWithMetaData = await _repository.Feedback.GetFeedbacksForRoomAsync(roomId, feedbackParameters, trackChanges: false);
+        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacksWithMetaData);
        
-        return feedbacksDto;
+        return (feedbacks: feedbacksDto, metaData: feedbacksWithMetaData.MetaData);
     }
 
-    public async Task<IEnumerable<FeedbackDto>> GetFeedbacksForReservationAsync(Guid reservationId)
+    public async Task<(IEnumerable<FeedbackDto> feedbacks, MetaData metaData)> GetFeedbacksForReservationAsync
+        (Guid reservationId, FeedbackParameters feedbackParameters)
     {
         await CheckIfReservationExists(reservationId);
 
-        var feedbacks = await _repository.Feedback.GetFeedbacksForReservationAsync(reservationId, trackChanges: false);
-        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
-        
-        return feedbacksDto;
+        var feedbacksWithMetaData = await _repository.Feedback.GetFeedbacksForReservationAsync(reservationId, feedbackParameters, trackChanges: false);
+        var feedbacksDto = _mapper.Map<IEnumerable<FeedbackDto>>(feedbacksWithMetaData);
+
+        return (feedbacks: feedbacksDto, metaData: feedbacksWithMetaData.MetaData);
     }
 
     public async Task<FeedbackDto> GetFeedbackAsync(Guid id)

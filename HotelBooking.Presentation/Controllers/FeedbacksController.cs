@@ -11,12 +11,26 @@ namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
 [Authorize]
+[Consumes("application/json")]
+[Produces("application/json", "text/xml", "text/csv")]
 public class FeedbacksController : ControllerBase
 {
     private readonly IServiceManager _service;
     public FeedbacksController(IServiceManager service) => _service = service;
 
 
+    /// <summary>
+    /// Gets the list of feedbacks by hotel
+    /// </summary>
+    /// <param name="hotelId"></param>
+    /// <param name="feedbackParameters"></param>
+    /// <returns>Feedbacks list</returns>
+    /// <remarks>
+    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/hotels/{hotelId:guid}/feedbacks")]
@@ -27,6 +41,18 @@ public class FeedbacksController : ControllerBase
         return Ok(feedbacks);
     }
 
+    /// <summary>
+    /// Gets the list of feedbacks by room
+    /// </summary>
+    /// <param name="roomId"></param>
+    /// <param name="feedbackParameters"></param>
+    /// <returns>Feedbacks list</returns>
+    /// <remarks>
+    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/rooms/{roomId:guid}/feedbacks")]
@@ -36,6 +62,18 @@ public class FeedbacksController : ControllerBase
         return Ok(feedbacks);
     }
 
+    /// <summary>
+    /// Gets the list of feedbacks by reservation
+    /// </summary>
+    /// <param name="reservationId"></param>
+    /// <param name="feedbackParameters"></param>
+    /// <returns>Feedbacks list</returns>
+    /// <remarks>
+    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
