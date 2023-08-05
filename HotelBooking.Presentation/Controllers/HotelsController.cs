@@ -13,8 +13,8 @@ using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
-[Route("api/hotels")]
 [Authorize]
+[Route("api/hotels")]
 [Consumes("application/json")]
 [Produces("application/json", "text/xml", "text/csv")]
 public class HotelsController : ControllerBase
@@ -30,7 +30,7 @@ public class HotelsController : ControllerBase
     /// <returns>Hotels list</returns>
     /// <remarks>
     /// Query parameter MaxStars should be greater than or equal 
-    /// to MinStars, otherwise response code will by 400.
+    /// to MinStars, otherwise response code will by 400. <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
     /// <response code="400">If query parameters are invalid</response>
@@ -53,7 +53,7 @@ public class HotelsController : ControllerBase
     /// <remarks>
     /// Please note that required query parameter "ids" should look like 
     /// (f934d940-f542-400b-8182-aea42a9b0773, 0c6cc6d4-3f8c-43d2-9591-230cb646aab9) <br />
-    /// If ids parameter is null, or collection count mismatch comparing to ids, Bad Request will be returned in response.
+    /// If ids parameter is null, or collection count mismatch comparing to ids, Bad Request will be returned in response. <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
     /// <response code="400">If parameters are invalid</response>
