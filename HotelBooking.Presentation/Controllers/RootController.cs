@@ -4,16 +4,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 namespace HotelBooking.Presentation.Controllers;
 
-[Route("api")]
 [ApiController]
 [Authorize]
+[Route("api")]
+[Consumes("application/vnd.hotelbooking.apiroot+json", "application/vnd.hotelbooking.apiroot+xml")]
+[Produces("application/vnd.hotelbooking.apiroot+json", "application/vnd.hotelbooking.apiroot+xml")]
 public class RootController : ControllerBase
 {
     private readonly LinkGenerator _linkGenerator;
     public RootController(LinkGenerator linkGenerator) => _linkGenerator = linkGenerator;
 
 
+    /// <summary>
+    /// Gets API root
+    /// </summary>
+    /// <param name="mediaType"></param>
+    /// <returns>List of links</returns>
+    /// <remarks>
+    /// <strong>Important: Don't forget to add one of the options to the "Accept" header: </strong><br />
+    /// (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body) <br />
+    /// • JSON: "application/vnd.hotelbooking.apiroot+json" <br />
+    /// • XML: "application/vnd.hotelbooking.apiroot+xml" <br />
+    /// <br />
+    /// This endpoint shows available actions at the API root level (/api/). <br />
+    /// It returns a list of links, that looks like this:
+    /// 
+    /// [
+    ///     {
+    ///         "href": "/api",
+    ///         "rel": "self",
+    ///         "method": "GET"
+    ///     },
+    ///     {
+    ///         "href": "/api/hotels",
+    ///         "rel": "hotels",
+    ///         "method": "GET"
+    ///     },
+    ///     {
+    ///         "href": "/api/hotels",
+    ///         "rel": "create_hotel",
+    ///         "method": "POST"
+    ///     },
+    ///     ...
+    /// ]
+    /// </remarks>
     [HttpGet(Name = "GetRoot")]
+    [ProducesResponseType(200)]
     public IActionResult GetRoot([FromHeader(Name = "Accept")] string mediaType)
     {
         if (!mediaType.Contains("application/vnd.hotelbooking.apiroot"))

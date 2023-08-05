@@ -38,12 +38,10 @@ public class RoomsController : ControllerBase
     /// Enumerate the desirable comma-separated fields in the query parameter "fields" (e.g. fields=id,name,price). <br />
     /// <br />
     /// <strong>HATEOAS support:</strong> <br />
-    /// Add one of the options to "Accept" header: <br />
-    /// (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body)
-    /// <ul>
-    /// <li>JSON: "application/vnd.hotelbooking.hateoas+json"</li>
-    /// <li>XML: "application/vnd.hotelbooking.hateoas+xml"</li>
-    /// </ul>
+    /// Add one of the options to the "Accept" header: <br />
+    /// (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body) <br />
+    /// • JSON: "application/vnd.hotelbooking.hateoas+json" <br />
+    /// • XML: "application/vnd.hotelbooking.hateoas+xml" <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
     /// <response code="400">If query parameters are invalid</response>
@@ -52,6 +50,7 @@ public class RoomsController : ControllerBase
     [HttpHead]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     [Consumes("application/vnd.hotelbooking.hateoas+json", "application/vnd.hotelbooking.hateoas+xml")]
+    [Produces("application/vnd.hotelbooking.hateoas+json", "application/vnd.hotelbooking.hateoas+xml")]
     [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 400)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]

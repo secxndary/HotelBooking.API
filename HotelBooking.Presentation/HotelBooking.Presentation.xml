@@ -4,6 +4,13 @@
         <name>HotelBooking.Presentation</name>
     </assembly>
     <members>
+        <member name="M:HotelBooking.Presentation.Controllers.Authentication.TokenController.Refresh(Shared.DataTransferObjects.AuthenticationDtos.TokenDto)">
+            <summary>
+            Refreshes tokens
+            </summary>
+            <param name="tokenDto"></param>
+            <returns>TokenDto</returns>
+        </member>
         <member name="M:HotelBooking.Presentation.Controllers.FeedbacksController.GetFeedbacksForHotel(System.Guid,Shared.RequestFeatures.UserParameters.FeedbackParameters)">
             <summary>
             Gets the list of feedbacks by hotel
@@ -657,12 +664,10 @@
             Enumerate the desirable comma-separated fields in the query parameter "fields" (e.g. fields=id,name,price). <br />
             <br />
             <strong>HATEOAS support:</strong> <br />
-            Add one of the options to "Accept" header: <br />
-            (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body)
-            <ul>
-            <li>JSON: "application/vnd.hotelbooking.hateoas+json"</li>
-            <li>XML: "application/vnd.hotelbooking.hateoas+xml"</li>
-            </ul>
+            Add one of the options to the "Accept" header: <br />
+            (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body) <br />
+            • JSON: "application/vnd.hotelbooking.hateoas+json" <br />
+            • XML: "application/vnd.hotelbooking.hateoas+xml" <br />
             </remarks>
             <response code="200">Returns list of items</response>
             <response code="400">If query parameters are invalid</response>
@@ -885,6 +890,41 @@
             </summary>
             <returns>No content</returns>
             <response code="204">Returnes No content</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.RootController.GetRoot(System.String)">
+            <summary>
+            Gets API root
+            </summary>
+            <param name="mediaType"></param>
+            <returns>List of links</returns>
+            <remarks>
+            <strong>Important: Don't forget to add one of the options to the "Accept" header: </strong><br />
+            (<b>WARN:</b> You can't add Accept header for this action in Swagger because it doesn't have request body) <br />
+            • JSON: "application/vnd.hotelbooking.apiroot+json" <br />
+            • XML: "application/vnd.hotelbooking.apiroot+xml" <br />
+            <br />
+            This endpoint shows available actions at the API root level (/api/). <br />
+            It returns a list of links, that looks like this:
+            
+            [
+                {
+                    "href": "/api",
+                    "rel": "self",
+                    "method": "GET"
+                },
+                {
+                    "href": "/api/hotels",
+                    "rel": "hotels",
+                    "method": "GET"
+                },
+                {
+                    "href": "/api/hotels",
+                    "rel": "create_hotel",
+                    "method": "POST"
+                },
+                ...
+            ]
+            </remarks>
         </member>
     </members>
 </doc>
