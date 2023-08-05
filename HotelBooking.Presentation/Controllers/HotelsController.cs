@@ -1,4 +1,6 @@
 ﻿using System.Text.Json;
+using Entities.ErrorModel;
+using Entities.Exceptions.BadRequest.Filtering;
 using HotelBooking.Presentation.Filters.ActionFilters;
 using HotelBooking.Presentation.ModelBinders;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
@@ -22,9 +25,12 @@ public class HotelsController : ControllerBase
     /// <summary>
     /// Gets the list of all hotels
     /// </summary>
+    /// <param name="hotelParameters"></param>
     /// <returns>Hotels list</returns>
     /// <response code="200">Returns list of items</response>
-    [ProducesResponseType(200)]
+    /// <response code="400">If </response>
+    [ProducesResponseType(typeof(IEnumerable<HotelDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
     [HttpGet(Name = "GetHotels")]
     [HttpHead]
     public async Task<IActionResult> GetHotels([FromQuery] HotelParameters hotelParameters)
@@ -40,7 +46,7 @@ public class HotelsController : ControllerBase
     /// <param name="ids"></param>
     /// <returns>Hotels list</returns>
     /// <response code="200">Returns list of items</response>
-    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(IEnumerable<HotelDto>), 200)]
     [HttpGet("collection/({ids})", Name = "HotelCollection")]
     public async Task<IActionResult> GetHotelCollection(
         [ModelBinder(typeof(ArrayModelBinder))] IEnumerable<Guid> ids)
@@ -56,8 +62,8 @@ public class HotelsController : ControllerBase
     /// <returns>Hotel</returns>
     /// <response code="200">Returns item</response>
     /// <response code="404">If this item does not exist</response>
-    [ProducesResponseType(200)]
-    [ProducesResponseType(404)]
+    [ProducesResponseType(typeof(HotelDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
     [HttpGet("{id:guid}", Name = "HotelById")]
     public async Task<IActionResult> GetHotel(Guid id)
     {
@@ -73,9 +79,9 @@ public class HotelsController : ControllerBase
     /// <response code="201">Returns a newly created item</response>
     /// <response code="400">If the item is null</response>
     /// <response code="422">If the model is invalid</response>
-    [ProducesResponseType(201)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(422)]
+    [ProducesResponseType(typeof(HotelDto), 201)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     [HttpPost(Name = "CreateHotel")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -93,9 +99,9 @@ public class HotelsController : ControllerBase
     /// <response code="200">Returns a newly created list of items</response>
     /// <response code="400">If the collection is null</response>
     /// <response code="422">If the model is invalid</response>
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(422)]
+    [ProducesResponseType(typeof(IEnumerable<HotelDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     [HttpPost("collection")]
     [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> CreateHotelCollection(
@@ -114,9 +120,9 @@ public class HotelsController : ControllerBase
     /// <response code="200">Returns updated item</response>
     /// <response code="400">If the item is null</response>
     /// <response code="422">If the model is invalid</response>
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(422)]
+    [ProducesResponseType(typeof(HotelDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -135,9 +141,9 @@ public class HotelsController : ControllerBase
     /// <response code="200">Returns updated item</response>
     /// <response code="400">If the item is null</response>
     /// <response code="422">If the model is invalid</response>
-    [ProducesResponseType(200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(422)]
+    [ProducesResponseType(typeof(HotelDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     [HttpPatch("{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     public async Task<IActionResult> PartiallyUpdateHotel(Guid id,

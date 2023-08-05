@@ -8,8 +8,10 @@
             <summary>
             Gets the list of all hotels
             </summary>
+            <param name="hotelParameters"></param>
             <returns>Hotels list</returns>
             <response code="200">Returns list of items</response>
+            <response code="400">If </response>
         </member>
         <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotelCollection(System.Collections.Generic.IEnumerable{System.Guid})">
             <summary>

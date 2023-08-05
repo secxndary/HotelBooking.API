@@ -4,6 +4,7 @@ using Contracts;
 using Contracts.Repository;
 using Entities.ConfigurationModels;
 using Entities.Models;
+using HotelBooking.SchemaFilters;
 using LoggerService;
 using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -189,6 +190,8 @@ public static class ServiceExtensions
                     Url = new Uri("https://example.com/license")
                 }
             });
+
+            s.SchemaFilter<SwaggerIgnoreFilter>();
 
             var xmlFile = $"{typeof(Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
