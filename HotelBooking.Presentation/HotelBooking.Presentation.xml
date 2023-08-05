@@ -10,6 +10,15 @@
             </summary>
             <param name="tokenDto"></param>
             <returns>TokenDto</returns>
+            <remarks>
+            This endpoint is used for token refreshing. <br />
+            If you send access and refresh token via request body, you'll get a new pair of access and refresh tokens. <br />
+            The tokens you sent will become expired an inaccessible. <br />
+            Also, you don't have to send Authorization header to this endpoint. <br />
+            If the refresh token is incorrect or already expired, the response code will be 400. <br />
+            </remarks>
+            <response code="200">Returns item</response>
+            <response code="400">If the token is invalid</response>
         </member>
         <member name="M:HotelBooking.Presentation.Controllers.FeedbacksController.GetFeedbacksForHotel(System.Guid,Shared.RequestFeatures.UserParameters.FeedbackParameters)">
             <summary>
