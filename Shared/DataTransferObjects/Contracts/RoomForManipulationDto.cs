@@ -3,11 +3,11 @@ namespace Shared.DataTransferObjects.Contracts;
 
 public abstract record RoomForManipulationDto
 {
-    [Range(0, int.MaxValue, ErrorMessage = "The Price should not be less than 0.")]
+    [Range(0, 99999, ErrorMessage = "The Price should be in range between 0 and 99999.")]
     [Required(ErrorMessage = "Price is a required field.")]
     public int Price { get; init; }
 
-    [Range(0, int.MaxValue, ErrorMessage = "The Quantity should not be less than 0.")]
+    [Range(0, 999, ErrorMessage = "The Quantity should be in range between 0 and 999.")]
     [Required(ErrorMessage = "Quantity is a required field.")]
     public int Quantity { get; init; }
 
