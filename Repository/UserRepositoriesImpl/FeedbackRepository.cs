@@ -23,7 +23,7 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
         return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
     }
 
-    public async Task<IEnumerable<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, FeedbackParameters feedbackParameters, bool trackChanges)
+    public async Task<PagedList<Feedback>> GetFeedbacksForRoomAsync(Guid roomId, FeedbackParameters feedbackParameters, bool trackChanges)
     {
         var feedbacks = await FindByCondition(f => f.Reservation!.RoomId.Equals(roomId), trackChanges)
             .Search(feedbackParameters.SearchTerm)
@@ -33,7 +33,7 @@ public class FeedbackRepository : RepositoryBase<Feedback>, IFeedbackRepository
         return PagedList<Feedback>.ToPagedList(feedbacks, feedbackParameters.PageNumber, feedbackParameters.PageSize);
     }
 
-    public async Task<IEnumerable<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, FeedbackParameters feedbackParameters, bool trackChanges)
+    public async Task<PagedList<Feedback>> GetFeedbacksForReservationAsync(Guid reservationId, FeedbackParameters feedbackParameters, bool trackChanges)
     {
         var feedbacks = await FindByCondition(f => f.ReservationId.Equals(reservationId), trackChanges)
             .Search(feedbackParameters.SearchTerm)

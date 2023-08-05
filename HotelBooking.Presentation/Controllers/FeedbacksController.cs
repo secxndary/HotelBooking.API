@@ -1,10 +1,12 @@
 ﻿using System.Text.Json;
+using Entities.ErrorModel;
 using HotelBooking.Presentation.Filters.ActionFilters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.InputDtos;
+using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 namespace HotelBooking.Presentation.Controllers;
@@ -26,14 +28,15 @@ public class FeedbacksController : ControllerBase
     /// <param name="feedbackParameters"></param>
     /// <returns>Feedbacks list</returns>
     /// <remarks>
-    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// If the hotel with hotelId does not exist, the response code will be 404. <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
-    /// <response code="400">If query parameters are invalid</response>
     /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/hotels/{hotelId:guid}/feedbacks")]
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> GetFeedbacksForHotel(Guid hotelId, [FromQuery] FeedbackParameters feedbackParameters)
     {
         var (feedbacks, metaData) = await _service.FeedbackService.GetFeedbacksForHotelAsync(hotelId, feedbackParameters);
@@ -48,17 +51,19 @@ public class FeedbacksController : ControllerBase
     /// <param name="feedbackParameters"></param>
     /// <returns>Feedbacks list</returns>
     /// <remarks>
-    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// If the hotel with hotelId does not exist, the response code will be 404. <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
-    /// <response code="400">If query parameters are invalid</response>
     /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/rooms/{roomId:guid}/feedbacks")]
-    public async Task<IActionResult> GetFeedbacksForRoom(Guid roomId)
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetFeedbacksForRoom(Guid roomId, [FromQuery] FeedbackParameters feedbackParameters)
     {
-        var feedbacks = await _service.FeedbackService.GetFeedbacksForRoomAsync(roomId);
+        var (feedbacks, metaData) = await _service.FeedbackService.GetFeedbacksForRoomAsync(roomId, feedbackParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(feedbacks);
     }
 
@@ -69,49 +74,125 @@ public class FeedbacksController : ControllerBase
     /// <param name="feedbackParameters"></param>
     /// <returns>Feedbacks list</returns>
     /// <remarks>
-    /// If the hotel with hotelId does not exist, the response code will be 404. <br /> <br />
+    /// If the resertvation with reservationId does not exist, the response code will be 404. <br />
     /// </remarks>
     /// <response code="200">Returns list of items</response>
-    /// <response code="400">If query parameters are invalid</response>
     /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
     [Route("api/reservations/{reservationId:guid}/feedbacks")]
-    public async Task<IActionResult> GetFeedbacksForReservation(Guid reservationId)
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetFeedbacksForReservation(Guid reservationId, [FromQuery] FeedbackParameters feedbackParameters)
     {
-        var feedbacks = await _service.FeedbackService.GetFeedbacksForReservationAsync(reservationId);
+        var (feedbacks, metaData) = await _service.FeedbackService.GetFeedbacksForReservationAsync(reservationId, feedbackParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(feedbacks);
     }
 
+    /// <summary>
+    /// Gets a feedback
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Feedback</returns>
+    /// <remarks>
+    /// If the feedback with id or does not exist, the response code will be 404.
+    /// </remarks>
+    /// <response code="200">Returns item</response>
+    /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [Route("api/feedbacks/{id:guid}", Name = "FeedbackById")]
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> GetFeedback(Guid id)
     {
         var feedback = await _service.FeedbackService.GetFeedbackAsync(id);
         return Ok(feedback);
     }
 
+
+    /// <summary>
+    /// Creates a feedback
+    /// </summary>
+    /// <param name="feedback"></param>
+    /// <returns>A newly created feedback</returns>
+    /// <remarks>
+    /// You can find a href to the newly created feedback in the Location header. <br />
+    /// <i>You need to have an User role to perform this action. </i>
+    /// </remarks>
+    /// <response code="201">Returns the newly created item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="422">If the model is invalid</response>
     [HttpPost]
     [Authorize(Roles = "User")]
     [Route("api/feedbacks", Name = "CreateFeedback")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
+    [ProducesResponseType(typeof(FeedbackDto), 201)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     public async Task<IActionResult> CreateFeedback([FromBody] FeedbackForCreationDto feedback)
     {
         var createdFeedback = await _service.FeedbackService.CreateFeedbackAsync(feedback);
         return CreatedAtRoute("FeedbackById", new { id = createdFeedback.Id }, createdFeedback);
     }
 
+    /// <summary>
+    /// Updates a feedback
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="feedback"></param>
+    /// <returns>Updated feedback</returns>
+    /// <remarks>
+    /// If the feedback with id does not exist, the response code will be 404. <br />
+    /// <i>You need to have an User role to perform this action.</i>
+    /// </remarks>
+    /// <response code="200">Returns the updated item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="404">If the item does not exist</response>
+    /// <response code="422">If the model is invalid</response>
     [HttpPut("api/feedbacks/{id:guid}")]
     [Authorize(Roles = "User")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     public async Task<IActionResult> UpdateFeedback(Guid id, [FromBody] FeedbackForUpdateDto feedback)
     {
         var updatedFeedback = await _service.FeedbackService.UpdateFeedbackAsync(id, feedback);
         return Ok(updatedFeedback);
     }
 
+    /// <summary>
+    /// Partially updates a feedback
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="patchDoc"></param>
+    /// <returns>Updated feedback</returns>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     [
+    ///         {
+    ///             "op": "add",
+    ///             "path": "/textPositive",
+    ///             "value": "sample text"
+    ///         }
+    ///     ]
+    /// Don't forget to add "Content-Type": "application/json-patch+json". <br />
+    /// <i>You need to have an User role to perform this action.</i>
+    /// </remarks>
+    /// <response code="200">Returns the updated item</response>
+    /// <response code="400">If the item is null</response>
+    /// <response code="404">If the item does not exist</response>
+    /// <response code="422">If the model is invalid</response>
     [HttpPatch("api/feedbacks/{id:guid}")]
     [Authorize(Roles = "User")]
+    [Consumes("application/json-patch+json")]
+    [ProducesResponseType(typeof(FeedbackDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    [ProducesResponseType(typeof(ErrorDetails), 422)]
     public async Task<IActionResult> PartiallyUpdateFeedback(Guid id, 
         [FromBody] JsonPatchDocument<FeedbackForUpdateDto> patchDoc)
     {
@@ -129,39 +210,36 @@ public class FeedbacksController : ControllerBase
         return Ok(updatedFeedback);
     }
 
+    /// <summary>
+    /// Deletes a feedback
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns>No content</returns>
+    /// <remarks>
+    /// <i>You need to have an User or Admin role to perform this action.</i>
+    /// </remarks>
+    /// <response code="204">Returns No content</response>
+    /// <response code="404">If the item does not exist</response>
     [HttpDelete("api/feedbacks/{id:guid}")]
     [Authorize(Roles = "User, Admin")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> DeleteFeedback(Guid id)
     {
         await _service.FeedbackService.DeleteFeedbackAsync(id);
         return NoContent();
     }
 
+    /// <summary>
+    /// Shows available request methods
+    /// </summary>
+    /// <returns>No content</returns>
+    /// <response code="204">Returnes No content</response>
     [HttpOptions("api/feedbacks")]
+    [ProducesResponseType(204)]
     public IActionResult GetFeedbacksOptions()
     {
         Response.Headers.Add("Allow", "OPTIONS, POST");
-        return Ok();
-    }
-
-    [HttpOptions("api/hotels/{hotelId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksByHotelOptions()
-    {
-        Response.Headers.Add("Allow", "GET, OPTIONS");
-        return Ok();
-    }
-
-    [HttpOptions("api/rooms/{roomId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksByRoomOptions()
-    {
-        Response.Headers.Add("Allow", "GET, OPTIONS");
-        return Ok();
-    }
-
-    [HttpOptions("api/reservations/{reservationId:guid}/feedbacks")]
-    public IActionResult GetFeedbacksByReservationOptions()
-    {
-        Response.Headers.Add("Allow", "GET, OPTIONS");
         return Ok();
     }
 }
