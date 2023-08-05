@@ -18,8 +18,6 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
-using Swashbuckle.AspNetCore.Filters;
-
 namespace HotelBooking.Extensions;
 
 public static class ServiceExtensions
@@ -131,7 +129,7 @@ public static class ServiceExtensions
         {
             o.Password.RequireDigit = true;
             o.Password.RequireUppercase = true;
-            o.Password.RequireUppercase = true;
+            o.Password.RequireLowercase = true;
             o.Password.RequireNonAlphanumeric = true;
             o.Password.RequiredLength = 10;
             o.User.RequireUniqueEmail = true;
