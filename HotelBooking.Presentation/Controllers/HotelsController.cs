@@ -40,7 +40,7 @@ public class HotelsController : ControllerBase
     [ProducesResponseType(typeof(ErrorDetails), 400)]
     public async Task<IActionResult> GetHotels([FromQuery] HotelParameters hotelParameters)
     {
-        var (hotels, metadata)= await _service.HotelService.GetAllHotelsAsync(hotelParameters);
+        var (hotels, metadata) = await _service.HotelService.GetAllHotelsAsync(hotelParameters);
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
         return Ok(hotels);
     }
