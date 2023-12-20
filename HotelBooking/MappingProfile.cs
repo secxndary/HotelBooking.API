@@ -35,6 +35,7 @@ public class MappingProfile : Profile
         CreateMap<RoomPhotoForUpdateDto, RoomPhoto>().ReverseMap();
         CreateMap<HotelPhotoForUpdateDto, HotelPhoto>().ReverseMap();
 
-        CreateMap<UserForRegistrationDto, UserIdentity>();
+        CreateMap<UserForRegistrationDto, UserIdentity>().ReverseMap();
+        CreateMap<UserDto, UserIdentity>().ReverseMap();
     }
 }

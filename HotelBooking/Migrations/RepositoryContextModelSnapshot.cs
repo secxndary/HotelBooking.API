@@ -103,7 +103,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "1567fa9b-7fc8-4f4f-b4df-896397616bfe",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "de2a4f87-8730-4262-91ff-1ef1980c5412",
+                            ConcurrencyStamp = "b0c8882a-d430-412c-9447-c36c7581b4b2",
                             Email = "johndoe@example.org",
                             EmailConfirmed = false,
                             FirstName = "John",
@@ -115,7 +115,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375291234567",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "93d84a39-3e7c-439e-8b57-9761aab170ce",
+                            SecurityStamp = "1ea4240e-3580-4531-8e50-90fedd6e6448",
                             TwoFactorEnabled = false,
                             UserName = "johndoe"
                         },
@@ -123,7 +123,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "27bc938b-a6b3-4c8e-ba6b-74ddadb424ed",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5f71539-e810-4a36-9fbb-80b3827d0c39",
+                            ConcurrencyStamp = "89900690-aa76-4cc2-9e61-b8d19fe0ce2d",
                             Email = "janedoe@example.org",
                             EmailConfirmed = false,
                             FirstName = "Jane",
@@ -135,7 +135,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375447654321",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "67d21d8b-b85d-4f6a-afb4-d478381305db",
+                            SecurityStamp = "51860717-297d-45cc-b4d4-882d3a2c566e",
                             TwoFactorEnabled = false,
                             UserName = "janedoe"
                         },
@@ -143,7 +143,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "3a08ecca-7fbe-4886-ad58-61998c01c9e0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67f9092c-beb2-4c53-8d9b-f6d4dca1bd0c",
+                            ConcurrencyStamp = "6b8abd97-d015-4928-a43d-500af9b8c77c",
                             Email = "valdaitsevv@mail.ru",
                             EmailConfirmed = false,
                             FirstName = "Alexander",
@@ -155,7 +155,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375445574506",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "e79eae36-e050-4cee-ba69-a99c2f9faff3",
+                            SecurityStamp = "108fecd3-3785-4c37-aae1-24dda4cfc50e",
                             TwoFactorEnabled = false,
                             UserName = "valdaitsevv"
                         },
@@ -163,7 +163,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "a3c2b7a1-6c0e-4fa0-b3bd-ed1d2c428cf9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b8de0a4-5bdc-4646-88df-698e5371c596",
+                            ConcurrencyStamp = "7586a883-ad5e-4b7a-8a87-c851fbbec528",
                             Email = "katie@mail.ru",
                             EmailConfirmed = false,
                             FirstName = "Katherine",
@@ -175,7 +175,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375333749235",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "d53583a7-9ab7-46f4-bfda-bb8173ee581d",
+                            SecurityStamp = "7d6f8567-ca2c-4abc-9b91-cae873620fa2",
                             TwoFactorEnabled = false,
                             UserName = "sashasbabe"
                         },
@@ -183,7 +183,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "f94a3937-8935-48a4-81f3-4d6e33603c65",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2a3a56bd-f48a-4367-afc0-0984a05827fd",
+                            ConcurrencyStamp = "8e259bc4-517b-464a-bd15-2b77719df834",
                             Email = "default@example.org",
                             EmailConfirmed = false,
                             FirstName = "Default",
@@ -195,7 +195,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375294859923",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "39a61a17-123c-4dd2-b8ef-6a7bc2dc7e32",
+                            SecurityStamp = "2205fc18-e515-442a-90da-3ab89850a35b",
                             TwoFactorEnabled = false,
                             UserName = "user"
                         },
@@ -203,7 +203,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "eb8fd43e-aa3d-4bf2-bfac-b70af06668e9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c8ba9e9e-a42f-4372-bc57-bf0a068a6453",
+                            ConcurrencyStamp = "b6daa7cc-0f0b-4e9c-9b21-bec6a9dce295",
                             Email = "root@example.org",
                             EmailConfirmed = false,
                             FirstName = "Admin",
@@ -215,7 +215,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375449274568",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "b88056ab-365d-41df-8529-b710a51ec5d2",
+                            SecurityStamp = "09bd4cee-273a-4bf3-b18d-11bd2f4b7830",
                             TwoFactorEnabled = false,
                             UserName = "root"
                         },
@@ -223,7 +223,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "c459163f-341b-4073-a7b7-067c1ceeac15",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a690981f-5136-4c73-80c6-2e48a35b7ed5",
+                            ConcurrencyStamp = "21a05ebf-877d-43b5-86f3-f87f45662caf",
                             Email = "krotnichenko@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Александр",
@@ -235,7 +235,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375333744859",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "98f8ec12-f6fc-427b-bcf2-f24bad1a6b80",
+                            SecurityStamp = "862c276c-5afa-449f-970e-a98d6ad8aca2",
                             TwoFactorEnabled = false,
                             UserName = "presidentowner"
                         },
@@ -243,7 +243,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "42e40179-1f6c-41b7-be2f-754023e576fa",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c27141a-f862-491b-9c67-c45336ed160e",
+                            ConcurrencyStamp = "58c3bee9-75b1-4c0b-b9ba-5fa1c0620c2a",
                             Email = "shaman@belstu.by",
                             EmailConfirmed = false,
                             FirstName = "Дмитрий",
@@ -255,7 +255,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375293749574",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "b4868afa-831d-4148-b29a-424704f33230",
+                            SecurityStamp = "452cba5f-9d72-4eed-a89b-ebc46ef94889",
                             TwoFactorEnabled = false,
                             UserName = "shaman"
                         },
@@ -263,7 +263,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "ed3707a2-a416-4318-95a6-e462b10e9936",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "616705f7-b2b0-4fca-908c-9b46703dfc75",
+                            ConcurrencyStamp = "a59dde5f-187a-4813-8fa3-e065ae53aab9",
                             Email = "vmazenkova@mail.ru",
                             EmailConfirmed = false,
                             FirstName = "Василиса",
@@ -275,7 +275,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375447568124",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "10511b01-ce6d-4820-9ea2-fe4422e3200a",
+                            SecurityStamp = "994e2509-22db-4625-924f-1ce3d0cfc0ac",
                             TwoFactorEnabled = false,
                             UserName = "vmazenkova"
                         },
@@ -283,7 +283,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = "ba8fe5c0-0c4e-49c0-b12e-5dd834b6e8d6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6becbc76-0578-46b8-9ddc-43829e5f8518",
+                            ConcurrencyStamp = "a37118b2-0282-41f3-9b29-5d9aff0a1b12",
                             Email = "viktorkon@gmail.com",
                             EmailConfirmed = false,
                             FirstName = "Виктор",
@@ -295,7 +295,7 @@ namespace HotelBooking.Migrations
                             PhoneNumber = "+375448569125",
                             PhoneNumberConfirmed = false,
                             RefreshTokenExpiryTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SecurityStamp = "aa90c840-9131-485e-85d6-56d34dd89a73",
+                            SecurityStamp = "b9489ab6-b08b-43df-8d50-d481fd0e1fd4",
                             TwoFactorEnabled = false,
                             UserName = "viktorrr"
                         });
@@ -382,6 +382,9 @@ namespace HotelBooking.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("nvarchar(3000)");
 
+                    b.Property<string>("HotelOwnerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -392,6 +395,8 @@ namespace HotelBooking.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotelOwnerId");
+
                     b.ToTable("Hotels");
 
                     b.HasData(
@@ -399,6 +404,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = new Guid("894622e4-9303-4ee8-a25b-dbea1c26eb1a"),
                             Description = "Президентский отель Премиум-класса",
+                            HotelOwnerId = "c459163f-341b-4073-a7b7-067c1ceeac15",
                             Name = "President Hotel",
                             Stars = 5
                         },
@@ -406,6 +412,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = new Guid("f934d940-f542-400b-8182-aea42a9b0773"),
                             Description = "Дефолтный 3-звездочный отель",
+                            HotelOwnerId = "ed3707a2-a416-4318-95a6-e462b10e9936",
                             Name = "Турист",
                             Stars = 3
                         },
@@ -413,6 +420,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = new Guid("e418aacc-8a7c-4d78-b509-24dd42e823ee"),
                             Description = "Для настоящих патриотов",
+                            HotelOwnerId = "ba8fe5c0-0c4e-49c0-b12e-5dd834b6e8d6",
                             Name = "Беларусь",
                             Stars = 4
                         },
@@ -420,6 +428,7 @@ namespace HotelBooking.Migrations
                         {
                             Id = new Guid("0c6cc6d4-3f8c-43d2-9591-230cb646aab9"),
                             Description = "Лесное убежище",
+                            HotelOwnerId = "42e40179-1f6c-41b7-be2f-754023e576fa",
                             Name = "Поляна",
                             Stars = 2
                         });
@@ -1254,6 +1263,15 @@ namespace HotelBooking.Migrations
                         .IsRequired();
 
                     b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("Entities.Models.UserModels.Hotel", b =>
+                {
+                    b.HasOne("Entities.Models.UserIdentity", "HotelOwner")
+                        .WithMany()
+                        .HasForeignKey("HotelOwnerId");
+
+                    b.Navigation("HotelOwner");
                 });
 
             modelBuilder.Entity("Entities.Models.UserModels.HotelPhoto", b =>

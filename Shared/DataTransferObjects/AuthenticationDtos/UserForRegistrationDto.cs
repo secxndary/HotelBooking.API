@@ -17,5 +17,5 @@ public record UserForRegistrationDto
     
     public string? PhoneNumber { get; init; }
     
-    public ICollection<string>? Roles { get; init; }
+    public ICollection<string>? Roles { get; set; }
 }
