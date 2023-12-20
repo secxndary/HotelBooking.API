@@ -28,13 +28,12 @@ public class ServiceManager : IServiceManager
     {
         _roomTypeService = new Lazy<IRoomTypeService>(() => new RoomTypeService(repository, logger, mapper));
         _roomService = new Lazy<IRoomService>(() => new RoomService(repository, logger, mapper, roomLinks));
-        _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger, mapper));
         _reservationService = new Lazy<IReservationService>(() =>  new ReservationService(repository, logger, mapper));
         _feedbackService = new Lazy<IFeedbackService>(() => new FeedbackService(repository, logger, mapper));
         _roomPhotoService = new Lazy<IRoomPhotoService>(() => new RoomPhotoService(repository, logger, mapper));
         _hotelPhotoService = new Lazy<IHotelPhotoService>(() => new HotelPhotoService(repository, logger, mapper));
-        _authenticationService = new Lazy<IAuthenticationService>(() => 
-            new AuthenticationService(logger, mapper, userManager, roleManager, config));
+        _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, userManager, roleManager, config));
+        _hotelService = new Lazy<IHotelService>(() => new HotelService(repository, logger, mapper, _authenticationService.Value));
     }
 
     public IRoomTypeService RoomTypeService => _roomTypeService.Value;

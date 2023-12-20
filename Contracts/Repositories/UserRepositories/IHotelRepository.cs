@@ -6,6 +6,7 @@ namespace Contracts.Repositories.UserRepositories;
 public interface IHotelRepository
 {
     Task<PagedList<Hotel>> GetAllHotelsAsync(HotelParameters hotelParameters, bool trackChanges);
+    Task<PagedList<Hotel>> GetHotelsByHotelOwnerAsync(string hotelOwnerId, HotelParameters hotelParameters, bool trackChanges);
     Task<IEnumerable<Hotel>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges);
     Task<Hotel?> GetHotelAsync(Guid id, bool trackChanges);
     void CreateHotel(Hotel hotel);

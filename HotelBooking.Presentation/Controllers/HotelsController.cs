@@ -44,6 +44,29 @@ public class HotelsController : ControllerBase
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
         return Ok(hotels);
     }
+    
+    /// <summary>
+    /// Gets the list of hotels by HotelOwner Id
+    /// </summary>
+    /// <param name="hotelOwnerId"></param>
+    /// <param name="hotelParameters"></param>
+    /// <returns>Hotels list</returns>
+    /// <remarks>
+    /// Query parameter MaxStars should be greater than or equal 
+    /// to MinStars, otherwise response code will by 400. <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    [HttpGet("owner/{hotelOwnerId:guid}", Name = "GetHotelsByOwner")]
+    [HttpHead]
+    [ProducesResponseType(typeof(IEnumerable<HotelDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    public async Task<IActionResult> GetHotelsByOwner(string hotelOwnerId, [FromQuery] HotelParameters hotelParameters)
+    {
+        var (hotels, metadata) = await _service.HotelService.GetHotelsByHotelOwnerAsync(hotelOwnerId, hotelParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+        return Ok(hotels);
+    }
 
     /// <summary>
     /// Gets a hotel collection

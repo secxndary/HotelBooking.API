@@ -116,8 +116,12 @@ public class AuthenticationService : IAuthenticationService
         userDto.Roles = roles.ToList();
         return userDto;
     }
-    
 
+    public async Task<IdentityUser> GetUserById(string id) => await _userManager.FindByIdAsync(id);
+    
+    public UserIdentity GetUser() => _user;
+
+    
     private SigningCredentials GetSigningCredentials()
     {
         var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")!);

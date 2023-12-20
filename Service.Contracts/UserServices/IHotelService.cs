@@ -9,6 +9,7 @@ namespace Service.Contracts.UserServices;
 public interface IHotelService
 {
     Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetAllHotelsAsync(HotelParameters hotelParameters);
+    Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetHotelsByHotelOwnerAsync(string hotelOwnerId, HotelParameters hotelParameters);
     Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids);
     Task<HotelDto> GetHotelAsync(Guid id);
     Task<HotelDto> CreateHotelAsync(HotelForCreationDto hotel);

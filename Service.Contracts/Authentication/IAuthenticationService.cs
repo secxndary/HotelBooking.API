@@ -10,4 +10,6 @@ public interface IAuthenticationService
     Task<TokenDto> CreateToken(bool populateExpiration);
     Task<TokenDto> RefreshToken(TokenDto tokenDto);
     Task<UserDto> GetUserByToken(TokenDto tokenDto);
+    UserIdentity GetUser();
+    Task<IdentityUser> GetUserById(string id);
 }

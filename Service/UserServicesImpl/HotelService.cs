@@ -4,6 +4,7 @@ using Contracts.Repository;
 using Entities.Exceptions.BadRequest.Collections;
 using Entities.Exceptions.BadRequest.Filtering;
 using Entities.Exceptions.NotFound;
+using Entities.Models;
 using Service.Contracts.UserServices;
 using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
@@ -11,6 +12,8 @@ using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures.UserParameters;
 using Shared.RequestFeatures;
 using Entities.Models.UserModels;
+using Microsoft.AspNetCore.Identity;
+using Service.Contracts.Authentication;
 namespace Service.UserServicesImpl;
 
 public sealed class HotelService : IHotelService
@@ -18,12 +21,14 @@ public sealed class HotelService : IHotelService
     private readonly IRepositoryManager _repository;
     private readonly ILoggerManager _logger;
     private readonly IMapper _mapper;
-
-    public HotelService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+    private readonly IAuthenticationService _authenticationService;
+    
+    public HotelService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper, IAuthenticationService authenticationService)
     {
         _repository = repository;
         _logger = logger;
         _mapper = mapper;
+        _authenticationService = authenticationService;
     }
 
 
@@ -37,6 +42,23 @@ public sealed class HotelService : IHotelService
         return (hotels: hotelsDto, metaData: hotelsWithMetaData.MetaData);
     }
 
+    public async Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetHotelsByHotelOwnerAsync
+        (string hotelOwnerId, HotelParameters hotelParameters)
+    {
+        if (!hotelParameters.ValidStarsRange)
+            throw new MaxStarsRangeBadRequestException();
+
+        // Console.WriteLine(_authenticationService.GetUser().Id);
+        // Console.WriteLine(_authenticationService.GetUserById(hotelOwnerId).Id);
+        
+        // if (!_authenticationService.GetUser().Equals(_authenticationService.GetUserById(hotelOwnerId)))
+        //     throw new Exception("Иди нахуй");
+        
+        var hotelsWithMetaData = await _repository.Hotel.GetHotelsByHotelOwnerAsync(hotelOwnerId, hotelParameters, trackChanges: false);
+        var hotelsDto = _mapper.Map<IEnumerable<HotelDto>>(hotelsWithMetaData);
+        return (hotels: hotelsDto, metaData: hotelsWithMetaData.MetaData);
+    }
+    
     public async Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids)
     {
         if (ids is null)

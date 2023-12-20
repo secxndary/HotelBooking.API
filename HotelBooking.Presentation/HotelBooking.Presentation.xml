@@ -335,6 +335,20 @@
             <response code="200">Returns list of items</response>
             <response code="400">If query parameters are invalid</response>
         </member>
+        <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotelsByOwner(System.String,Shared.RequestFeatures.UserParameters.HotelParameters)">
+            <summary>
+            Gets the list of hotels by HotelOwner Id
+            </summary>
+            <param name="hotelOwnerId"></param>
+            <param name="hotelParameters"></param>
+            <returns>Hotels list</returns>
+            <remarks>
+            Query parameter MaxStars should be greater than or equal 
+            to MinStars, otherwise response code will by 400. <br />
+            </remarks>
+            <response code="200">Returns list of items</response>
+            <response code="400">If query parameters are invalid</response>
+        </member>
         <member name="M:HotelBooking.Presentation.Controllers.HotelsController.GetHotelCollection(System.Collections.Generic.IEnumerable{System.Guid})">
             <summary>
             Gets a hotel collection

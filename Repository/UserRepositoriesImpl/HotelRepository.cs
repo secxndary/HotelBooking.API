@@ -24,6 +24,18 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
         return PagedList<Hotel>.ToPagedList(hotels, hotelParameters.PageNumber, hotelParameters.PageSize);
     }
 
+    public async Task<PagedList<Hotel>> GetHotelsByHotelOwnerAsync(string hotelOwnerId, HotelParameters hotelParameters,
+        bool trackChanges)
+    {
+        var hotels = await FindByCondition(h => h.HotelOwnerId == hotelOwnerId, trackChanges)
+            .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
+            .Search(hotelParameters.SearchTerm)
+            .Sort(hotelParameters.OrderBy)
+            .ToListAsync();
+
+        return PagedList<Hotel>.ToPagedList(hotels, hotelParameters.PageNumber, hotelParameters.PageSize);
+    }
+    
     public async Task<IEnumerable<Hotel>> GetByIdsAsync(IEnumerable<Guid> ids, bool trackChanges) =>
         await FindByCondition(h => ids.Contains(h.Id), trackChanges)
         .ToListAsync();
