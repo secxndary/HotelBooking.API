@@ -8,8 +8,12 @@ namespace Service.Contracts.UserServices;
 
 public interface IReservationService
 {
-    Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsAsync
+    Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetAllReservationsAsync
+        (ReservationlParameters reservationlParameters);
+    Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsByRoomAsync
         (Guid roomId, ReservationlParameters reservationlParameters);
+    Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsByUserAsync
+        (string userId, ReservationlParameters reservationlParameters);
     Task<ReservationDto> GetReservationAsync(Guid roomId, Guid id);
     Task<ReservationDto> CreateReservationForRoomAsync(Guid roomId, ReservationForCreationDto reservation);
     Task<ReservationDto> UpdateReservationForRoomAsync(Guid roomId, Guid id, ReservationForUpdateDto reservation);

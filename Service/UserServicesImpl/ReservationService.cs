@@ -26,7 +26,21 @@ public sealed class ReservationService : IReservationService
     }
 
 
-    public async Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsAsync
+    public async Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetAllReservationsAsync
+        (ReservationlParameters reservationlParameters)
+    {
+        if (!reservationlParameters.ValidDateEntry)
+            throw new MaxDateEntryRangeBadRequestException();
+        if (!reservationlParameters.ValidDateExit)
+            throw new MaxDateExitRangeBadRequestException();
+
+        var reservationsWithMetaData = await _repository.Reservation.GetAllReservationsAsync(reservationlParameters, trackChanges: false);
+        var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservationsWithMetaData);
+        
+        return (reservations: reservationsDto, metaData: reservationsWithMetaData.MetaData);
+    }
+    
+    public async Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsByRoomAsync
         (Guid roomId, ReservationlParameters reservationlParameters)
     {
         if (!reservationlParameters.ValidDateEntry)
@@ -36,7 +50,21 @@ public sealed class ReservationService : IReservationService
 
         await CheckIfRoomExists(roomId);
 
-        var reservationsWithMetaData = await _repository.Reservation.GetReservationsAsync(roomId, reservationlParameters, trackChanges: false);
+        var reservationsWithMetaData = await _repository.Reservation.GetReservationsByRoomAsync(roomId, reservationlParameters, trackChanges: false);
+        var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservationsWithMetaData);
+        
+        return (reservations: reservationsDto, metaData: reservationsWithMetaData.MetaData);
+    }
+    
+    public async Task<(IEnumerable<ReservationDto> reservations, MetaData metaData)> GetReservationsByUserAsync
+        (string roomId, ReservationlParameters reservationlParameters)
+    {
+        if (!reservationlParameters.ValidDateEntry)
+            throw new MaxDateEntryRangeBadRequestException();
+        if (!reservationlParameters.ValidDateExit)
+            throw new MaxDateExitRangeBadRequestException();
+
+        var reservationsWithMetaData = await _repository.Reservation.GetReservationsByUserAsync(roomId, reservationlParameters, trackChanges: false);
         var reservationsDto = _mapper.Map<IEnumerable<ReservationDto>>(reservationsWithMetaData);
         
         return (reservations: reservationsDto, metaData: reservationsWithMetaData.MetaData);

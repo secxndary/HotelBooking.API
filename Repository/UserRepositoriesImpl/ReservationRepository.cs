@@ -13,7 +13,18 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
     { }
 
 
-    public async Task<PagedList<Reservation>> GetReservationsAsync(Guid roomId, ReservationlParameters reservationlParameters, bool trackChanges)
+    public async Task<PagedList<Reservation>> GetAllReservationsAsync(ReservationlParameters reservationlParameters, bool trackChanges)
+    {
+        var reservations = await FindAll(trackChanges)
+            .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
+            .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .Sort(reservationlParameters.OrderBy)
+            .ToListAsync();
+
+        return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);
+    }
+    
+    public async Task<PagedList<Reservation>> GetReservationsByRoomAsync(Guid roomId, ReservationlParameters reservationlParameters, bool trackChanges)
     {
         var reservations = await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
             .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
@@ -24,6 +35,17 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);
     }
 
+    public async Task<PagedList<Reservation>> GetReservationsByUserAsync(string userId, ReservationlParameters reservationlParameters, bool trackChanges)
+    {
+        var reservations = await FindByCondition(r => r.UserId.Equals(userId), trackChanges)
+            .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
+            .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .Sort(reservationlParameters.OrderBy)
+            .ToListAsync();
+
+        return PagedList<Reservation>.ToPagedList(reservations, reservationlParameters.PageNumber, reservationlParameters.PageSize);
+    }
+    
     public async Task<Reservation?> GetReservationAsync(Guid roomId, Guid id, bool trackChanges) =>
         await FindByCondition(r =>
             r.RoomId.Equals(roomId) &&

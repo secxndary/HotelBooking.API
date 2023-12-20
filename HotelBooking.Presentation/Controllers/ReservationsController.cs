@@ -13,7 +13,6 @@ namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/rooms/{roomId:guid}/reservations")]
 [Consumes("application/json")]
 [Produces("application/json", "text/xml", "text/csv")]
 public class ReservationsController : ControllerBase
@@ -22,6 +21,32 @@ public class ReservationsController : ControllerBase
     public ReservationsController(IServiceManager service) => _service = service;
 
 
+    /// <summary>
+    /// Gets the list of all reservations
+    /// </summary>
+    /// <param name="reservationParameters"></param>
+    /// <returns>Reservations list</returns>
+    /// <remarks>
+    /// Query parameters MaxDateEntry and MaxDateExit should be greater than or equal to 
+    /// MinDateEntry and MinDateExit accordingly, otherwise response code will by 400. <br />
+    /// If the room with roomId does not exist, the response code will be 404. <br /> <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    /// <response code="404">If the item does not exist</response>
+    [HttpGet]
+    [HttpHead]
+    [Route("api/reservations")]
+    [ProducesResponseType(typeof(IEnumerable<ReservationDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetAllReservations([FromQuery] ReservationlParameters reservationParameters)
+    {
+        var (reservations, metaData) = await _service.ReservationService.GetAllReservationsAsync(reservationParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+        return Ok(reservations);
+    }
+    
     /// <summary>
     /// Gets the list of reservations
     /// </summary>
@@ -38,12 +63,40 @@ public class ReservationsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
+    [Route("api/rooms/{roomId:guid}/reservations")]
     [ProducesResponseType(typeof(IEnumerable<ReservationDto>), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 400)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
-    public async Task<IActionResult> GetReservations(Guid roomId, [FromQuery] ReservationlParameters reservationParameters)
+    public async Task<IActionResult> GetReservationsByRoom(Guid roomId, [FromQuery] ReservationlParameters reservationParameters)
     {
-        var (reservations, metaData) = await _service.ReservationService.GetReservationsAsync(roomId, reservationParameters);
+        var (reservations, metaData) = await _service.ReservationService.GetReservationsByRoomAsync(roomId, reservationParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
+        return Ok(reservations);
+    }
+    
+    /// <summary>
+    /// Gets the list of reservations by User Id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="reservationParameters"></param>
+    /// <returns>Reservations list</returns>
+    /// <remarks>
+    /// Query parameters MaxDateEntry and MaxDateExit should be greater than or equal to 
+    /// MinDateEntry and MinDateExit accordingly, otherwise response code will by 400. <br />
+    /// If the room with roomId does not exist, the response code will be 404. <br /> <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    /// <response code="404">If the item does not exist</response>
+    [HttpGet]
+    [HttpHead]
+    [Route("api/users/{userId:guid}/reservations")]
+    [ProducesResponseType(typeof(IEnumerable<ReservationDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetReservationsByUser(string userId, [FromQuery] ReservationlParameters reservationParameters)
+    {
+        var (reservations, metaData) = await _service.ReservationService.GetReservationsByUserAsync(userId, reservationParameters);
         Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metaData));
         return Ok(reservations);
     }
@@ -59,7 +112,7 @@ public class ReservationsController : ControllerBase
     /// </remarks>
     /// <response code="200">Returns item</response>
     /// <response code="404">If the item does not exist</response>
-    [HttpGet("{id:guid}", Name = "ReservationById")]
+    [HttpGet("api/rooms/{roomId:guid}/reservations/{id:guid}", Name = "ReservationById")]
     [ProducesResponseType(typeof(ReservationDto), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> GetReservation(Guid roomId, Guid id)
@@ -83,7 +136,7 @@ public class ReservationsController : ControllerBase
     /// <response code="400">If the item is null</response>
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
-    [HttpPost]
+    [HttpPost("api/rooms/{roomId:guid}/reservations")]
     [Authorize(Roles = "User")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(typeof(ReservationDto), 201)]
@@ -111,7 +164,7 @@ public class ReservationsController : ControllerBase
     /// <response code="400">If the item is null</response>
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
-    [HttpPut("{id:guid}")]
+    [HttpPut("api/rooms/{roomId:guid}/reservations/{id:guid}")]
     [Authorize(Roles = "User, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(typeof(ReservationDto), 200)]
@@ -149,7 +202,7 @@ public class ReservationsController : ControllerBase
     /// <response code="400">If the item is null</response>
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
-    [HttpPatch("{id:guid}")]
+    [HttpPatch("api/rooms/{roomId:guid}/reservations/{id:guid}")]
     [Authorize(Roles = "User, HotelOwner")]
     [Consumes("application/json-patch+json")]
     [ProducesResponseType(typeof(ReservationDto), 200)]
@@ -184,8 +237,8 @@ public class ReservationsController : ControllerBase
     /// </remarks>
     /// <response code="204">Returns No content</response>
     /// <response code="404">If the item does not exist</response>
-    [HttpDelete("{id:guid}")]
-    [Authorize(Roles = "User, HotelOwner")]
+    [HttpDelete("api/rooms/{roomId:guid}/reservations/{id:guid}")]
+    [Authorize(Roles = "User, HotelOwner, Admin")]
     [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> DeleteReservationForRoom(Guid roomId, Guid id)
@@ -200,6 +253,7 @@ public class ReservationsController : ControllerBase
     /// <returns>No content</returns>
     /// <response code="204">Returnes No content</response>
     [HttpOptions]
+    [Route("api/rooms/{roomId:guid}/reservations")]
     [ProducesResponseType(204)]
     public IActionResult GetReservationsOptions()
     {
