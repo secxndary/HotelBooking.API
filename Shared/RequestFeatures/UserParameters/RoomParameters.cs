@@ -10,6 +10,8 @@ public class RoomParameters : RequestParameters
     public uint MinPrice { get; set; }
     public uint MaxPrice { get; set; } = int.MaxValue;
 
+    public bool WithAll { get; set; } = false;
+
     public bool ValidSleepingPlacesRange => MaxSleepingPlaces > MinSleepingPlaces;
     public bool ValidPriceRange => MaxPrice > MinPrice;
 }

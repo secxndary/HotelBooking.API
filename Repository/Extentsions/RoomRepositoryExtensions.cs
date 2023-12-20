@@ -11,6 +11,9 @@ public static class RoomRepositoryExtensions
     public static IQueryable<Room> FilterRoomsByPrice(this IQueryable<Room> rooms, uint minPrice, uint maxPrice) =>
         rooms.Where(r => r.Price >= minPrice && r.Price <= maxPrice);
 
+    public static IQueryable<Room> FilterRoomsByQuantity(this IQueryable<Room> rooms, bool withAll) =>
+        withAll ? rooms : rooms.Where(r => r.Quantity > 0);
+    
     public static IQueryable<Room> Sort(this IQueryable<Room> rooms, string? orderByQueryString)
     {
         if (string.IsNullOrWhiteSpace(orderByQueryString))
