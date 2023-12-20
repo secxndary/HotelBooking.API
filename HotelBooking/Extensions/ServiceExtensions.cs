@@ -111,7 +111,7 @@ public static class ServiceExtensions
             new RateLimitRule
             {
                 Endpoint = "*",
-                Limit = 30,
+                Limit = 5000,
                 Period = "5m"
             }
         };
