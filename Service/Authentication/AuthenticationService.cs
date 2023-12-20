@@ -102,6 +102,21 @@ public class AuthenticationService : IAuthenticationService
         return await CreateToken(populateExpiration: false);
     }
 
+    public async Task<UserDto> GetUserByToken(TokenDto tokenDto)
+    {
+        var principal = GetPrincipalForExpiredToken(tokenDto.AccessToken);
+        
+        var user = await _userManager.FindByNameAsync(principal.Identity!.Name!);
+        if (user == null || user.RefreshTokenExpiryTime <= DateTime.Now)
+            throw new RefreshTokenBadRequest();
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var userDto = _mapper.Map<UserDto>(user);
+        
+        userDto.Roles = roles.ToList();
+        return userDto;
+    }
+    
 
     private SigningCredentials GetSigningCredentials()
     {

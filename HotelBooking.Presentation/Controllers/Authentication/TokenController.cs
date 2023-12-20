@@ -38,4 +38,14 @@ public class TokenController : ControllerBase
         var tokenDtoRefreshed = await _service.AuthenticationService.RefreshToken(tokenDto);
         return Ok(tokenDtoRefreshed);
     }
+    
+    [HttpPost("getUser")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    [ProducesResponseType(typeof(TokenDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 401)]
+    public async Task<IActionResult> GetUserByToken([FromBody] TokenDto token)
+    {
+        var user = await _service.AuthenticationService.GetUserByToken(token);
+        return Ok(user);
+    }
 }
