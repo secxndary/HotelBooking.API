@@ -15,6 +15,9 @@ public abstract record RoomForManipulationDto
     [Required(ErrorMessage = "SleepingPlaces is a required field.")]
     public int SleepingPlaces { get; init; }
 
+    [Required(ErrorMessage = "HotelId is a required field.")]
+    public Guid HotelId { get; init; }
+    
     [Required(ErrorMessage = "RoomTypeId is a required field.")]
     public Guid RoomTypeId { get; init; }
 }

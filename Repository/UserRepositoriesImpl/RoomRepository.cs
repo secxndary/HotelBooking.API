@@ -11,13 +11,38 @@ public class RoomRepository : RepositoryBase<Room>, IRoomRepository
     public RoomRepository(RepositoryContext repositoryContext)
         : base(repositoryContext)
     { }
+    
+    
+    public async Task<PagedList<Room>> GetRoomsAsync(RoomParameters roomParameters, bool trackChanges)
+    {
+        var rooms = await FindAll(trackChanges)
+            .FilterRoomsBySleepingPlaces(roomParameters.MinSleepingPlaces, roomParameters.MaxSleepingPlaces)
+            .FilterRoomsByPrice(roomParameters.MinPrice, roomParameters.MaxPrice)
+            .FilterRoomsByQuantity(roomParameters.WithAll)
+            .Sort(roomParameters.OrderBy)
+            .ToListAsync();
 
-
+        return PagedList<Room>.ToPagedList(rooms, roomParameters.PageNumber, roomParameters.PageSize);
+    }
+    
+    public async Task<PagedList<Room>> GetRoomsForHotelAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges)
+    {
+        var rooms = await FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
+            .FilterRoomsBySleepingPlaces(roomParameters.MinSleepingPlaces, roomParameters.MaxSleepingPlaces)
+            .FilterRoomsByPrice(roomParameters.MinPrice, roomParameters.MaxPrice)
+            .FilterRoomsByQuantity(roomParameters.WithAll)
+            .Sort(roomParameters.OrderBy)
+            .ToListAsync();
+    
+        return PagedList<Room>.ToPagedList(rooms, roomParameters.PageNumber, roomParameters.PageSize);
+    }
+    
     public async Task<PagedList<Room>> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges)
     {
         var rooms = await FindByCondition(r => r.HotelId.Equals(hotelId), trackChanges)
             .FilterRoomsBySleepingPlaces(roomParameters.MinSleepingPlaces, roomParameters.MaxSleepingPlaces)
             .FilterRoomsByPrice(roomParameters.MinPrice, roomParameters.MaxPrice)
+            .FilterRoomsByQuantity(roomParameters.WithAll)
             .Sort(roomParameters.OrderBy)
             .ToListAsync();
 

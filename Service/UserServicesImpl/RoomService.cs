@@ -11,6 +11,8 @@ using Shared.DataTransferObjects.InputDtos;
 using Shared.DataTransferObjects.OutputDtos;
 using Shared.DataTransferObjects.UpdateDtos;
 using Shared.RequestFeatures;
+using Shared.RequestFeatures.UserParameters;
+
 namespace Service.UserServicesImpl;
 
 public sealed class RoomService : IRoomService
@@ -29,6 +31,30 @@ public sealed class RoomService : IRoomService
     }
 
 
+    public async Task<(IEnumerable<RoomDto> rooms, MetaData metaData)> GetAllRoomsAsync(RoomParameters roomParameters)
+    {
+        if (!roomParameters.ValidSleepingPlacesRange)
+            throw new MaxSleepingPlacesRangeBadRequestException();
+        if (!roomParameters.ValidPriceRange)
+            throw new MaxPriceRangeBadRequestException();
+
+        var roomsWithMetaData = await _repository.Room.GetRoomsAsync(roomParameters, trackChanges: false);
+        var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(roomsWithMetaData);
+        return (rooms: roomsDto, metaData: roomsWithMetaData.MetaData);
+    }
+    
+    public async Task<(IEnumerable<RoomDto> rooms, MetaData metaData)> GetRoomsForHotelAsync(Guid hotelId, RoomParameters roomParameters)
+        {
+            if (!roomParameters.ValidSleepingPlacesRange)
+                throw new MaxSleepingPlacesRangeBadRequestException();
+            if (!roomParameters.ValidPriceRange)
+                throw new MaxPriceRangeBadRequestException();
+    
+            var roomsWithMetaData = await _repository.Room.GetRoomsForHotelAsync(hotelId, roomParameters, trackChanges: false);
+            var roomsDto = _mapper.Map<IEnumerable<RoomDto>>(roomsWithMetaData);
+            return (rooms: roomsDto, metaData: roomsWithMetaData.MetaData);
+        }
+    
     public async Task<(LinkResponse linkResponse, MetaData metaData)> GetRoomsAsync(Guid hotelId, LinkParameters linkParameters)
     {
         if (!linkParameters.RoomParameters.ValidSleepingPlacesRange)
@@ -60,6 +86,16 @@ public sealed class RoomService : IRoomService
         return roomsDto;
     }
 
+    public async Task<RoomDto> GetRoomAsync(Guid id)
+    {
+        var room = await _repository.Room.GetRoomAsync(id, trackChanges: false);
+        if (room is null)
+            throw new RoomNotFoundException(id);
+        
+        var roomDto = _mapper.Map<RoomDto>(room);
+        return roomDto;
+    }
+    
     public async Task<RoomDto> GetRoomAsync(Guid hotelId, Guid id)
     {
         await CheckIfHotelExists(hotelId);

@@ -5,6 +5,8 @@ namespace Contracts.Repositories.UserRepositories;
 
 public interface IRoomRepository
 {
+    Task<PagedList<Room>> GetRoomsAsync(RoomParameters roomParameters, bool trackChanges);
+    Task<PagedList<Room>> GetRoomsForHotelAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges);
     Task<PagedList<Room>> GetRoomsAsync(Guid hotelId, RoomParameters roomParameters, bool trackChanges);
     Task<IEnumerable<Room>> GetByIdsForHotelAsync(Guid hotelId, IEnumerable<Guid> ids, bool trackChanges);
     Task<Room?> GetRoomAsync(Guid hotelId, Guid id, bool trackChanges);

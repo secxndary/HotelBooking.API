@@ -6,5 +6,6 @@ public record RoomDto
     public int Price { get; init; }
     public int Quantity { get; init; }
     public int SleepingPlaces { get; init; }
+    public Guid HotelId { get; init; }
     public Guid RoomTypeId { get; init; }
 }

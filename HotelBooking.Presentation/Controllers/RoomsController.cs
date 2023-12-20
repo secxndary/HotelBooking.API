@@ -15,7 +15,6 @@ namespace HotelBooking.Presentation.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("api/hotels/{hotelId:guid}/rooms")]
 [Consumes("application/json")]
 [Produces("application/json", "text/xml", "text/csv")]
 public class RoomsController : ControllerBase
@@ -24,6 +23,52 @@ public class RoomsController : ControllerBase
     public RoomsController(IServiceManager service) => _service = service;
 
 
+    /// <summary>
+    /// Gets the list of all rooms
+    /// </summary>
+    /// <param name="roomParameters"></param>
+    /// <returns>Rooms list</returns>
+    /// <remarks>
+    /// Query parameters MaxSleepingPlaces and MaxPrice should be greater than or equal to 
+    /// MinSleepingPlaces and MinPrice accordingly, otherwise response code will by 400. <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    [HttpGet("api/rooms", Name = "GetRooms")]
+    [HttpHead]
+    [Route("api/rooms")]
+    [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    public async Task<IActionResult> GetRooms([FromQuery] RoomParameters roomParameters)
+    {
+        var (rooms, metadata) = await _service.RoomService.GetAllRoomsAsync(roomParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+        return Ok(rooms);
+    }
+    
+    /// <summary>
+    /// Gets the list of rooms by hotel
+    /// </summary>
+    /// <param name="hotelId"></param>
+    /// <param name="roomParameters"></param>
+    /// <returns>Rooms list</returns>
+    /// <remarks>
+    /// Query parameters MaxSleepingPlaces and MaxPrice should be greater than or equal to 
+    /// MinSleepingPlaces and MinPrice accordingly, otherwise response code will by 400. <br />
+    /// </remarks>
+    /// <response code="200">Returns list of items</response>
+    /// <response code="400">If query parameters are invalid</response>
+    [Route("api/hotels/{hotelId:guid}/rooms")]
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 400)]
+    public async Task<IActionResult> GetRooms(Guid hotelId, [FromQuery] RoomParameters roomParameters)
+    {
+        var (rooms, metadata) = await _service.RoomService.GetRoomsForHotelAsync(hotelId, roomParameters);
+        Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+        return Ok(rooms);
+    }
+    
     /// <summary>
     /// Gets the list of rooms
     /// </summary>
@@ -48,6 +93,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     [HttpGet]
     [HttpHead]
+    [Route("api/hotels/{hotelId:guid}/rooms/full")]
     [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
     [Consumes("application/vnd.hotelbooking.hateoas+json", "application/vnd.hotelbooking.hateoas+xml")]
     [Produces("application/vnd.hotelbooking.hateoas+json", "application/vnd.hotelbooking.hateoas+xml")]
@@ -78,6 +124,7 @@ public class RoomsController : ControllerBase
     /// <response code="400">If parameters are invalid</response>
     /// <response code="404">If the item does not exist</response>
     [HttpGet("collection/({ids})", Name = "RoomCollection")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 400)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
@@ -93,6 +140,23 @@ public class RoomsController : ControllerBase
     /// <summary>
     /// Gets a room
     /// </summary>
+    /// <param name="id"></param>
+    /// <returns>Room</returns>
+    /// <response code="200">Returns item</response>
+    /// <response code="404">If the item does not exist</response>
+    [HttpGet("api/rooms/{id:guid}", Name = "GetRoom")]
+    [Route("api/rooms/{id:guid}")]
+    [ProducesResponseType(typeof(RoomDto), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetRoom(Guid id)
+    {
+        var room = await _service.RoomService.GetRoomAsync(id);
+        return Ok(room);
+    }
+    
+    /// <summary>
+    /// Gets a room
+    /// </summary>
     /// <param name="hotelId"></param>
     /// <param name="id"></param>
     /// <returns>Room</returns>
@@ -102,6 +166,7 @@ public class RoomsController : ControllerBase
     /// <response code="200">Returns item</response>
     /// <response code="404">If the item does not exist</response>
     [HttpGet("{id:guid}", Name = "GetRoomForHotel")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [ProducesResponseType(typeof(RoomDto), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
     public async Task<IActionResult> GetRoomForHotel(Guid hotelId, Guid id)
@@ -126,6 +191,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPost]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(typeof(RoomDto), 201)]
@@ -155,6 +221,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPost("collection")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ProducesResponseType(typeof(IEnumerable<RoomDto>), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 400)]
@@ -182,6 +249,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPut("{id:guid}")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(typeof(RoomDto), 200)]
@@ -219,6 +287,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPatch("{id:guid}")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [Consumes("application/json-patch+json")]
     [ProducesResponseType(typeof(RoomDto), 200)]
@@ -254,6 +323,7 @@ public class RoomsController : ControllerBase
     /// <response code="204">Returns No content</response>
     /// <response code="404">If the item does not exist</response>
     [HttpDelete("{id:guid}")]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [Authorize(Roles = "HotelOwner")]
     [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
@@ -269,6 +339,7 @@ public class RoomsController : ControllerBase
     /// <returns>No content</returns>
     /// <response code="204">Returnes No content</response>
     [HttpOptions]
+    [Route("api/hotels/{hotelId:guid}/rooms")]
     [ProducesResponseType(204)]
     public IActionResult GetRoomsOptions()
     {
