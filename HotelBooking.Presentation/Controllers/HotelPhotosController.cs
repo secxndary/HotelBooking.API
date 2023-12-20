@@ -94,7 +94,18 @@ public class HotelPhotosController : ControllerBase
         var hotelPhoto = await _service.HotelPhotoService.GetHotelPhotoAsync(hotelId, id);
         return Ok(hotelPhoto);
     }
-
+    
+    [HttpGet("{id:guid}/file", Name = "GetHotelPhotoFile")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(typeof(ErrorDetails), 404)]
+    public async Task<IActionResult> GetRoomPhotoFile(Guid hotelId, Guid id)
+    {
+        var roomPhoto = await _service.HotelPhotoService.GetHotelPhotoAsync(hotelId, id);
+        var imagePath = roomPhoto.Path;
+        var imageBytes = await System.IO.File.ReadAllBytesAsync(imagePath);
+        return File(imageBytes, "image/jpeg");
+    }
+    
     /// <summary>
     /// Creates a hotel photo
     /// </summary>

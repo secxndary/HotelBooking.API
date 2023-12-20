@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace Entities.Models.UserModels;
 
 public class Hotel
@@ -16,7 +17,11 @@ public class Hotel
     [Range(1, 5, ErrorMessage = "The stars should be in the range between 1 and 5.")]
     [Required(ErrorMessage = "Stars is a required field.")]
     public int Stars { get; set; }
-
+    
+    [ForeignKey(nameof(UserIdentity))]
+    public string? HotelOwnerId { get; set; }
+    public UserIdentity? HotelOwner { get; set; }
+    
     public ICollection<Room>? Rooms { get; set; }
     public ICollection<HotelPhoto>? HotelPhotos { get; set; }
 }

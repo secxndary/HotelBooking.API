@@ -448,11 +448,42 @@
             <returns>No content</returns>
             <response code="204">Returnes No content</response>
         </member>
-        <member name="M:HotelBooking.Presentation.Controllers.ReservationsController.GetReservations(System.Guid,Shared.RequestFeatures.UserParameters.ReservationlParameters)">
+        <member name="M:HotelBooking.Presentation.Controllers.ReservationsController.GetAllReservations(Shared.RequestFeatures.UserParameters.ReservationlParameters)">
+            <summary>
+            Gets the list of all reservations
+            </summary>
+            <param name="reservationParameters"></param>
+            <returns>Reservations list</returns>
+            <remarks>
+            Query parameters MaxDateEntry and MaxDateExit should be greater than or equal to 
+            MinDateEntry and MinDateExit accordingly, otherwise response code will by 400. <br />
+            If the room with roomId does not exist, the response code will be 404. <br /> <br />
+            </remarks>
+            <response code="200">Returns list of items</response>
+            <response code="400">If query parameters are invalid</response>
+            <response code="404">If the item does not exist</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.ReservationsController.GetReservationsByRoom(System.Guid,Shared.RequestFeatures.UserParameters.ReservationlParameters)">
             <summary>
             Gets the list of reservations
             </summary>
             <param name="roomId"></param>
+            <param name="reservationParameters"></param>
+            <returns>Reservations list</returns>
+            <remarks>
+            Query parameters MaxDateEntry and MaxDateExit should be greater than or equal to 
+            MinDateEntry and MinDateExit accordingly, otherwise response code will by 400. <br />
+            If the room with roomId does not exist, the response code will be 404. <br /> <br />
+            </remarks>
+            <response code="200">Returns list of items</response>
+            <response code="400">If query parameters are invalid</response>
+            <response code="404">If the item does not exist</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.ReservationsController.GetReservationsByUser(System.String,Shared.RequestFeatures.UserParameters.ReservationlParameters)">
+            <summary>
+            Gets the list of reservations by User Id
+            </summary>
+            <param name="userId"></param>
             <param name="reservationParameters"></param>
             <returns>Reservations list</returns>
             <remarks>
@@ -696,6 +727,33 @@
             <returns>No content</returns>
             <response code="204">Returnes No content</response>
         </member>
+        <member name="M:HotelBooking.Presentation.Controllers.RoomsController.GetRooms(Shared.RequestFeatures.UserParameters.RoomParameters)">
+            <summary>
+            Gets the list of all rooms
+            </summary>
+            <param name="roomParameters"></param>
+            <returns>Rooms list</returns>
+            <remarks>
+            Query parameters MaxSleepingPlaces and MaxPrice should be greater than or equal to 
+            MinSleepingPlaces and MinPrice accordingly, otherwise response code will by 400. <br />
+            </remarks>
+            <response code="200">Returns list of items</response>
+            <response code="400">If query parameters are invalid</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.RoomsController.GetRooms(System.Guid,Shared.RequestFeatures.UserParameters.RoomParameters)">
+            <summary>
+            Gets the list of rooms by hotel
+            </summary>
+            <param name="hotelId"></param>
+            <param name="roomParameters"></param>
+            <returns>Rooms list</returns>
+            <remarks>
+            Query parameters MaxSleepingPlaces and MaxPrice should be greater than or equal to 
+            MinSleepingPlaces and MinPrice accordingly, otherwise response code will by 400. <br />
+            </remarks>
+            <response code="200">Returns list of items</response>
+            <response code="400">If query parameters are invalid</response>
+        </member>
         <member name="M:HotelBooking.Presentation.Controllers.RoomsController.GetRoomsForHotel(System.Guid,Shared.RequestFeatures.UserParameters.RoomParameters)">
             <summary>
             Gets the list of rooms
@@ -735,6 +793,15 @@
             </remarks>
             <response code="200">Returns list of items</response>
             <response code="400">If parameters are invalid</response>
+            <response code="404">If the item does not exist</response>
+        </member>
+        <member name="M:HotelBooking.Presentation.Controllers.RoomsController.GetRoom(System.Guid)">
+            <summary>
+            Gets a room
+            </summary>
+            <param name="id"></param>
+            <returns>Room</returns>
+            <response code="200">Returns item</response>
             <response code="404">If the item does not exist</response>
         </member>
         <member name="M:HotelBooking.Presentation.Controllers.RoomsController.GetRoomForHotel(System.Guid,System.Guid)">

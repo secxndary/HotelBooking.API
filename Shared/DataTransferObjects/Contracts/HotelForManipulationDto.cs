@@ -14,4 +14,7 @@ public record HotelForManipulationDto
     [Required(ErrorMessage = "Stars is a required field.")]
     [Range(1, 5, ErrorMessage = "The stars should be in the range between 1 and 5.")]
     public int Stars { get; init; }
+
+    [Required(ErrorMessage = "HotelOwnerId is a required field.")]
+    public string? HotelOwnerId { get; set; }
 }
