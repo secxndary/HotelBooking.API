@@ -11,7 +11,6 @@ public class Room
     public double Price { get; set; }
 
     [Range(0, 999, ErrorMessage = "Количество комнат должно быть в диапазоне от 0 до 999")]
-    [Required(ErrorMessage = "Введите количество комнат")]
     public int Quantity { get; set; }
 
     [Range(1, 16, ErrorMessage = "Количество спальных мест должно быть в диапазоне от 0 до 16")]
