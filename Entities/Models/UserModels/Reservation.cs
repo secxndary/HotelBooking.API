@@ -6,10 +6,10 @@ public class Reservation
 {
     public Guid Id { get; set; }
 
-    [Required(ErrorMessage = "DateEntry is a required field.")]
+    [Required(ErrorMessage = "Введите дату заезда")]
     public DateTime DateEntry { get; set; }
 
-    [Required(ErrorMessage = "DateExit is a required field.")]
+    [Required(ErrorMessage = "Введите дату выезда")]
     public DateTime DateExit { get; set; }
 
     [ForeignKey(nameof(Room))]

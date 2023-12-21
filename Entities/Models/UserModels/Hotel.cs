@@ -6,16 +6,16 @@ public class Hotel
 {
     public Guid Id { get; set; }
 
-    [Required(ErrorMessage = "Name is a required field.")]
-    [MaxLength(50, ErrorMessage = "Maximum length for the Name is 50 characters.")]
+    [Required(ErrorMessage = "Введите название")]
+    [MaxLength(50, ErrorMessage = "Максимальная длина названия – 50 символов")]
     public string? Name { get; set; }
 
-    [Required(ErrorMessage = "Description is a required field.")]
-    [MaxLength(3000, ErrorMessage = "Maximum length for the Description is 3000 characters.")]
+    [Required(ErrorMessage = "Введите описание")]
+    [MaxLength(3000, ErrorMessage = "Максимальная длина описания – 3000 символов")]
     public string? Description { get; set; }
 
-    [Range(1, 5, ErrorMessage = "The stars should be in the range between 1 and 5.")]
-    [Required(ErrorMessage = "Stars is a required field.")]
+    [Range(1, 5, ErrorMessage = "Количество звёзд должно быть в диапазоне от 1 до 5")]
+    [Required(ErrorMessage = "Введите количество звёзд")]
     public int Stars { get; set; }
     
     [ForeignKey(nameof(UserIdentity))]

@@ -3,21 +3,21 @@ namespace Shared.DataTransferObjects.Contracts;
 
 public abstract record RoomForManipulationDto
 {
-    [Range(0, 99999, ErrorMessage = "The Price should be in range between 0 and 99999.")]
-    [Required(ErrorMessage = "Price is a required field.")]
+    [Range(0, 99999, ErrorMessage = "Цена должна быть в диапазоне от 0 до 99999")]
+    [Required(ErrorMessage = "Введите цену")]
     public int Price { get; init; }
 
-    [Range(0, 999, ErrorMessage = "The Quantity should be in range between 0 and 999.")]
-    [Required(ErrorMessage = "Quantity is a required field.")]
+    [Range(0, 999, ErrorMessage = "Количество комнат должно быть в диапазоне от 0 до 999")]
+    [Required(ErrorMessage = "Введите количество комнат")]
     public int Quantity { get; init; }
 
-    [Range(1, 16, ErrorMessage = "The SleepingPlaces should be in the range between 1 and 16.")]
-    [Required(ErrorMessage = "SleepingPlaces is a required field.")]
+    [Range(1, 16, ErrorMessage = "Количество спальных мест должно быть в диапазоне от 0 до 16")]
+    [Required(ErrorMessage = "Введите количество спальных мест")]
     public int SleepingPlaces { get; init; }
 
-    [Required(ErrorMessage = "HotelId is a required field.")]
+    [Required(ErrorMessage = "Введите индентификатор отеля")]
     public Guid HotelId { get; init; }
     
-    [Required(ErrorMessage = "RoomTypeId is a required field.")]
+    [Required(ErrorMessage = "Введите идентификатор типа комнаты")]
     public Guid RoomTypeId { get; init; }
 }

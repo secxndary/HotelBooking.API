@@ -7,10 +7,10 @@ public record UserForRegistrationDto
 
     public string? LastName { get; init; }
 
-    [Required(ErrorMessage = "Username is a required field.")]
+    [Required(ErrorMessage = "Введите имя пользователя")]
     public string? UserName { get; init; }
 
-    [Required(ErrorMessage = "Password is a required field.")]
+    [Required(ErrorMessage = "Введите пароль")]
     public string? Password { get; init; }
     
     public string? Email { get; init; }

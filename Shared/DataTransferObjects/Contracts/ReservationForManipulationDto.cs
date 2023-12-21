@@ -3,12 +3,12 @@ namespace Shared.DataTransferObjects.Contracts;
 
 public abstract record ReservationForManipulationDto
 {
-    [Required(ErrorMessage = "DateEntry is a required field.")]
+    [Required(ErrorMessage = "Введите дату заезда")]
     public DateTime DateEntry { get; init; }
 
-    [Required(ErrorMessage = "DateExit is a required field.")]
+    [Required(ErrorMessage = "Введите дату выезда")]
     public DateTime DateExit { get; init; }
 
-    [Required(ErrorMessage = "UserId is a required field.")]
+    [Required(ErrorMessage = "Введите идентификатор пользователя")]
     public string? UserId { get; init; }
 }
