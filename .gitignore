@@ -1,6 +1,9 @@
 # My TODO file
 TODO.txt
 
+# JetBrains Rider files
+.idea/
+
 # Project Internal logs
 internal_logs/
 
