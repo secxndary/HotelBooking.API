@@ -15,6 +15,10 @@ public record HotelForManipulationDto
     [Required(ErrorMessage = "Введите количество звёзд")]
     public int Stars { get; init; }
 
+    [Required(ErrorMessage = "Введите адрес")]
+    [MaxLength(500, ErrorMessage = "Максимальная длина описания – 500 символов")]
+    public string? Address { get; init; }
+
     [Required(ErrorMessage = "Введите идентфиикатор владельца отеля")]
     public string? HotelOwnerId { get; set; }
 }

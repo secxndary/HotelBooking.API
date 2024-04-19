@@ -25,8 +25,16 @@ public static class HotelRepositoryExtensions
                 h.Description!.ToLower().Contains(lowerCaseTerm))
             .Select(h => new { Hotel = h, Priority = 2 });
 
+        var hotelsWithSearchTermInAddress = hotels
+            .Where(h => 
+                !h.Name!.ToLower().Contains(lowerCaseTerm) && 
+                !h.Description!.ToLower().Contains(lowerCaseTerm) &&
+                h.Address.ToLower().Contains(lowerCaseTerm))
+            .Select(h => new { Hotel = h, Priority = 3 });
+
         var result = hotelsWithSearchTermInName
             .Union(hotelsWithSearchTermInDescription)
+            .Union(hotelsWithSearchTermInAddress)
             .OrderBy(h => h.Priority)
             .Select(h => h.Hotel);
 

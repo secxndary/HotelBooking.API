@@ -17,7 +17,11 @@ public class Hotel
     [Range(1, 5, ErrorMessage = "Количество звёзд должно быть в диапазоне от 1 до 5")]
     [Required(ErrorMessage = "Введите количество звёзд")]
     public int Stars { get; set; }
-    
+
+    [Required(ErrorMessage = "Введите адрес")]
+    [MaxLength(500, ErrorMessage = "Максимальная длина описания – 500 символов")]
+    public string? Address { get; set; }
+
     [ForeignKey(nameof(UserIdentity))]
     public string? HotelOwnerId { get; set; }
     public UserIdentity? HotelOwner { get; set; }
