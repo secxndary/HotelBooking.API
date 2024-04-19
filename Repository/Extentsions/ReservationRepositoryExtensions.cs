@@ -13,6 +13,18 @@ public static class ReservationRepositoryExtensions
         (this IQueryable<Reservation> reservations, DateTime minDateExit, DateTime maxDateExit) =>
             reservations.Where(r => r.DateExit >= minDateExit && r.DateExit <= maxDateExit);
 
+    public static IQueryable<Reservation> FilterReservationsByActiveStatus(this IQueryable<Reservation> reservations, bool? isActive)
+    {
+        if (isActive is null)
+        {
+            return reservations;
+        }
+
+        return isActive.Value
+            ? reservations.Where(r => r.DateEntry >= DateTime.Today || r.DateExit >= DateTime.Today)
+            : reservations.Where(r => r.DateExit < DateTime.Today);
+    }
+
     public static IQueryable<Reservation> Sort(this IQueryable<Reservation> reservations, string? orderByQueryString)
     {
         if (string.IsNullOrWhiteSpace(orderByQueryString))

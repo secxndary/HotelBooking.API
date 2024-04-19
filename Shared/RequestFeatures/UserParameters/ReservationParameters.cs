@@ -8,6 +8,8 @@ public class ReservationlParameters : RequestParameters
     public DateTime MinDateExit { get; set; } = DateTime.MinValue;
     public DateTime MaxDateExit { get; set; } = DateTime.MaxValue;
 
+    public bool? IsActive { get; set; } = null;
+
     public bool ValidDateEntry => MaxDateEntry > MinDateEntry;
     public bool ValidDateExit => MaxDateExit > MinDateExit;
 }

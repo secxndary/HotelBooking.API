@@ -18,6 +18,7 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         var reservations = await FindAll(trackChanges)
             .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
             .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .FilterReservationsByActiveStatus(reservationlParameters.IsActive)
             .Sort(reservationlParameters.OrderBy)
             .ToListAsync();
 
@@ -29,6 +30,7 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         var reservations = await FindByCondition(r => r.RoomId.Equals(roomId), trackChanges)
             .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
             .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .FilterReservationsByActiveStatus(reservationlParameters.IsActive)
             .Sort(reservationlParameters.OrderBy)
             .ToListAsync();
 
@@ -40,6 +42,7 @@ public class ReservationRepository : RepositoryBase<Reservation>, IReservationRe
         var reservations = await FindByCondition(r => r.UserId.Equals(userId), trackChanges)
             .FilterReservationsByDateEntry(reservationlParameters.MinDateEntry, reservationlParameters.MaxDateEntry)
             .FilterReservationsByDateExit(reservationlParameters.MinDateExit, reservationlParameters.MaxDateExit)
+            .FilterReservationsByActiveStatus(reservationlParameters.IsActive)
             .Sort(reservationlParameters.OrderBy)
             .ToListAsync();
 
