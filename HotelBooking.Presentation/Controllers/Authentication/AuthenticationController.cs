@@ -37,14 +37,21 @@ public class AuthenticationController : ControllerBase
     /// • Username should be unique <br />
     /// </remarks>
     /// <response code="201">If the item is created</response>
+    /// <response code="202">If account is created, but not activated</response>
     /// <response code="400">If the item is invalid</response>
     [HttpPost]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(201)]
+    [ProducesResponseType(202)]
     [ProducesResponseType(typeof(IdentityError), 400)]
     public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto user)
     {
         var result = await _service.AuthenticationService.RegisterUser(user);
+
+        if (result.Errors.Any(e => e.Code == "AccountNotActivated"))
+        {
+            return Accepted(new { message = "AccountNotActivated" });
+        }
 
         if (!result.Succeeded)
         {
@@ -67,6 +74,7 @@ public class AuthenticationController : ControllerBase
     /// If credentials are incorrect or null, the response status will be 401. <br />
     /// </remarks>
     /// <response code="200">If the credentials are correct</response>
+    /// <response code="202">If account is created, but still not activated yet</response>
     /// <response code="401">If the credentials are incorrect</response>
     [HttpPost("login")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -74,10 +82,20 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
     {
-        if (!await _service.AuthenticationService.ValidateUser(user))
+        var result = await _service.AuthenticationService.ValidateUser(user);
+
+        if (result is null)
+        {
+            return Accepted(new { message = "AccountNotActivated" });
+        }
+
+        if ((bool)!result.Value)
+        {
             return Unauthorized();
+        }
 
         var tokenDto = await _service.AuthenticationService.CreateToken(populateExpiration: true);
+
         return Ok(tokenDto);
     }
 }

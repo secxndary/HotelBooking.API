@@ -45,7 +45,10 @@ public class AuthenticationService : IAuthenticationService
         var user = _mapper.Map<UserIdentity>(userForRegistration);
         var result = await _userManager.CreateAsync(user, userForRegistration.Password!);
 
+        await _userManager.AddToRolesAsync(user, userForRegistration.Roles!);
+        
         foreach (var role in userForRegistration.Roles!)
+        {
             if (!await _roleManager.RoleExistsAsync(role))
             {
                 return IdentityResult.Failed(new IdentityError
@@ -55,19 +58,30 @@ public class AuthenticationService : IAuthenticationService
                 });
             }
 
-        if (result.Succeeded)
-            await _userManager.AddToRolesAsync(user, userForRegistration.Roles!);
-
+            if (role.ToLower().Equals("hotelowner"))
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Code = "AccountNotActivated",
+                    Description = "Account registration successful, but account activation is pending."
+                });
+            }
+        }
+        
         return result;
     }
 
-    public async Task<bool> ValidateUser(UserForAuthenticationDto userForAuthentication)
+    public async Task<bool?> ValidateUser(UserForAuthenticationDto userForAuthentication)
     {
         _user = await _userManager.FindByNameAsync(userForAuthentication.UserName!);
-        var result = (_user != null && await _userManager.CheckPasswordAsync(_user, userForAuthentication.Password!));
+        var result = _user != null && await _userManager.CheckPasswordAsync(_user, userForAuthentication.Password!);
 
         if (!result)
             _logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Incorrect username or password.");
+
+        var roles = await _userManager.GetRolesAsync(_user);
+        if (!_user.HotelOwnerConfirmedByAdmin && (roles.Contains("hotelOwner") || roles.Contains("HotelOwner")))
+            return null;
 
         return result;
     }

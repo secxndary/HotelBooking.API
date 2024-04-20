@@ -26,6 +26,7 @@
             • Username should be unique <br />
             </remarks>
             <response code="201">If the item is created</response>
+            <response code="202">If account is created, but not activated</response>
             <response code="400">If the item is invalid</response>
         </member>
         <member name="M:HotelBooking.Presentation.Controllers.Authentication.AuthenticationController.Authenticate(Shared.DataTransferObjects.AuthenticationDtos.UserForAuthenticationDto)">
@@ -40,6 +41,7 @@
             If credentials are incorrect or null, the response status will be 401. <br />
             </remarks>
             <response code="200">If the credentials are correct</response>
+            <response code="202">If account is created, but still not activated yet</response>
             <response code="401">If the credentials are incorrect</response>
         </member>
         <member name="M:HotelBooking.Presentation.Controllers.Authentication.TokenController.Refresh(Shared.DataTransferObjects.AuthenticationDtos.TokenDto)">
