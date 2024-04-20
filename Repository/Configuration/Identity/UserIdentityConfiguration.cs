@@ -21,6 +21,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375291234567",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -34,6 +35,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375447654321",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -47,6 +49,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375445574506",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -60,6 +63,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375333749235",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -73,6 +77,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375294859923",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -86,6 +91,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375449274568",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -99,6 +105,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375333744859",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -112,6 +119,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375293749574",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -125,6 +133,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375447568124",
+                HotelOwnerConfirmedByAdmin = true
             },
             new UserIdentity
             {
@@ -138,6 +147,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 LockoutEnabled = true,
                 PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
                 PhoneNumber = "+375448569125",
+                HotelOwnerConfirmedByAdmin = true
             }
         );
     }
