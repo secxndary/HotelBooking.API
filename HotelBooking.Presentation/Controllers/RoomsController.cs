@@ -249,7 +249,7 @@ public class RoomsController : ControllerBase
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
     [HttpPut("{id:guid}")]
-    [Route("api/hotels/{hotelId:guid}/rooms")]
+    [Route("api/hotels/{hotelId:guid}/rooms/{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     [ProducesResponseType(typeof(RoomDto), 200)]

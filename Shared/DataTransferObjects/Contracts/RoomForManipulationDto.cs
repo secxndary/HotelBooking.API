@@ -15,7 +15,7 @@ public abstract record RoomForManipulationDto
     public int SleepingPlaces { get; init; }
 
     [Required(ErrorMessage = "Введите индентификатор отеля")]
-    public Guid HotelId { get; init; }
+    public Guid HotelId { get; set; }
     
     [Required(ErrorMessage = "Введите идентификатор типа комнаты")]
     public Guid RoomTypeId { get; init; }

@@ -141,6 +141,8 @@ public sealed class RoomService : IRoomService
         await CheckIfRoomTypeExists(roomForUpdate.RoomTypeId);
 
         var roomEntity = await GetRoomForHotelAndCheckIfItExists(hotelId, id, trackChanges: true);
+        roomForUpdate.HotelId = hotelId;
+
         _mapper.Map(roomForUpdate, roomEntity);
         await _repository.SaveAsync();
 
