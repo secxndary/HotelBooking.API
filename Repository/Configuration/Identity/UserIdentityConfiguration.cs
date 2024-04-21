@@ -19,7 +19,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "JOHNDOE",
                 NormalizedEmail = "JOHNDOE@EXAMPLE.ORG",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375291234567",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -34,7 +34,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "JANEDOE",
                 NormalizedEmail = "JANEDOE@EXAMPLE.ORG",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375447654321",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -49,7 +49,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "VALDAITSEVV",
                 NormalizedEmail = "VALDAITSEVV@MAIL.RU",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375445574506",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -64,7 +64,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "SASHASBABE",
                 NormalizedEmail = "KATIE@MAIL.RU",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375333749235",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -79,7 +79,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "USER",
                 NormalizedEmail = "DEFAULT@EXAMPLE.ORG",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375294859923",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -94,7 +94,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "ROOT",
                 NormalizedEmail = "ROOT@EXAMPLE.ORG",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375449274568",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -109,7 +109,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "PRESIDENTOWNER",
                 NormalizedEmail = "KROTNICHENKO@GMAIL.COM",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375333744859",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -124,7 +124,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "SHAMAN",
                 NormalizedEmail = "SHAMAN@BELSTU.BY",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375293749574",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -139,7 +139,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "VMAZENKOVA",
                 NormalizedEmail = "VMAZENKOVA@MAIL.RU",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375447568124",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
@@ -154,7 +154,7 @@ public class UserIdentityConfiguration : IEntityTypeConfiguration<UserIdentity>
                 NormalizedUserName = "VIKTORRR",
                 NormalizedEmail = "VIKTORKON@GMAIL.COM",
                 LockoutEnabled = true,
-                PasswordHash = "AQAAAAIAAYagAAAAEMGzPOccYwucA6sQEj5E55e0KpyBuWurkfoUDOEBTe2FNdkpwiRbKI++HV/hopSptA==",
+                PasswordHash = "AQAAAAIAAYagAAAAEO8+QXtqMpGP/GC+0fxr7EUoqSnZauiyg/0y2tHN0W45swfJ1tstR59G0510OGnWfQ==",
                 PhoneNumber = "+375448569125",
                 HotelOwnerConfirmedByAdmin = true,
                 HotelOwnerDeclinedByAdmin = false
