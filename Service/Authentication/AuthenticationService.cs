@@ -43,10 +43,16 @@ public class AuthenticationService : IAuthenticationService
     public async Task<IdentityResult> RegisterUser(UserForRegistrationDto userForRegistration)
     {
         var user = _mapper.Map<UserIdentity>(userForRegistration);
+
+        if (!userForRegistration.Roles.Contains("hotelOwner") && !userForRegistration.Roles.Contains("HotelOwner"))
+        {
+            user.HotelOwnerConfirmedByAdmin = true;
+        }
+
         var result = await _userManager.CreateAsync(user, userForRegistration.Password!);
 
         await _userManager.AddToRolesAsync(user, userForRegistration.Roles!);
-        
+
         foreach (var role in userForRegistration.Roles!)
         {
             if (!await _roleManager.RoleExistsAsync(role))
@@ -67,11 +73,11 @@ public class AuthenticationService : IAuthenticationService
                 });
             }
         }
-        
+
         return result;
     }
 
-    public async Task<bool?> ValidateUser(UserForAuthenticationDto userForAuthentication)
+    public async Task<(bool?, string)> ValidateUser(UserForAuthenticationDto userForAuthentication)
     {
         _user = await _userManager.FindByNameAsync(userForAuthentication.UserName!);
         var result = _user != null && await _userManager.CheckPasswordAsync(_user, userForAuthentication.Password!);
@@ -80,10 +86,19 @@ public class AuthenticationService : IAuthenticationService
             _logger.LogWarn($"{nameof(ValidateUser)}: Authentication failed. Incorrect username or password.");
 
         var roles = await _userManager.GetRolesAsync(_user);
-        if (!_user.HotelOwnerConfirmedByAdmin && (roles.Contains("hotelOwner") || roles.Contains("HotelOwner")))
-            return null;
 
-        return result;
+        if (!_user.HotelOwnerConfirmedByAdmin && _user.HotelOwnerDeclinedByAdmin &&
+            (roles.Contains("hotelOwner") || roles.Contains("HotelOwner")))
+        {
+            return (result: null, message: "AccountDeclined");
+        }
+
+        if (!_user.HotelOwnerConfirmedByAdmin && (roles.Contains("hotelOwner") || roles.Contains("HotelOwner")))
+        {
+            return (result: null, message: "AccountNotActivated");
+        }
+
+        return (result, "");
     }
 
     public async Task<TokenDto> CreateToken(bool populateExpiration)
@@ -131,11 +146,34 @@ public class AuthenticationService : IAuthenticationService
         return userDto;
     }
 
-    public async Task<IdentityUser> GetUserById(string id) => await _userManager.FindByIdAsync(id);
-    
+    public async Task<UserIdentity> GetUserById(string id) => await _userManager.FindByIdAsync(id);
+
     public UserIdentity GetUser() => _user;
 
-    
+    public IQueryable<UserIdentity> GetHotelOwnersNotActivated() => 
+        _userManager.Users
+            .Where(u => !u.HotelOwnerConfirmedByAdmin && !u.HotelOwnerDeclinedByAdmin);
+
+    public async Task<bool> ActivateHotelOwnerAccount(string id)
+    {
+        var user = await GetUserById(id);
+        user.HotelOwnerConfirmedByAdmin = true;
+
+        await _userManager.UpdateAsync(user);
+
+        return true;
+    }
+
+    public async Task<bool> DeclineHotelOwnerAccount(string id)
+    {
+        var user = await GetUserById(id);
+        user.HotelOwnerDeclinedByAdmin = true;
+
+        await _userManager.UpdateAsync(user);
+
+        return true;
+    }
+
     private SigningCredentials GetSigningCredentials()
     {
         var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")!);

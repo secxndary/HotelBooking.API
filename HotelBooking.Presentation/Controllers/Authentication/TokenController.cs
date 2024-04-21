@@ -1,5 +1,8 @@
 ﻿using Entities.ErrorModel;
+using Entities.Models;
 using HotelBooking.Presentation.Filters.ActionFilters;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.AuthenticationDtos;
@@ -50,11 +53,40 @@ public class TokenController : ControllerBase
     }
 
     [HttpGet("user-by-id/{id}")]
-    [ProducesResponseType(typeof(TokenDto), 200)]
+    [ProducesResponseType(typeof(IdentityUser), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> GetUserById(string id)
     {
         var user = await _service.AuthenticationService.GetUserById(id);
         return Ok(user);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("hotel-owners-not-activated")]
+    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 401)]
+    public async Task<IActionResult> GetHotelOwnersNotActivated()
+    {
+        var hotelOwners = _service.AuthenticationService.GetHotelOwnersNotActivated();
+        return Ok(hotelOwners);
+    }
+    
+    [Authorize(Roles = "Admin")]
+    [HttpGet("activate-account/{id}")]
+    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 401)]
+    public async Task<IActionResult> ActivateHotelOwnerAccount(string id)
+    {
+        await _service.AuthenticationService.ActivateHotelOwnerAccount(id);
+        return Ok();
+    }
+    
+    [HttpGet("decline-account/{id}")]
+    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(typeof(ErrorDetails), 401)]
+    public async Task<IActionResult> DeclineHotelOwnerAccount(string id)
+    {
+        await _service.AuthenticationService.DeclineHotelOwnerAccount(id);
+        return Ok();
     }
 }

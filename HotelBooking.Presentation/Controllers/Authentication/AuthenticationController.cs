@@ -82,14 +82,19 @@ public class AuthenticationController : ControllerBase
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)
     {
-        var result = await _service.AuthenticationService.ValidateUser(user);
+        var (result, message) = await _service.AuthenticationService.ValidateUser(user);
 
-        if (result is null)
+        if (result is null && message == "AccountNotActivated")
         {
-            return Accepted(new { message = "AccountNotActivated" });
+            return Accepted(new { message });
         }
 
-        if ((bool)!result.Value)
+        if (result is null && message == "AccountDeclined")
+        {
+            return Accepted(new { message });
+        }
+
+        if (!result.Value)
         {
             return Unauthorized();
         }
