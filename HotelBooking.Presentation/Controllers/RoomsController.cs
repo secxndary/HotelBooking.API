@@ -248,7 +248,7 @@ public class RoomsController : ControllerBase
     /// <response code="400">If the item is null</response>
     /// <response code="404">If the item does not exist</response>
     /// <response code="422">If the model is invalid</response>
-    [HttpPut("{id:guid}")]
+    [HttpPut]
     [Route("api/hotels/{hotelId:guid}/rooms/{id:guid}")]
     [Authorize(Roles = "Admin, HotelOwner")]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -322,8 +322,8 @@ public class RoomsController : ControllerBase
     /// </remarks>
     /// <response code="204">Returns No content</response>
     /// <response code="404">If the item does not exist</response>
-    [HttpDelete("{id:guid}")]
-    [Route("api/hotels/{hotelId:guid}/rooms")]
+    [HttpDelete]
+    [Route("api/hotels/{hotelId:guid}/rooms/delete/{id:guid}")]
     [Authorize(Roles = "HotelOwner")]
     [ProducesResponseType(204)]
     [ProducesResponseType(typeof(ErrorDetails), 404)]
