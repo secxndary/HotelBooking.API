@@ -15,11 +15,25 @@ public class HotelRepository : RepositoryBase<Hotel>, IHotelRepository
 
     public async Task<PagedList<Hotel>> GetAllHotelsAsync(HotelParameters hotelParameters, bool trackChanges)
     {
-        var hotels = await FindAll(trackChanges)
-            .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
-            .Search(hotelParameters.SearchTerm)
-            .Sort(hotelParameters.OrderBy)
-            .ToListAsync();
+        var hotels = new List<Hotel>();
+        
+        if (!string.IsNullOrWhiteSpace(hotelParameters.City))
+        {
+            hotels = await FindAll(trackChanges)
+                .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
+                .Search(hotelParameters.SearchTerm)
+                .Sort(hotelParameters.OrderBy)
+                .Where(hotel => hotel.Address.Contains(hotelParameters.City))
+                .ToListAsync();
+        }
+        else
+        {
+            hotels = await FindAll(trackChanges)
+                .FilterHotelsByStars(hotelParameters.MinStars, hotelParameters.MaxStars)
+                .Search(hotelParameters.SearchTerm)
+                .Sort(hotelParameters.OrderBy)
+                .ToListAsync();
+        }
 
         return PagedList<Hotel>.ToPagedList(hotels, hotelParameters.PageNumber, hotelParameters.PageSize);
     }

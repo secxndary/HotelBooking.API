@@ -11,6 +11,7 @@ public interface IHotelService
     Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetAllHotelsAsync(HotelParameters hotelParameters);
     Task<(IEnumerable<HotelDto> hotels, MetaData metaData)> GetHotelsByHotelOwnerAsync(string hotelOwnerId, HotelParameters hotelParameters);
     Task<IEnumerable<HotelDto>> GetByIdsAsync(IEnumerable<Guid> ids);
+    Task<IEnumerable<string>> GetAddressesAsync();
     Task<HotelDto> GetHotelAsync(Guid id);
     Task<HotelDto> CreateHotelAsync(HotelForCreationDto hotel);
     Task<(IEnumerable<HotelDto> hotels, string ids)> CreateHotelCollectionAsync 

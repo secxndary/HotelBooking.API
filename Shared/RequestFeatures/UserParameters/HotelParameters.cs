@@ -10,4 +10,5 @@ public class HotelParameters : RequestParameters
     public bool ValidStarsRange => MaxStars >= MinStars;
 
     public string? SearchTerm { get; set; }
+    public string? City { get; set; }
 }

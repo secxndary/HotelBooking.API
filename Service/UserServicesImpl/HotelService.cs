@@ -79,6 +79,17 @@ public sealed class HotelService : IHotelService
         return hotelDto;
     }
 
+    public async Task<IEnumerable<string>> GetAddressesAsync()
+    {
+        var result = await GetAllHotelsAsync(new HotelParameters());
+        var hotels = result.hotels;
+
+        return hotels
+            .Select(h => h.Address.Split(',')[0] + "," + h.Address.Split(',')[1])
+            .Distinct()
+            .ToList();
+    }
+
     public async Task<HotelDto> CreateHotelAsync(HotelForCreationDto hotel)
     {
         var hotelEntity = _mapper.Map<Hotel>(hotel);

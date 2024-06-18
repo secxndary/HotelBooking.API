@@ -91,6 +91,13 @@ public class HotelsController : ControllerBase
         return Ok(hotels);
     }
 
+    [HttpGet("addresses")]
+    public async Task<IActionResult> GetAddresses()
+    {
+        var addresses = await _service.HotelService.GetAddressesAsync();
+        return Ok(addresses);
+    }
+
     /// <summary>
     /// Gets a hotel
     /// </summary>
