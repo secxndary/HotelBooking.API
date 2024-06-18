@@ -15,4 +15,5 @@ public interface IAuthenticationService
     IQueryable<UserIdentity> GetHotelOwnersNotActivated();
     Task<bool> ActivateHotelOwnerAccount(string id);
     Task<bool> DeclineHotelOwnerAccount(string id);
+    Task<UserIdentity> UpdateUser(UserDto user);
 }

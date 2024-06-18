@@ -174,6 +174,17 @@ public class AuthenticationService : IAuthenticationService
         return true;
     }
 
+    public async Task<UserIdentity> UpdateUser(UserDto userToUpdate)
+    {
+        var user = await _userManager.FindByIdAsync(userToUpdate.Id);
+
+        _mapper.Map(userToUpdate, user);
+        await _userManager.UpdateAsync(user);
+
+        return user;
+    }
+
+
     private SigningCredentials GetSigningCredentials()
     {
         var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRET")!);

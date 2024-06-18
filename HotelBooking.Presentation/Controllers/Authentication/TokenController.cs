@@ -53,7 +53,7 @@ public class TokenController : ControllerBase
     }
 
     [HttpGet("user-by-id/{id}")]
-    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(typeof(UserIdentity), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> GetUserById(string id)
     {
@@ -63,7 +63,7 @@ public class TokenController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet("hotel-owners-not-activated")]
-    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(typeof(IEnumerable<UserIdentity>), 200)]
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> GetHotelOwnersNotActivated()
     {
@@ -73,16 +73,17 @@ public class TokenController : ControllerBase
     
     [Authorize(Roles = "Admin")]
     [HttpGet("activate-account/{id}")]
-    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(200)]
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> ActivateHotelOwnerAccount(string id)
     {
         await _service.AuthenticationService.ActivateHotelOwnerAccount(id);
         return Ok();
     }
-    
+
+    [Authorize(Roles = "Admin")]
     [HttpGet("decline-account/{id}")]
-    [ProducesResponseType(typeof(IdentityUser), 200)]
+    [ProducesResponseType(200)]
     [ProducesResponseType(typeof(ErrorDetails), 401)]
     public async Task<IActionResult> DeclineHotelOwnerAccount(string id)
     {
